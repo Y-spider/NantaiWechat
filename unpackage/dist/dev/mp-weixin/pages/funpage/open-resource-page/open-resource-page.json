@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "backgroundColor": "#2f4052",
+  "usingComponents": {
+    "uni-fab": "/uni_modules/uni-fab/components/uni-fab/uni-fab",
+    "uni-search-bar": "/uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar",
+    "navigation-self": "/pages/common-components/head/head",
+    "pop-website": "/pages/common-components/website-input-pop/pop-website",
+    "pop-document": "/pages/common-components/document-input-pop/pop-document",
+    "state-component": "/pages/common-components/stateComponent/stateComponent"
+  }
+}

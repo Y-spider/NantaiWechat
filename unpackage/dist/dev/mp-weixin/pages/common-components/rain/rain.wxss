@@ -1,0 +1,61 @@
+
+.rain-box.data-v-0807962f{
+	 display: flex;
+	 flex-direction: column;
+}
+.rain.data-v-0807962f{
+	 width: 140rpx;
+	 margin-left: 5rpx;
+	 position: relative;
+	 top: -30rpx;
+	 display: flex;
+	 justify-content: space-around;
+	 align-items: center;
+}
+.rain ._span.data-v-0807962f{
+	 width: 8rpx;
+	 height: 8rpx;
+	 border-radius: 50%;
+	 background-color: red;
+	 margin: 0rpx 2rpx;
+	 background-color: white;
+	 visibility: 0;
+	 -webkit-animation:rain-down-data-v-0807962f 2s linear infinite;
+	         animation:rain-down-data-v-0807962f 2s linear infinite;
+	 -webkit-transform-origin: bottom;
+	         transform-origin: bottom;
+}
+@-webkit-keyframes rain-down-data-v-0807962f{
+	 /* 雨滴落下关键帧 */
+0%{
+		 -webkit-transform: translateY(0) scale(1);
+		         transform: translateY(0) scale(1);
+}
+70%{
+		 -webkit-transform: translateY(320rpx) scale(1);
+		         transform: translateY(320rpx) scale(1);
+}
+100%{
+		 -webkit-transform: translateY(300rpx) scale(0);
+		         transform: translateY(300rpx) scale(0);
+}
+}
+@keyframes rain-down-data-v-0807962f{
+	 /* 雨滴落下关键帧 */
+0%{
+		 -webkit-transform: translateY(0) scale(1);
+		         transform: translateY(0) scale(1);
+}
+70%{
+		 -webkit-transform: translateY(320rpx) scale(1);
+		         transform: translateY(320rpx) scale(1);
+}
+100%{
+		 -webkit-transform: translateY(300rpx) scale(0);
+		         transform: translateY(300rpx) scale(0);
+}
+}
+ 
+ 
+ 
+

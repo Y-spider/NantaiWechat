@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "home-success-page": "/pages/home-success/home-success",
+    "navigation-self": "/pages/common-components/head/head",
+    "rain-compont": "/pages/common-components/rain/rain"
+  }
+}

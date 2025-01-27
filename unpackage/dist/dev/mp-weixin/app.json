@@ -1,0 +1,61 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/start/start",
+    "pages/post/post",
+    "pages/home/home",
+    "pages/home-success/home-success",
+    "pages/modify-info/modify-info",
+    "pages/funpage/signin-page/signin-page",
+    "pages/common-components/head/head",
+    "pages/funpage/model-page/model-page",
+    "pages/funpage/post-detail/post-detail",
+    "pages/funpage/my-post-page/my-post-page",
+    "pages/funpage/post-report-page/post-report-page",
+    "pages/funpage/post-page-of-type/post-page-of-type",
+    "pages/funpage/my-collection-page/my-collection-page",
+    "pages/funpage/protocol-page/protocol-page",
+    "pages/funpage/use-guide-page/use-guide-page",
+    "pages/funpage/open-resource-page/open-resource-page",
+    "pages/message/message",
+    "pages/funpage/message-detail/message-detail"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8",
+    "navigationStyle": "custom"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/导航-首页.png",
+        "selectedIconPath": "static/导航-首页 (1).png"
+      },
+      {
+        "pagePath": "pages/post/post",
+        "text": "发布",
+        "iconPath": "static/发布.png",
+        "selectedIconPath": "static/发布 (1).png"
+      },
+      {
+        "pagePath": "pages/message/message",
+        "text": "消息",
+        "iconPath": "static/消息.png",
+        "selectedIconPath": "static/消息(1).png"
+      },
+      {
+        "pagePath": "pages/home/home",
+        "text": "我的",
+        "iconPath": "static/我的.png",
+        "selectedIconPath": "static/我的 (1).png"
+      }
+    ],
+    "backgroundColor": "#2f4052"
+  },
+  "usingComponents": {}
+}

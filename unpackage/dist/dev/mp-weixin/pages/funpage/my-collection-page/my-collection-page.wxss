@@ -1,0 +1,129 @@
+
+.navigation-self.data-v-5a4565af{
+	width: 100%;
+	height: 160rpx;
+	background-color: #2f4052;
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	border: none;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	position: fixed;
+	z-index:9999;
+}
+.temp.data-v-5a4565af{
+	width: 100%;
+	height: 160rpx;
+}
+.title-self.data-v-5a4565af{
+	font-size: large;
+	padding: 50rpx;
+	padding-left: 18rpx;
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-grow: 1;
+	margin-top: 60rpx;
+	position: relative;
+	z-index: 9999;
+}
+.bcke-self.data-v-5a4565af{
+	color: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 5rpx;
+	margin-top: 60rpx;
+	z-index: 99999;
+	position: relative;
+}
+
+
+.post-item-box{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	margin-top: 12rpx;
+}
+.post-item{
+	width: 100%;
+	min-height: 220rpx;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	margin: 30rpx 0rpx;
+	border: 1rpx solid lightgray;
+	box-shadow: 0rpx 5rpx 2rpx lightgray;
+}
+.post-item-base-info{
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	font-size: small;
+	border-bottom: 1rpx dashed lightgray;
+}
+.post-item-base-info image{
+	width: 100rpx;
+	height: 100rpx;
+	border-radius: 50%;
+	margin-top: -50%;
+	background-color: #1f2e4b;
+}
+.post-item-type,.post-item-top,.post-item-delete{
+	border-radius: 15rpx;
+	background-color: #b95c00;
+	color: white;
+}
+.post-item-top{
+	background-color: #d30000;
+}
+.post-item-title{
+	display: flex;
+	flex-wrap: wrap;
+}
+.post-item-title-box{
+	font-size: small;
+	margin: 15rpx 60rpx;
+}
+.post-item-title-box image{
+	width: 46rpx;
+	height: 46rpx;
+}
+.post-item-iamge-info-box{
+	display: flex;
+	justify-content: center;
+	align-items: center;	
+	margin-left: 60rpx;
+	font-size: small;
+}
+.post-item-other-info-box{
+	margin: 5rpx 0rpx;
+	font-size: small;
+	color: lightgray;
+	display: flex;
+	justify-content: space-around;
+	position: relative;
+	/* bottom: -30rpx; */
+}
+.post-item-other-info-box image{
+	width: 30rpx;
+	height: 30rpx;
+}
+.post-item-iamge-info-box{
+	display: flex;
+	justify-content: center;
+	align-items: center;	
+	margin-left: 60rpx;
+	font-size: small;
+}
+.post-item-other-info-box image{
+	width: 30rpx;
+	height: 30rpx;
+}
+.other-info-look,.other-info-comment,.other-info-like,.post-item-name{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+

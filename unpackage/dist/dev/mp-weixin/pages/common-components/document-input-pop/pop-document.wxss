@@ -1,0 +1,38 @@
+
+.pop-box.data-v-424b4bac{
+	width:100vw;
+	z-index: 10;
+	height:100vh;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	background-color: white;
+	opacity: 1;
+	-webkit-transform: translate(-50%,-50%);
+	        transform: translate(-50%,-50%);
+	border-radius: 30rpx;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.line-box.data-v-424b4bac{
+	width: 100vw;
+	display: flex;
+	align-items: center;
+	margin: 15rpx 0rpx;
+}
+label.data-v-424b4bac{
+	width: 200rpx;
+	margin: 0rpx 10rpx;
+}
+input.data-v-424b4bac{
+	width: 100%;
+	border-bottom: 2rpx solid lightgray;
+}
+.body-box-upload-image.data-v-424b4bac{
+	width: 100%;
+	margin-top: 18rpx;
+	border-bottom: 1rpx solid lightgray;
+}
+

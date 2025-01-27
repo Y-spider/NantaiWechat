@@ -1,0 +1,201 @@
+
+.navigation-self.data-v-5a4565af{
+	width: 100%;
+	height: 160rpx;
+	background-color: #2f4052;
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	border: none;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	position: fixed;
+	z-index:9999;
+}
+.temp.data-v-5a4565af{
+	width: 100%;
+	height: 160rpx;
+}
+.title-self.data-v-5a4565af{
+	font-size: large;
+	padding: 50rpx;
+	padding-left: 18rpx;
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-grow: 1;
+	margin-top: 60rpx;
+	position: relative;
+	z-index: 9999;
+}
+.bcke-self.data-v-5a4565af{
+	color: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 5rpx;
+	margin-top: 60rpx;
+	z-index: 99999;
+	position: relative;
+}
+
+
+.singin-info-box.data-v-059e498a,.head.data-v-059e498a{
+	width: 100%;
+	background-color: #2f4052;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+.singin-info-box.data-v-059e498a{
+	width: 85%;
+}
+.sign-info-item.data-v-059e498a{
+	width: 80rpx;
+	height: 80%;
+	margin: 0rpx 15rpx;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.sign-info-item-date-info.data-v-059e498a{
+	color: white;
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-size: 36rpx;
+}
+.sign-info-item-date-info .day-key.data-v-059e498a{
+}
+.sigin-statu-icon image.data-v-059e498a{
+	margin-top: 5rpx;
+	width: 30rpx;
+	height: 30rpx;
+}
+.body.data-v-059e498a{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: #2f4052;
+}
+.rod-box.data-v-059e498a{
+	width: 85%;
+	height: 100rpx;
+	/* border-top: 3rpx solid gray; */
+	margin-top: 30rpx;
+}
+.rod.data-v-059e498a{
+	width: 100%;
+	height: 15rpx;
+	background:linear-gradient(to right,#98A7C8,#bc95c6);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+}
+.nail.data-v-059e498a{
+	width: 30rpx;
+	height: 30rpx;
+	background-color: lightblue;
+	border-radius: 50%;
+}
+.nail-left.data-v-059e498a{
+	margin-left: -10rpx;
+	background-color: #98A7C8;
+}
+.nail-right.data-v-059e498a{
+	margin-right: -10rpx;
+	background-color: #bc95c6;
+}
+.chain.data-v-059e498a{
+	width: 96%;
+	height: 85rpx;
+	border-left: 15rpx solid #98A7C8;
+	border-right: 15rpx solid #bc95c6;
+}
+.singin-point-info.data-v-059e498a{
+	width: 100%;
+	height: 1000rpx;
+	background-color: white;
+	display: flex;
+	border:none;
+	flex-direction: column;
+}
+.box-head.data-v-059e498a{
+	width: 100%;
+	height: 60%;
+	background: linear-gradient(#98A7C8,#bc95c6);
+	display: flex;
+	flex-direction: column;
+}
+.circle-box.data-v-059e498a{
+	width: 100%;
+	height: 100rpx;
+	display: flex;
+	margin-bottom: -50rpx;
+}
+.circle-group.data-v-059e498a{
+	width: 60%;
+	height: 100rpx;
+	background-color: white;
+	border-radius: 75%;
+	overflow-x: hidden;
+}
+.circle-1.data-v-059e498a{
+	background-color: #bc95c6;
+	margin-left: -30rpx;
+}
+.info-box.data-v-059e498a{
+	width: 100%;
+	height:100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 100rpx;
+}
+.info-item.data-v-059e498a{
+	color: white;
+	font-size: 50rpx;
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	margin: 15rpx;
+}
+.info-has-signed-day.data-v-059e498a{
+	color: #bc95c6;
+	font-size: 34rpx;
+	border-radius: 60rpx;
+	background-color: white;
+}
+.info-now-point.data-v-059e498a{
+	font-size: 30rpx;
+}
+.info-signin-rule.data-v-059e498a{
+	width: 80%;
+	font-size: 24rpx;
+}
+.box-body.data-v-059e498a{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.button-box.data-v-059e498a{
+	width: 80%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.signin-button.data-v-059e498a{
+	background-color: #bc95c6;
+	color: white;
+}
+.back-button.data-v-059e498a{
+	background-color: lightgray;
+	color: white;
+}
+
+
+
+

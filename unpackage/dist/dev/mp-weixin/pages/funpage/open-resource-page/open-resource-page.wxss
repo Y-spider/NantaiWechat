@@ -1,0 +1,129 @@
+
+.navigation-self.data-v-5a4565af{
+	width: 100%;
+	height: 160rpx;
+	background-color: #2f4052;
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	border: none;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	position: fixed;
+	z-index:9999;
+}
+.temp.data-v-5a4565af{
+	width: 100%;
+	height: 160rpx;
+}
+.title-self.data-v-5a4565af{
+	font-size: large;
+	padding: 50rpx;
+	padding-left: 18rpx;
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-grow: 1;
+	margin-top: 60rpx;
+	position: relative;
+	z-index: 9999;
+}
+.bcke-self.data-v-5a4565af{
+	color: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 5rpx;
+	margin-top: 60rpx;
+	z-index: 99999;
+	position: relative;
+}
+
+
+page.data-v-0ebaad25,page.data-v-0ebaad25,.box.data-v-0ebaad25{
+	width: 100%;
+	min-height: 100%;
+}
+.navigate-bar.data-v-0ebaad25{
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 36rpx;
+}
+.navigate-item.data-v-0ebaad25{
+	width:50%;
+	display:flex;
+	justify-content: center;
+	align-items: center;
+}
+.selected-style.data-v-0ebaad25{
+	color:#007AFF;
+	/* 还要有下划线 */
+	border-bottom: 10rpx solid #007AFF;
+}
+.no-selected-style.data-v-0ebaad25{
+	color: black;
+	border: none;
+}
+.website-content-box.data-v-0ebaad25{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-top: 15rpx;
+}
+.website-content-item.data-v-0ebaad25,.document-content-item.data-v-0ebaad25{
+	width: 98%;
+	display: flex;
+	flex-direction: column;
+	margin: 30rpx 0rpx;
+	border-bottom: 3rpx solid #ccc;
+}
+._img.data-v-0ebaad25{
+	width: 64rpx;
+	height: 64rpx;
+	border-radius: 50%;
+}
+image.data-v-0ebaad25{
+	width: 32rpx;
+	height: 32rpx;
+}
+.website-url.data-v-0ebaad25{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.base-info.data-v-0ebaad25{
+	width: 100%;
+	display: flex;
+}
+.avatar.data-v-0ebaad25{
+	margin-left: 18rpx;
+}
+.avatar image.data-v-0ebaad25{
+	width: 64rpx;
+	height: 64rpx;
+	border-radius: 50%;
+}
+.post-info.data-v-0ebaad25{
+	margin-left: 12rpx;
+}
+.show-type-picker.data-v-0ebaad25{
+	width: 100rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	border-bottom: 3rpx solid #ccc;
+}
+.document-iamge.data-v-0ebaad25{
+	width: 128rpx;
+	height: 128rpx;
+	border-radius: 15rpx;
+	margin: 10rpx;
+}
+
+
+

@@ -1,0 +1,219 @@
+
+.navigation-self.data-v-5a4565af{
+	width: 100%;
+	height: 160rpx;
+	background-color: #2f4052;
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	border: none;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	position: fixed;
+	z-index:9999;
+}
+.temp.data-v-5a4565af{
+	width: 100%;
+	height: 160rpx;
+}
+.title-self.data-v-5a4565af{
+	font-size: large;
+	padding: 50rpx;
+	padding-left: 18rpx;
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-grow: 1;
+	margin-top: 60rpx;
+	position: relative;
+	z-index: 9999;
+}
+.bcke-self.data-v-5a4565af{
+	color: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 5rpx;
+	margin-top: 60rpx;
+	z-index: 99999;
+	position: relative;
+}
+
+
+.poster-info.data-v-2b4ee9c3{
+	width: 100%;
+	min-height: 200rpx;	
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 3rpx solid lightgray;
+}
+.post-info-base-info.data-v-2b4ee9c3{
+	display: flex;
+}
+.avatar.data-v-2b4ee9c3{
+	width: 160rpx;
+	height: 160rpx;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.avatar image.data-v-2b4ee9c3{
+	width: 120rpx;
+	height: 120rpx;
+	border-radius: 50%;
+}
+.name-time-box.data-v-2b4ee9c3{
+	height: 120rpx;
+	padding:30rpx 15rpx;
+	color: lightgray;
+	font-size: small;
+	display: flex;
+	flex-direction: column;
+}
+.name-time-box .time.data-v-2b4ee9c3{
+	margin-top: 30rpx;
+}
+.fun-box.data-v-2b4ee9c3{
+	width: 120rpx;
+	height: 120rpx;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+}
+.fun-box image.data-v-2b4ee9c3{
+	width: 50rpx;
+	height: 50rpx;
+}
+.post-detail-info-box.data-v-2b4ee9c3{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-top: 30rpx;
+	border-bottom: 2rpx solid lightgray;
+}
+.post-detail-info-box .post-content.data-v-2b4ee9c3{
+	width: 85%;
+	font-size: small;
+}
+.image-box.data-v-2b4ee9c3{
+	width: 85%;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	flex-wrap: wrap;
+	margin:10rpx 5rpx;
+}
+.image-box image.data-v-2b4ee9c3{
+	max-width: 160rpx;
+	max-height: 160rpx;
+	border-radius: 10rpx;
+	margin:10rpx;
+}
+.contact-info.data-v-2b4ee9c3{
+	width: 85%;
+}
+.contact.data-v-2b4ee9c3{
+	margin: 15rpx 60rpx;
+	color: #333333;
+	font-size: small;
+}
+.contact view.data-v-2b4ee9c3{
+	margin-top: 15rpx;
+}
+.comment-item.data-v-2b4ee9c3{
+	width: 95%;
+	min-height: 160rpx;
+	display: flex;
+	flex-direction: column;
+	border-radius: 15rpx;
+	border-bottom: 2rpx solid lightgray;
+}
+[v-cloak].data-v-2b4ee9c3 {
+	display: none;
+}
+.comment-item .base-info-box.data-v-2b4ee9c3{
+	display: flex;
+}
+.base-info-box .avatar.data-v-2b4ee9c3{
+	width: 80rpx;
+	height: 80rpx;
+	margin: 12rpx;
+	display: flex;
+}
+.base-info-box .avatar image.data-v-2b4ee9c3{
+	width: 64rpx;
+	height: 64rpx;
+	border-radius: 50%;
+	background-color: #333;
+}
+.base-info-box .name-and-time.data-v-2b4ee9c3{
+	height: 80rpx;
+	color: #333;
+	font-size: small;
+	margin-top: 12rpx;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+.comment-text.data-v-2b4ee9c3{
+	margin:15rpx 80rpx;
+	font-size: 26rpx;
+}
+.other-info-box.data-v-2b4ee9c3{
+	display: flex;
+	width: 100%;
+	flex-direction: row-reverse;
+	align-items: center;
+}
+.other-info-box image.data-v-2b4ee9c3{
+	width: 36rpx;
+	height: 36rpx;
+}
+.other-info-box .like.data-v-2b4ee9c3,.reply.data-v-2b4ee9c3{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: lightgray;
+}
+.like.data-v-2b4ee9c3{
+	margin: 0rpx 20rpx;
+}
+.button-box.data-v-2b4ee9c3{
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+	position: fixed;
+	bottom: 30rpx;
+	display: flex;
+	justify-content: center;
+}
+.button-box-inner-box.data-v-2b4ee9c3{
+	width: 75%;
+	display: flex;
+	justify-content: space-around;
+}
+.replayComment.data-v-2b4ee9c3{
+	width: 100%;
+	margin-left: 30rpx;
+	display: flex;
+	flex-direction: column;
+}
+.comment-input.data-v-2b4ee9c3{
+	height: 120rpx;
+	width: 100%;
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	bottom: 0;
+	justify-content: center;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+	background-color: #f0f0f0;
+}
+.delet.data-v-2b4ee9c3{
+	margin:10rpx;
+}
+

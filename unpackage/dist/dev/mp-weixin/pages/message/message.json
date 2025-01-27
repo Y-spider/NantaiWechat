@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "navigation-self": "/pages/common-components/head/head",
+    "state-component": "/pages/common-components/stateComponent/stateComponent"
+  }
+}

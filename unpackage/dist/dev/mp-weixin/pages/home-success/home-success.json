@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "rain-compont": "/pages/common-components/rain/rain",
+    "cloud-compont": "/pages/common-components/cloud/cloud",
+    "navigation-self": "/pages/common-components/head/head"
+  }
+}

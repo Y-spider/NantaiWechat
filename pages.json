@@ -1,0 +1,181 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index"
+		},
+		{
+			"path" : "pages/start/start",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/post/post",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/home/home",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/home-success/home-success",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/modify-info/modify-info",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		
+		{
+			"path" : "pages/funpage/signin-page/signin-page",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/common-components/head/head",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/funpage/model-page/model-page",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/funpage/post-detail/post-detail",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/funpage/my-post-page/my-post-page",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/funpage/post-report-page/post-report-page",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/funpage/post-page-of-type/post-page-of-type",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/funpage/my-collection-page/my-collection-page",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/funpage/protocol-page/protocol-page",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/funpage/use-guide-page/use-guide-page",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/funpage/open-resource-page/open-resource-page",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false,
+				"backgroundColor": "#2f4052"
+			}
+		},
+		{
+			"path" : "pages/message/message",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/funpage/message-detail/message-detail",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		}
+	],
+	  "window": {
+	    "backgroundTextStyle": "light",
+	    "navigationBarBackgroundColor": "#fff",
+	    "navigationBarTitleText": "小程序",
+	    "navigationBarTextStyle": "black",
+	    "enablePullDownRefresh": true,
+	    "onReachBottomDistance": 50,
+	    "backgroundColor": "#F7F7F7",
+	    // "backgroundImage": "C:\Users\Administrator\Pictures\蓝天背景.jpg",
+	    "backgroundSize": "cover"
+	  },
+	"tabBar": {
+		"list": [
+			{"pagePath": "pages/index/index","text": "首页","iconPath": "static/导航-首页.png","selectedIconPath": "static/导航-首页 (1).png"},
+			{"pagePath": "pages/post/post","text": "发布","iconPath": "static/发布.png","selectedIconPath": "static/发布 (1).png"},
+			{"pagePath": "pages/message/message","text": "消息","iconPath": "static/消息.png","selectedIconPath": "static/消息(1).png"},
+			{"pagePath": "pages/home/home","text": "我的","iconPath": "static/我的.png","selectedIconPath": "static/我的 (1).png"}
+		],
+		"backgroundColor": "#2f4052"
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"navigationStyle": "custom"
+	},
+	"uniIdRouter": {}
+}

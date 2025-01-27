@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "clould-compont": "/pages/common-components/cloud/cloud"
+  }
+}

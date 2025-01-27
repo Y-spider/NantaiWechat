@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "z-paging": "/uni_modules/z-paging/components/z-paging/z-paging",
+    "uni-search-bar": "/uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar",
+    "x-skeleton": "/uni_modules/x-skeleton/components/x-skeleton/x-skeleton",
+    "navigation-self": "/pages/common-components/head/head",
+    "state-component": "/pages/common-components/stateComponent/stateComponent"
+  }
+}

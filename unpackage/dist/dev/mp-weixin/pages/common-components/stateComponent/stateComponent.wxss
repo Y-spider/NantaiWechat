@@ -1,0 +1,12 @@
+
+.box.data-v-7ec8416f{
+	display: flex;
+	flex-direction: column; 
+	width: 100vw; 
+	margin: 15rpx;
+	justify-content: center;
+	align-items: center;
+	color: lightgray;
+	font-size: small;
+}
+

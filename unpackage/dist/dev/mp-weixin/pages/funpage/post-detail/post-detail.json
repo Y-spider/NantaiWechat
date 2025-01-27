@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "x-skeleton": "/uni_modules/x-skeleton/components/x-skeleton/x-skeleton",
+    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons",
+    "uni-easyinput": "/uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput",
+    "navigation-self": "/pages/common-components/head/head",
+    "state-component": "/pages/common-components/stateComponent/stateComponent"
+  }
+}

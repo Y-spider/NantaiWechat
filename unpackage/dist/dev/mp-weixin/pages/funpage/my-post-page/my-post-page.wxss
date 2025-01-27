@@ -1,0 +1,113 @@
+
+.navigation-self.data-v-5a4565af{
+	width: 100%;
+	height: 160rpx;
+	background-color: #2f4052;
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	border: none;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	position: fixed;
+	z-index:9999;
+}
+.temp.data-v-5a4565af{
+	width: 100%;
+	height: 160rpx;
+}
+.title-self.data-v-5a4565af{
+	font-size: large;
+	padding: 50rpx;
+	padding-left: 18rpx;
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-grow: 1;
+	margin-top: 60rpx;
+	position: relative;
+	z-index: 9999;
+}
+.bcke-self.data-v-5a4565af{
+	color: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 5rpx;
+	margin-top: 60rpx;
+	z-index: 99999;
+	position: relative;
+}
+
+
+.post-show-box{
+	width: 100vw;
+	min-height: 120rpx;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 15rpx;
+}
+.post-show-item{
+		width: 96%;
+		border-bottom: 2rpx solid lightgray;
+		margin: 15rpx 0rpx;
+}
+.head-line,.content-line-1,.content-line-2{
+		display: flex;
+		justify-content: space-between;
+		margin: 15rpx 0rpx;
+}
+.content-line-2{
+		display: flex;
+		flex-direction: row-reverse;
+}
+.post-name{
+		word-wrap: break-word; /*强制换行*/
+		overflow: hidden; /*超出隐藏*/
+		text-overflow: ellipsis;/*隐藏后添加省略号*/
+		white-space: nowrap;/*强制不换行*/
+}
+.head-line .post-type,.post-top{
+		border-radius: 15rpx;
+		background-color: #b95c00;
+		color: white;
+}
+.post-top{
+		background-color: #d30000;
+}
+image{
+		width: 30rpx;
+		height: 30rpx;
+}
+.post-look-and-comment{
+		display: flex;
+		color: lightgray;
+}
+.comment-info-box,.look-info-box,.post-image-count,.like-info-box{
+		margin: 0rpx 5rpx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+}
+.show-top-info{
+		display: flex;
+		justify-content: space-around;
+}
+.fun-line{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 30rpx;
+}
+.fun-lien-box-1,.fun-lien-box-2{
+		display: flex;
+		justify-content: space-between;
+}
+.fun-lien-box-1{
+		width: 40%;
+}
+.delete-post{
+		margin-left: 15rpx;
+}
+
