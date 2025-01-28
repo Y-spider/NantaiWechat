@@ -1,48 +1,72 @@
 <template>
 	<!-- 文档上传页面 -->
-	<view v-if="isShow">
+	<view v-if="isShow" class="pop-container">
 		<view class="pop-box">
-			<view class="line-box">
-				<label>文件名称:</label>
-				<input v-model:value="fileName" placeholder="可以手动修改"/>
-			</view>
-			<view class="line-box">
-				<label>文件大小:</label>
-				<input disabled v-bind:value="showFileSize"/>
-			</view>
-			<view class="line-box">
-				<label>上传进度:</label>
-				<progress :percent="uploadProgress" show-info stroke-width="3" />
-			</view>
-			<view class="line-box">
-				<label>上传图片:</label>
-				<uni-file-picker
-					style="border: 1rpx solid black;"
-					v-model="base64ImageList"
-					fileMediatype="image"
-					file-extname="jpg,png,jpeg"
-					mode="grid"
-					:limit="6"
-					size-type="compress"
-					auto-upload="false"
-					:image-styles="imgStyle"
-					@select="select" 
-					@sourceType="album"
-					@success="success" 
-					@fail="fail" 
-					@delete="deleteImg"
-				/>
-			</view>
-			<view class="line-box">
-				<label>选择文件:</label>
-				<button size="mini" type="primary" @click="getFileFormLocal()" style="background-color: #ccc; margin-left: -60rpx;">选择上传文件</button>
-			</view>
-			<view class="line-box" style="display: flex;">
-				<view style="height: 100%;"><label>文件描述:</label></view>
-				<textarea style="border: 1rpx solid black;" v-model:value="fileDes" maxlength="500" placeholder="500字以内"/>
-			</view>
-			<view style="margin: 60rpx 0rpx;">
-				<button type="primary" size="mini" @click="uploadFile()">上传</button>
+			<view class="content">
+				<view class="form-item">
+					<label>文件名称</label>
+					<input :value="fileName" placeholder="可以手动修改" class="input" style="width: 92vw;"/>
+				</view>
+
+				<view class="form-item">
+					<label>文件大小</label>
+					<input disabled v-bind:value="showFileSize" class="input readonly"/>
+				</view>
+
+				<view class="form-item">
+					<label>上传进度</label>
+					<progress 
+						:percent="uploadProgress" 
+						show-info 
+						stroke-width="3" 
+						class="progress-bar"
+						activeColor="#4CAF50"
+						backgroundColor="#E0E0E0"
+					/>
+				</view>
+
+				<view class="form-item">
+					<label>上传图片</label>
+					<uni-file-picker
+						class="file-picker"
+						v-model="base64ImageList"
+						fileMediatype="image"
+						file-extname="jpg,png,jpeg"
+						mode="grid"
+						:limit="6"
+						size-type="compress"
+						auto-upload="false"
+						:image-styles="imgStyle"
+						@select="select" 
+						@sourceType="album"
+						@success="success" 
+						@fail="fail" 
+						@delete="deleteImg"
+					/>
+				</view>
+
+				<view class="form-item">
+					<label>选择文件</label>
+					<button 
+						class="upload-btn" 
+						@click="getFileFormLocal()"
+					>选择上传文件</button>
+				</view>
+
+				<view class="form-item textarea-item">
+					<label>文件描述</label>
+					<textarea 
+						class="textarea"
+						v-model:value="fileDes" 
+						maxlength="500" 
+						placeholder="请输入文件描述（500字以内）"
+						style="width: 92vw;"
+					/>
+				</view>
+
+				<view class="submit-section">
+					<button class="submit-btn" @click="uploadFile()">上传文件</button>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -208,39 +232,121 @@
 </script>
 
 <style scoped>
-	.pop-box{
-		width:100vw;
-		z-index: 10;
-		height:100vh;
-		position: fixed;
-		left: 50%;
-		top: 50%;
-		background-color: white;
-		opacity: 1;
-		transform: translate(-50%,-50%);
-		border-radius: 30rpx;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-	}
-	.line-box{
-		width: 100vw;
-		display: flex;
-		align-items: center;
-		margin: 15rpx 0rpx;
-	}
-	label{
-		width: 200rpx;
-		margin: 0rpx 10rpx;
-	}
-	input{
-		width: 100%;
-		border-bottom: 2rpx solid lightgray;
-	}
-	.body-box-upload-image{
-		width: 100%;
-		margin-top: 18rpx;
-		border-bottom: 1rpx solid lightgray;
-	}
+.pop-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 8;
+}
+
+.pop-box {
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
+	left: 50%;
+	top: 60%;
+	transform: translate(-50%, -50%);
+	background-color: #fff;
+	box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.1);
+	overflow-y: auto;
+}
+
+.header {
+	padding: 30rpx;
+	text-align: center;
+	border-bottom: 2rpx solid #f5f5f5;
+}
+
+.title {
+	font-size: 36rpx;
+	font-weight: 600;
+	color: #333;
+}
+
+.content {
+	padding: 30rpx;
+}
+
+.form-item {
+	margin-bottom: 30rpx;
+}
+
+label {
+	display: block;
+	margin-bottom: 16rpx;
+	font-size: 28rpx;
+	color: #666;
+}
+
+.input {
+	width: 100%;
+	height: 80rpx;
+	padding: 0 20rpx;
+	border: 2rpx solid #e0e0e0;
+	border-radius: 12rpx;
+	font-size: 28rpx;
+	background-color: #fff;
+}
+
+.input.readonly {
+	background-color: #f5f5f5;
+}
+
+.progress-bar {
+	margin-top: 10rpx;
+}
+
+.file-picker {
+	border: 2rpx solid #e0e0e0;
+	border-radius: 12rpx;
+	padding: 20rpx;
+}
+
+.upload-btn {
+	width: 100%;
+	height: 80rpx;
+	line-height: 80rpx;
+	background-color: #f5f5f5;
+	color: #666;
+	font-size: 28rpx;
+	border-radius: 12rpx;
+	border: none;
+}
+
+.textarea-item {
+	margin-bottom: 40rpx;
+}
+
+.textarea {
+	width: 100%;
+	height: 200rpx;
+	padding: 20rpx;
+	border: 2rpx solid #e0e0e0;
+	border-radius: 12rpx;
+	font-size: 28rpx;
+	background-color: #fff;
+}
+
+.submit-section {
+	margin-top: 40rpx;
+	padding: 0 40rpx;
+}
+
+.submit-btn {
+	width: 100%;
+	height: 88rpx;
+	line-height: 88rpx;
+	background-color: #4CAF50;
+	color: #fff;
+	font-size: 32rpx;
+	border-radius: 44rpx;
+	border: none;
+}
+
+.submit-btn:active {
+	opacity: 0.8;
+}
 </style>

@@ -7,8 +7,8 @@ Vue.config.productionTip = false
 App.mpType = 'app'
 Vue.prototype.$baseImageUrl = baseURl+":6134/"
 Vue.prototype.$baseDocumentImageUrl = baseURl+":6135/"
-Vue.prototype.$fileUploadPath = baseURl+':39001/document/uploadFile'
-Vue.prototype.$fileDownloadPath = baseURl+":39001/document/downloadFile"
+Vue.prototype.$fileUploadPath = baseURl+':39001/api/document/uploadFile'
+Vue.prototype.$fileDownloadPath = baseURl+":39001/api/document/downloadFile"
 Vue.prototype.$messageTypeIconPath = baseURl
 Vue.prototype.$baseSwiperImageUrl = baseURl + ":6136/"
 

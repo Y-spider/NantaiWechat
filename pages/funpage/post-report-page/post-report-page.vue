@@ -1,23 +1,43 @@
 <template>
-	<view>
+	<view class="container">
 		<NavigationSelf title="举报" bg="#c50000"></NavigationSelf>
-		<view class="box">
-			<view class="report-content-box">
-				<text>举报内容:</text>
-				<input :value="content" disabled="false" style="color: lightgray;"/>
+		
+		<view class="content">
+			<view class="form-item">
+				<text class="form-label">举报内容</text>
+				<view class="input-container">
+					<input :value="content" disabled class="form-input readonly"/>
+				</view>
 			</view>
-			<view class="report-type-box">
-				<text>举报类型:</text>
-				<picker style="margin-left: 15rpx;color: orange;" mode="selector" :range="rangeData"  :value="index" @change="changeType">
-					<view class="uni-input ">{{rangeData[index]}}</view>
+
+			<view class="form-item">
+				<text class="form-label">举报类型</text>
+				<picker 
+					class="picker" 
+					mode="selector" 
+					:range="rangeData" 
+					:value="index" 
+					@change="changeType"
+				>
+					<view class="picker-value">{{rangeData[index]}}</view>
 				</picker>
 			</view>
-			<view class="report-descrption-box">
-				<text>举报描述:</text>
-				<uni-easyinput type="textarea" v-model="postData.reportDes" placeholder="请输入描述"></uni-easyinput>
-			</view>	
-			<view class="report-image-box">
-				<view style="margin: 10rpx 0rpx;">可以额外截图提供图片(最多4张)</view>
+
+			<view class="form-item">
+				<text class="form-label">举报描述</text>
+				<view class="textarea-container">
+					<uni-easyinput 
+						type="textarea" 
+						v-model="postData.reportDes" 
+						placeholder="请输入描述"
+						class="form-textarea"
+					></uni-easyinput>
+				</view>
+			</view>
+
+			<view class="form-item">
+				<text class="form-label">相关图片</text>
+				<text class="form-tip">可以额外截图提供图片(最多4张)</text>
 				<uni-file-picker
 					v-model="base64ImageList"
 					fileMediatype="image"
@@ -34,12 +54,12 @@
 					@delete="deleteImg"
 				/>
 			</view>
-			<view style="font-size: small; color: lightgray; margin-top: 30rpx; width: 85%; display: flex;justify-content: center; align-items: center;">
-				请勿恶意举报，如若发现将导致账号封禁
-			</view>
+
+			<text class="warning-text">请勿恶意举报，如若发现将导致账号封禁</text>
+
 			<view class="button-box">
-				<button size="mini" @click="submitReport" type="primary">提交</button>
-				<button size="mini" @click="back" style="background-color: lightgray;">返回</button>
+				<button class="action-btn primary-btn" @click="submitReport">提交</button>
+				<button class="action-btn" @click="back">返回</button>
 			</view>
 		</view>
 	</view>
@@ -174,56 +194,128 @@
 	}
 </script>
 
-<style>
-	*{margin: 0; padding: 0; box-sizing: border-box;}
-	.box{
-		color: #262626;
-		/* font-size: small; */
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		width: 100%;
-		margin-top: 30rpx;
-	}
-	.report-content-box,.report-type-box{
-		width: 85%;
-		display: flex;
-		align-items: center;
-	}
-	.report-content-box input{
-		width: 70%;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		border-bottom: 1rpx solid lightgray;
-	}
-	.report-type-box,.report-descrption-box{
-		margin-top: 30rpx;
-	}
-	picker{
-		color: orange;
-		border-bottom: 1rpx solid lightgray;
-	}
-	.report-descrption-box{
-		width: 90%;
-		display: flex;
-	}
-	.report-descrption-box textarea{
-		width: 70%;
-		height: 200rpx;
-		margin-left: 15rpx;
-	}
-	.report-image-box{
-		width: 85%;
-		border-bottom: 1rpx solid lightgray;
-	}
-	.button-box{
-		width: 85%;
-		display: flex;
-		margin-top: 45rpx;
-		justify-content: space-around;
-		align-items: center;
-	}
-	
-	
+<style scoped>
+.container {
+	min-height: 100vh;
+	background-color: #f8f8f8;
+}
+
+.content {
+	padding: 30rpx;
+}
+
+.form-item {
+	margin-bottom: 40rpx;
+	background-color: #fff;
+	padding: 30rpx;
+	border-radius: 12rpx;
+}
+
+.form-label {
+	display: block;
+	font-size: 28rpx;
+	color: #333;
+	margin-bottom: 16rpx;
+	font-weight: 500;
+}
+
+.form-tip {
+	display: block;
+	font-size: 24rpx;
+	color: #999;
+	margin-bottom: 16rpx;
+}
+
+.input-container {
+	position: relative;
+	width: 100%;
+}
+
+.form-input {
+	width: 100%;
+	height: 88rpx;
+	padding: 0 20rpx;
+	border: 2rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	font-size: 28rpx;
+	background-color: #fff;
+}
+
+.form-input.readonly {
+	background-color: #f5f5f5;
+	color: #999;
+}
+
+.picker {
+	width: 100%;
+}
+
+.picker-value {
+	width: 100%;
+	height: 88rpx;
+	line-height: 88rpx;
+	padding: 0 20rpx;
+	border: 2rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	font-size: 28rpx;
+	color: #409eff;
+}
+
+.textarea-container {
+	position: relative;
+	width: 100%;
+}
+
+.form-textarea {
+	width: 100%;
+	min-height: 200rpx;
+	font-size: 28rpx;
+}
+
+:deep(.uni-easyinput__content) {
+	border: 2rpx solid #e0e0e0 !important;
+	border-radius: 8rpx !important;
+	min-height: 200rpx;
+}
+
+:deep(.uni-file-picker__container) {
+	margin-top: 16rpx;
+}
+
+.warning-text {
+	display: block;
+	text-align: center;
+	font-size: 24rpx;
+	color: #999;
+	margin: 40rpx 0;
+}
+
+.button-box {
+	display: flex;
+	justify-content: space-between;
+	gap: 20rpx;
+	padding: 0 30rpx 40rpx;
+}
+
+.action-btn {
+	flex: 1;
+	height: 88rpx;
+	line-height: 88rpx;
+	border: none;
+	border-radius: 44rpx;
+	font-size: 28rpx;
+	font-weight: 500;
+	transition: all 0.3s ease;
+	background-color: #f0f0f0;
+	color: #333;
+}
+
+.primary-btn {
+	background-color: #c50000;
+	color: white;
+}
+
+.action-btn:active {
+	opacity: 0.8;
+}
 </style>

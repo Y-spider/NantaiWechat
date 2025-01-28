@@ -1,85 +1,301 @@
 <template>
-	<view class="box">
-		<NavigationSelf title="用户使用协议"></NavigationSelf>
-		<!-- 使用协议页面，主要是列举一些使用规范以及免责声明(重要) -->
-		<view style="display: flex;justify-content: center; align-items: center;">
-			<text>使用协议</text>
+	<view class="protocol-container">
+		<NavigationSelf title="用户使用协议" />
+		
+		<!-- 协议标题 -->
+		<view class="header">
+			<text class="title">使用协议</text>
+			<text class="subtitle">请仔细阅读以下协议内容</text>
 		</view>
-		<view class="context-box">
+
+		<!-- 协议前言 -->
+		<view class="intro-section">
 			在使用南泰微校园前，您需要仔细阅读以下协议。如果您对以下协议任何条款表示异议，您可以选择不使用南泰微校园。当您完成登录即表示您已将完全认可本协议中的所有条款。
 		</view>
-		<view class="context-paragraph">
-			<text class="title">使用规则</text>
-			<view class="content">
-				用户注册或者授权登录成功后，南泰微校园会给予每一个用户创建一个账户并分配一个用户唯一标识，用户应当对其账户进行所有活动和事件负法律责任。
-				用户需要对南泰微校园的注册信息的真实性，合法性，有效性承担全部责任，用户不得冒充他人；不得利用他人的名义发布任何信息；不得恶意使用注册账号导致其他用户误认。否则南泰微校园有权利对其停止服务，收回账号并由用户承担所有法律责任。
-				南泰微校园是一个为同学提供消息发布和查阅的平台，用户通过南泰微校园发表的信息均为公开信息，用户对任何信息的发布都默认为公开的信息；任何用户如果不希望被第三方获取的信息都不应该在南泰微校园上进行发表。
-				用户承诺不得以任何形式利用南泰微校园从事违反法律以及社会公德的行为，南泰微校园有权对违反上述承诺的内容进行删除。
-			</view>
-			<view class="content">
-				<ul style="color: red;">
-					<li>用户不得利用南泰微校园制作，上传，复制，发布或者传播以下内容：</li>
-					<li>危害国家安全，泄露国家秘密，颠覆国家政权，破坏国家统一的:损害国家荣誉和利益的;</li>
-				    <li>煽动民族仇恨、民族歧视，破坏民族团结的;侮辱、滥用英烈形象，否定英烈事迹，美化粉饰侵略战争行为的;破坏国家宗教政策，宣扬邪教和封建迷信的;散布谣言，扰乱社会秩序，破坏社会稳定的;</li>
-					<li>散布淫秽、色情、赌博、暴力、凶杀、恐怖或者教唆犯罪的:侮辱或者诽谤他人，侵害他人合法权益的;</li>
-					<li>含有法律、行政法规禁止的其他内容的信息</li>
-					<li>所有用户同意遵守万能墙规范。</li>
-					<li>万能墙有权对用户使用万能墙的情况进行审查和监督，如用户在使用万能墙时违反任何上述规定，万能墙或其授权的人有权要求用户改正或直接采取一切必要的措施(包括但不限于更改或删除用户发布的内容、暂停或终止用户使用万能墙的权利)以减轻用户不当行为造成的影响。</li>
-				</ul>
-			</view>
-			<view class="intellectual-property-right">
-				<view class="title" >知识产权</view>
-				<view class="content" >
-					南泰微校园是一个信息获取、发布及传播的平台，我们尊重和鼓励万能墙用户创作的内容，认识到保护知识产权对万能墙生存与发展的重要性，承诺将保护知识产权作为万能墙运营的基本原则之一。
-					用户在南泰微校园上发表的全部原创内容(包括但不仅限于文章和评论），著作权均归用户本人所有。用户可以授权第三方进行使用，不需要得到南泰微校园的同意。
-					为了促进知识的分享和传播，用户在南泰微校园中发布的信息，授予南泰南泰微校园免费的，不可撤销的，非独家使用许可，南泰微校园有权将改内容用于南泰微校园的产品和服务上，
-					包括但不限于小程序，公众号，网站以及发表的应用以及其他产品。为征得用户同意，任何第三方不得转载(包括不限于原文复制，截屏)用户在南泰微校园中发布的内容，否则视为侵权行为。
-					南泰微校园有权单无义务对用户发布内容进行审核，有权根据相关证据结合法律法规以及南泰微校园规范对侵权信息进行处理。
+
+		<!-- 协议内容区 -->
+		<scroll-view 
+			class="content-section" 
+			scroll-y 
+			:scroll-top="scrollTop"
+			@scroll="handleScroll"
+			@scrolltolower="handleScrollToLower"
+		>
+			<!-- 使用规则 -->
+			<view class="section">
+				<view class="section-header">
+					<text class="section-title">使用规则</text>
+				</view>
+				<view class="section-content">
+					<text class="paragraph">
+						用户注册或者授权登录成功后，南泰微校园会给予每一个用户创建一个账户并分配一个用户唯一标识，用户应当对其账户进行所有活动和事件负法律责任。
+					</text>
+					<text class="paragraph">
+						用户需要对南泰微校园的注册信息的真实性，合法性，有效性承担全部责任，用户不得冒充他人；不得利用他人的名义发布任何信息；不得恶意使用注册账号导致其他用户误认。否则南泰微校园有权利对其停止服务，收回账号并由用户承担所有法律责任。
+					</text>
+				</view>
+
+				<!-- 禁止行为列表 -->
+				<view class="warning-list">
+					<text class="warning-title">禁止行为：</text>
+					<view class="warning-items">
+						<view class="warning-item" v-for="(item, index) in prohibitedBehaviors" :key="index">
+							{{ index + 1 }}. {{ item }}
+						</view>
+					</view>
 				</view>
 			</view>
-			<view class="personal-info">
-				<veiw class="title">个人隐私</veiw>
-				<hr />
-				<veiw class="content">
-					南泰微校园尊重个人隐私，南泰微校园建通过技术手段，强化系统内部用户信息的管理等办法冲锋保护用户的个人信息，除法律赋予权限的有关部门要求或事先得到用户明确授权等原因外，
-					南泰微校园保证不会对外公开或向第三方机构透露用户的个人信息。同时为了南泰微校园的功能的完善，可以向第三方提供个人的非隐私信息，这将有利于提供更好的用户体验。
-				</veiw>
-			</view>
-			<view class="report-area">
-				<view class="title">侵权举报范围</view>
-				<hr/>
-				<view class="content">
-					受理万能墙社区内侵犯企业或个人合法权益的侵权举报，包括但不限于涉及个人隐私、造谣与诽谤、商业侵权。
-					涉及个人隐私:发布内容中直接涉及身份信息，如个人姓名、家庭住址、身份证号码、工作单位、私人电话等详细个人隐私;造谣、诽谤:发布内容中指名道姓(包括自然人和企业)的直接谩骂、侮辱、虚构中伤、恶意诽谤等;商业侵权:泄露企业商业机密及其他根据保密协议不能公开讨论的内容。
+
+			<!-- 知识产权 -->
+			<view class="section">
+				<view class="section-header">
+					<text class="section-title">知识产权</text>
+				</view>
+				<view class="section-content">
+					<text class="paragraph">
+						1. 南泰微校园的所有内容，包括但不限于文字、图片、音频、视频、图表、标识、版面设计、电子文档等均受中华人民共和国著作权法及其他相关法律法规的保护。
+					</text>
+					<text class="paragraph">
+						2. 未经南泰微校园及相关权利人的明确书面许可，任何人不得以任何方式擅自复制、转载、传播、修改、出版、发行、创造衍生作品或以其他任何方式使用这些内容。
+					</text>
+					<text class="paragraph">
+						3. 用户在平台上发布的原创内容，其著作权归用户本人所有。用户发布的内容即视为授予南泰微校园一项永久的、不可撤销的、免费的、可再许可的使用权。
+					</text>
 				</view>
 			</view>
-			<view class="Disclaimer">
-				<text style="color: red;">免责申明</text>
-				<view class="content">
-				<ul>
-					<li>南泰微校园对于用户发表的二手物品的质量不进行保证。南泰万能墙不对交易进行保证，不对任何财产损失承担任何责任。</li>
-					<li>用户在南泰微校园中发表的内容仅标明其个人的立场和观点，并不代表南泰微校园的立场与观点。作为内容的发表者，需要对所发内容进行负责。因该内容产生的一切后果，由发帖者自行承担。</li>
-					<li>南泰微校园不保证网络服务一定满足用户的需求，也不保证网络服务不会中断，不会卡顿。对于不可抗力或南泰微校园不可控的原因造成的网络服务中断或者其他缺陷，南泰微校园不承担任何责任。</li>
-					<li>南泰微校园不会对任何交易提供保障，如若用户在交易过程中造成的一切损失由用户自行承担。</li>
-				</ul>
+
+			<!-- 个人隐私 -->
+			<view class="section">
+				<view class="section-header">
+					<text class="section-title">个人隐私</text>
+				</view>
+				<view class="section-content">
+					<text class="paragraph">
+						1. 我们高度重视用户的隐私保护，承诺按照相关法律法规保护用户的个人信息安全。
+					</text>
+					<text class="paragraph">
+						2. 我们收集的信息包括：
+					</text>
+					<view class="info-list">
+						<text class="info-item">• 账号信息（学号、姓名等）</text>
+						<text class="info-item">• 设备信息（设备型号、操作系统等）</text>
+						<text class="info-item">• 日志信息（使用时间、访问记录等）</text>
+						<text class="info-item">• 位置信息（如您授权）</text>
+					</view>
+					<text class="paragraph">
+						3. 我们承诺：
+					</text>
+					<view class="promise-list">
+						<text class="promise-item">• 不会将您的个人信息出售或出租给任何第三方</text>
+						<text class="promise-item">• 采取严格的安全措施保护您的个人信息</text>
+						<text class="promise-item">• 仅在必要的范围内使用您的个人信息</text>
+					</view>
 				</view>
 			</view>
-			<view class="protocol-modification">
-				<text class="title">协议修改</text>
-				<hr />
-				<view class="content">
-					根据互联网的发展和有关法律、法规及规范性文件的变化或者因业务发展需要，南泰微校园有权对本协议的条款作出修改或变更，一旦本协议的内容发生变动，万能墙将会直接在万能墙网站上公布修改之后的协议内容，
-					该公布行为视为南泰微校园已经通知用户修改内容。南泰微校园也可采用站内发帖通知、弹窗等传送方式
-					，提示用户协议条款的修改、服务变更、或其它重要事项。如果不同意南泰微校园对本协议相关条款所做的修改，
-					用户有权并应当停止使用南泰微校园。如果用户继续使用南泰微校园，则视为用户接受南泰微校园对本协议相关条款所做的修改。
+
+			<!-- 免责声明 -->
+			<view class="section warning">
+				<view class="section-header">
+					<text class="section-title">免责声明</text>
+				</view>
+				<view class="section-content">
+					<text class="paragraph highlight">
+						1. 南泰微校园是一个由个人开发者维护的信息分享平台，仅为方便校园信息交流使用。平台与任何机构或组织均无从属关系。
+					</text>
+					<text class="paragraph">
+						2. 以下情况，平台开发者不承担任何责任：
+					</text>
+					<view class="disclaimer-list">
+						<text class="disclaimer-item">• 因不可抗力导致的服务中断或数据丢失</text>
+						<text class="disclaimer-item">• 用户个人信息泄露系由用户自身原因导致</text>
+						<text class="disclaimer-item">• 用户间因使用平台产生的纠纷</text>
+						<text class="disclaimer-item">• 第三方未经授权使用用户账号产生的后果</text>
+						<text class="disclaimer-item">• 平台服务的及时性、安全性、准确性等方面的风险</text>
+					</view>
+					<text class="paragraph">
+						3. 作为个人开发维护的平台，我们会尽最大努力确保平台的稳定运行，但不对服务的持续性和稳定性作出保证。
+					</text>
+					<text class="paragraph">
+						4. 平台开发者保留在任何时候修改或中断服务而不需通知用户的权利。
+					</text>
 				</view>
 			</view>
-		</view>
-		<view class="confirm-botton" style="display: flex;justify-content: center; margin: 60rpx;">
-			<view style="width: 60%; display: flex;align-items: center; margin-bottom: 60rpx;">
-				<button size="mini" type="primary" @click="confirm()">同意协议</button>
-				<button size="mini" style="background-color: lightgray;" @click="cancle()">取消</button>
+
+			<!-- 定义和解释部分 -->
+			<view class="section">
+				<view class="section-header">
+					<text class="section-title">定义和解释</text>
+				</view>
+				<view class="section-content">
+					<text class="paragraph">
+						1. "南泰微校园"：指由个人开发者开发和运营的校园信息服务平台。
+					</text>
+					<text class="paragraph">
+						2. "用户"：指注册、登录、使用本平台的所有自然人。
+					</text>
+					<text class="paragraph">
+						3. "内容"：指用户使用南泰微校园平台时发布的所有文字、图片、视频、音频等信息。
+					</text>
+					<text class="paragraph highlight">
+						4. 特别说明：本平台为个人开发者独立开发维护的非营利性平台，与任何机构或组织无关。
+					</text>
+				</view>
 			</view>
+
+			<!-- 账号管理部分 -->
+			<view class="section">
+				<view class="section-header">
+					<text class="section-title">账号管理</text>
+				</view>
+				<view class="section-content">
+					<text class="paragraph">
+						1. 用户应妥善保管账号密码，因账号密码保管不当造成的损失由用户自行承担。
+					</text>
+					<text class="paragraph">
+						2. 如发现账号被他人非法使用，应立即通知平台。
+					</text>
+					<text class="paragraph">
+						3. 平台有权在以下情况时，暂停或终止提供服务：
+					</text>
+					<view class="list-items">
+						<text class="list-item">• 提供虚假注册信息</text>
+						<text class="list-item">• 违反平台规则或相关法律法规</text>
+						<text class="list-item">• 平台认为用户行为可能损害平台或他人权益</text>
+					</view>
+				</view>
+			</view>
+
+			<!-- 用户行为规范 -->
+			<view class="section">
+				<view class="section-header">
+					<text class="section-title">用户行为规范</text>
+				</view>
+				<view class="section-content">
+					<text class="paragraph">
+						用户在使用南泰微校园服务时须遵守以下规定：
+					</text>
+					<view class="list-items">
+						<text class="list-item">• 遵守中华人民共和国相关法律法规</text>
+						<text class="list-item">• 遵守所有与网络服务有关的网络协议、规定和程序</text>
+						<text class="list-item">• 不得利用平台从事违法违规活动</text>
+						<text class="list-item">• 不得干扰平台的正常运营</text>
+						<text class="list-item">• 不得利用平台发布虚假信息或侵犯他人权益</text>
+					</view>
+				</view>
+			</view>
+
+			<!-- 信息安全与隐私保护补充 -->
+			<view class="section">
+				<view class="section-header">
+					<text class="section-title">信息安全与隐私保护补充</text>
+				</view>
+				<view class="section-content">
+					<text class="paragraph">
+						1. 信息使用范围：
+					</text>
+					<view class="list-items">
+						<text class="list-item">• 提供和改进服务</text>
+						<text class="list-item">• 确保平台安全运营</text>
+						<text class="list-item">• 向您推送相关信息</text>
+						<text class="list-item">• 处理您的反馈或请求</text>
+					</view>
+					<text class="paragraph">
+						2. 信息保护措施：
+					</text>
+					<view class="list-items">
+						<text class="list-item">• 数据加密存储和传输</text>
+						<text class="list-item">• 访问权限控制</text>
+						<text class="list-item">• 定期安全评估</text>
+					</view>
+				</view>
+			</view>
+
+			<!-- 知识产权补充 -->
+			<view class="section">
+				<view class="section-header">
+					<text class="section-title">知识产权补充</text>
+				</view>
+				<view class="section-content">
+					<text class="paragraph">
+						4. 用户保证其上传内容拥有合法权利，如因知识产权问题引起纠纷，由用户承担全部责任。
+					</text>
+					<text class="paragraph">
+						5. 平台有权但无义务对涉嫌侵权内容进行处理。
+					</text>
+				</view>
+			</view>
+
+			<!-- 协议修改 -->
+			<view class="section">
+				<view class="section-header">
+					<text class="section-title">协议修改</text>
+				</view>
+				<view class="section-content">
+					<text class="paragraph">
+						1. 平台保留随时修改本协议的权利，修改后的协议将在平台公布。
+					</text>
+					<text class="paragraph">
+						2. 如用户不同意修改后的协议，应当停止使用平台服务。继续使用则视为接受修改后的协议。
+					</text>
+				</view>
+			</view>
+
+			<!-- 服务说明 -->
+			<view class="section">
+				<view class="section-header">
+					<text class="section-title">服务说明</text>
+				</view>
+				<view class="section-content">
+					<text class="paragraph">
+						1. 本平台为非营利性质的信息服务平台，主要用于校园信息的分享和交流。
+					</text>
+					<text class="paragraph">
+						2. 平台的维护和更新完全依赖个人开发者的业余时间，服务质量可能受到以下因素影响：
+					</text>
+					<view class="list-items">
+						<text class="list-item">• 开发者的个人时间安排</text>
+						<text class="list-item">• 技术和资源的限制</text>
+						<text class="list-item">• 不可预见的系统故障</text>
+					</view>
+					<text class="paragraph">
+						3. 用户理解并同意，使用本平台服务时可能存在一定的风险和局限性。
+					</text>
+				</view>
+			</view>
+
+			<!-- 争议解决 -->
+			<view class="section">
+				<view class="section-header">
+					<text class="section-title">争议解决</text>
+				</view>
+				<view class="section-content">
+					<text class="paragraph">
+						1. 本协议受中华人民共和国法律管辖。
+					</text>
+					<text class="paragraph">
+						2. 平台开发者承诺秉持善意原则处理用户反馈的问题。
+					</text>
+					<text class="paragraph">
+						3. 协议履行过程中发生的争议，应首先通过友好协商解决。
+					</text>
+					<text class="paragraph">
+						4. 协商不成的，任何一方均可向开发者所在地有管辖权的人民法院提起诉讼。
+					</text>
+				</view>
+			</view>
+		</scroll-view>
+
+		<!-- 底部按钮 -->
+		<view class="bottom-buttons">
+			<button 
+				class="btn agree" 
+				:class="{'btn-disabled': !hasReadToBottom}"
+				:disabled="!hasReadToBottom"
+				@click="confirm"
+			>
+				{{ hasReadToBottom ? '同意协议' : '请阅读完整协议' }}
+			</button>
+			<button class="btn cancel" @click="cancle">取消</button>
 		</view>
 	</view>
 </template>
@@ -92,37 +308,297 @@
 		},
 		data() {
 			return {
-				
+				prohibitedBehaviors: [
+					'危害国家安全，泄露国家秘密，颠覆国家政权，破坏国家统一',
+					'煽动民族仇恨、民族歧视，破坏民族团结',
+					'散布淫秽、色情、赌博、暴力、凶杀、恐怖或者教唆犯罪',
+					'侮辱或者诽谤他人，侵害他人合法权益',
+					'含有法律、行政法规禁止的其他内容'
+				],
+				hasReadToBottom: false,
+				scrollTop: 0,
+				scrollViewHeight: 0,
+				contentHeight: 0,
 			}
+		},
+		mounted() {
+			const query = uni.createSelectorQuery().in(this);
+			query.select('.content-section').boundingClientRect(data => {
+				this.scrollViewHeight = data.height;
+			}).exec();
+			
+			query.select('.content-section >>> :last-child').boundingClientRect(data => {
+				this.contentHeight = data?.bottom;
+			}).exec();
 		},
 		methods: {
 			cancle(){
 				uni.navigateBack()
 			},
-			confirm(){
-				// 设置已经表示通用协议
-				uni.setStorageSync("isConfirmProtocal",true)
-				uni.navigateBack()
+			handleScroll(e) {
+				this.scrollTop = e.detail.scrollTop;
+			},
+			handleScrollToLower() {
+				this.hasReadToBottom = true;
+				uni.vibrateShort({
+					success: function () {
+						console.log('震动成功');
+					}
+				});
+			},
+			confirm() {
+				if (!this.hasReadToBottom) {
+					uni.showToast({
+						title: '请先阅读完整协议内容',
+						icon: 'none'
+					});
+					return;
+				}
+				uni.setStorageSync("isConfirmProtocal", true);
+				uni.navigateBack();
 			}
 		}
 	}
 </script>
 
-<style>
-	*{margin: 0rpx; padding: 0rpx; box-sizing: border-box;}
-	.box{
-		font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+<style scoped>
+	.protocol-container {
+		min-height: 100vh;
+		background-color: #f8f8f8;
+		padding-bottom: 120rpx;
 	}
-	.context-box{
-		font-size: small;
-		margin-top: 30rpx;
-		font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
+	.header {
+		padding: 40rpx;
+		text-align: center;
+		background-color: #fff;
+	}
+
+	.title {
+		font-size: 36rpx;
+		font-weight: 600;
+		color: #333;
+	}
+
+	.subtitle {
+		font-size: 24rpx;
+		color: #999;
+		margin-top: 8rpx;
+	}
+
+	.intro-section {
+		margin: 20rpx;
+		padding: 30rpx;
+		background-color: #fff;
+		border-radius: 12rpx;
+		font-size: 28rpx;
+		line-height: 1.6;
+		color: #666;
+	}
+
+	.content-section {
+		margin: 20rpx;
+		height: calc(100vh - 400rpx);
+	}
+
+	.section {
+		margin-bottom: 30rpx;
+		padding: 30rpx;
+		background-color: #fff;
+		border-radius: 12rpx;
+	}
+
+	.section-header {
+		margin-bottom: 20rpx;
+		border-left: 8rpx solid #007AFF;
+		padding-left: 20rpx;
+	}
+
+	.section-title {
+		font-size: 32rpx;
+		font-weight: 600;
+		color: #333;
+	}
+
+	.section-content {
+		font-size: 28rpx;
+		line-height: 1.6;
+		color: #666;
+	}
+
+	.paragraph {
+		display: block;
+		margin-bottom: 20rpx;
+	}
+
+	.warning-list {
+		margin-top: 20rpx;
+	}
+
+	.warning-title {
+		color: #ff4d4f;
+		font-weight: 500;
+		margin-bottom: 16rpx;
+		display: block;
+	}
+
+	.warning-items {
+		color: #ff4d4f;
+		font-size: 26rpx;
+		line-height: 1.6;
+	}
+
+	.warning-item {
+		margin-bottom: 12rpx;
+		padding-left: 20rpx;
+	}
+
+	.bottom-buttons {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 20rpx 40rpx;
+		background-color: #fff;
+		box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+		display: flex;
+		justify-content: space-between;
+		gap: 20rpx;
+	}
+
+	.btn {
+		flex: 1;
+		height: 80rpx;
+		line-height: 80rpx;
+		text-align: center;
+		border-radius: 40rpx;
+		font-size: 28rpx;
+		transition: all 0.3s ease;
+	}
+
+	.agree {
+		position: relative;
+		overflow: hidden;
+		background-color: #007AFF;
+		color: #fff;
+	}
+
+	.cancel {
+		background-color: #f5f5f5;
+		color: #666;
+	}
+
+	.btn-disabled {
+		background-color: #cccccc !important;
+		cursor: not-allowed;
+		opacity: 0.8;
+	}
+
+	/* 适配iPhone底部安全区 */
+	@supports (padding-bottom: constant(safe-area-inset-bottom)) {
+		.bottom-buttons {
+			padding-bottom: calc(20rpx + constant(safe-area-inset-bottom));
+		}
+	}
+
+	@supports (padding-bottom: env(safe-area-inset-bottom)) {
+		.bottom-buttons {
+			padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+		}
+	}
+
+	.info-list,
+	.promise-list,
+	.disclaimer-list {
+		padding-left: 30rpx;
+		margin: 16rpx 0;
+	}
+
+	.info-item,
+	.promise-item,
+	.disclaimer-item {
+		display: block;
+		font-size: 26rpx;
+		color: #666;
+		line-height: 1.6;
+		margin-bottom: 12rpx;
+	}
+
+	.highlight {
+		color: #ff4d4f;
+		font-weight: 500;
+	}
+
+	.warning .section-content {
+		color: #666;
+	}
+
+	.list-items {
+		padding-left: 30rpx;
+		margin: 12rpx 0;
+	}
+
+	.list-item {
+		display: block;
+		font-size: 26rpx;
+		color: #666;
+		line-height: 1.8;
+		margin-bottom: 10rpx;
+		position: relative;
+	}
+
+	/* 添加滚动提示 */
+	.content-section::after {
+		content: '请阅读完整协议内容';
+		display: block;
+		text-align: center;
+		padding: 20rpx 0;
+		color: #999;
+		font-size: 24rpx;
+	}
+
+	/* 已阅读到底部时隐藏提示 */
+	.content-section.read-to-bottom::after {
+		display: none;
+	}
+
+	/* 按钮过渡动画 */
+	.btn {
+		transition: all 0.3s ease;
+	}
+
+	/* 添加波纹效果 */
+	.agree:not(.btn-disabled):active::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 300%;
+		height: 300%;
+		background: rgba(255, 255, 255, 0.2);
+		border-radius: 50%;
+		transform: translate(-50%, -50%) scale(0);
+		animation: ripple 0.6s ease-out;
+	}
+
+	@keyframes ripple {
+		from {
+			transform: translate(-50%, -50%) scale(0);
+		}
+		to {
+			transform: translate(-50%, -50%) scale(1);
+			opacity: 0;
+		}
+	}
+
+	/* 适配暗黑模式 */
+	@media (prefers-color-scheme: dark) {
+		.btn-disabled {
+			background-color: #333333 !important;
+		}
 		
-	}
-	.title{
-		font-weight: bold;
-	}
-	.content{
-		font-size: small;
+		.content-section::after {
+			color: #666;
+		}
 	}
 </style>

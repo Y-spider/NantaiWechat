@@ -1,6 +1,6 @@
 const BASE_URL = "https://www.chopper.love:39001/api/"
 export function httpOFPost(path, params = {}, loading = true) {
-	console.log('%c请求拦截：', ' background:orange', params);
+	// console.log('%c请求拦截：', ' background:orange', params);
 	if (false) {
 		uni.showLoading({
 			title: "加载中",
@@ -19,7 +19,7 @@ export function httpOFPost(path, params = {}, loading = true) {
 			async success(res) {
 				uni.hideLoading();
 				resolve(res.data);
-				console.log('响应拦截：', path, params, res.data);
+				// console.log('响应拦截：', path, params, res.data);
 				// res.data?.code表示先判断res.data是否为null或undefined，
 				//如果不是，则访问其code属性。这样可以有效避免在对象为null或undefined时造成的错误
 				if (res.data?.code == -1) {
@@ -44,7 +44,7 @@ export function httpOFPost(path, params = {}, loading = true) {
 
 // 封装发送get请求
 export function httpOFGet(path,loading = true){
-	console.log('%c请求拦截：', ' background:orange',path);
+	// console.log('%c请求拦截：', ' background:orange',path);
 	if(false){
 		uni.showLoading({
 			title:"加载中",
@@ -64,7 +64,7 @@ export function httpOFGet(path,loading = true){
 				console.log(res)
 				uni.hideLoading()
 				resolve(res.data) // 将响应数据返回
-				console.log('响应拦截：', path,res.data);
+				// console.log('响应拦截：', path,res.data);
 				if(res.data?.code == -1){
 					console.log("djajkjdajdlal")
 					uni.showToast({
@@ -89,7 +89,7 @@ export function httpOFGet(path,loading = true){
 
 // 封装发送get请求
 export function httpOfGetWithNotToken(path,loading = false){
-	console.log('%c请求拦截：', ' background:orange',path);
+	// console.log('%c请求拦截：', ' background:orange',path);
 	if(false){
 		uni.showLoading({
 			title:"加载中",
@@ -103,10 +103,9 @@ export function httpOfGetWithNotToken(path,loading = false){
 			method:"GET",
 			timeout:5000,
 			async success(res){
-				console.log(res)
 				uni.hideLoading()
 				resolve(res.data) // 将响应数据返回
-				console.log('响应拦截：', path,res.data);
+				// console.log('响应拦截：', path,res.data);
 				if(res.data?.code == -1){
 					uni.showToast({
 						icon:"fail",
