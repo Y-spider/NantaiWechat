@@ -1,8 +1,8 @@
 import App from './App'
 // 线上环境
-const baseURl = "https://www.chopper.love"
+// const baseURl = "https://www.chopper.love"
 // 开发环境
-// const baseURl = "http://127.0.0.1"
+const baseURl = "http://127.0.0.1"
 
 // #ifndef VUE3
 import Vue from 'vue'
