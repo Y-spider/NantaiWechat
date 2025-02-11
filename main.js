@@ -12,13 +12,13 @@ App.mpType = 'app'
 Vue.prototype.$baseImageUrl = baseURl+":6134/"
 Vue.prototype.$baseDocumentImageUrl = baseURl+":6135/"
 // 开发环境
-// Vue.prototype.$fileUploadPath = baseURl+':8888/document/uploadFile'
+Vue.prototype.$fileUploadPath = baseURl+':8888/document/uploadFile'
 // 线上环境
-Vue.prototype.$fileUploadPath = baseURl+':39001/api/document/uploadFile'
+// Vue.prototype.$fileUploadPath = baseURl+':39001/api/document/uploadFile'
 // 开发环境
-// Vue.prototype.$fileDownloadPath = baseURl+":8888/document/downloadFile"
+Vue.prototype.$fileDownloadPath = baseURl+":8888/document/downloadFile"
 // 线上环境
-Vue.prototype.$fileDownloadPath = baseURl+":39001/api/document/downloadFile"
+// Vue.prototype.$fileDownloadPath = baseURl+":39001/api/document/downloadFile"
 Vue.prototype.$messageTypeIconPath = baseURl
 Vue.prototype.$baseSwiperImageUrl = baseURl + ":6136/"
 
