@@ -2,18 +2,15 @@
 	<view style="max-height: 100vh;">
 		<NavigationSelf boxBg="#2f4052" title="消息列表" :showBack="false"></NavigationSelf>
 		<!-- 消息总结信息 -->
-		<view style="height: 120rpx; position: fixed;">
+		<view style="height: 120rpx; position: fixed;z-index: 999;">
 			<view class="message-info">
 				<view style="display: flex;justify-content: center;align-items: center;">
 					<view class="dot"></view>
 					<view class="summary">当前总消息为{{total}}条 {{noReadCount}}条未读</view>
 				</view>
-				<!-- <view class="quick-read">
-					<button >一键已读</button>
-				</view> -->
 			</view>
 			<view>
-				<scroll-view class="scroll-view_H type-list" scroll-x="true" scroll-left="0">
+				<scroll-view :enable-flex="true" class="scroll-view_H type-list" scroll-x="true" scroll-left="0">
 					<view style="display: inline-block;" v-for="(item,index) in typeList" :key="index" @click="currentSelectedTypeIndex=index">
 						<view :class="item.style">
 							<img :src="baseIocnUrl + item.typeIcon" />
@@ -25,45 +22,84 @@
 		</view>
 		<!-- 占位 -->
 		<view style="height: 120rpx; width: 100vw;">1</view>
+		<view class="fun-box">
+			<button class="action-btn" @click="handleReadAll" :disabled="noReadCount == 0">
+				<text class="btn-icon">✓</text>
+				<text>一键已读</text>
+			</button>
+			<button v-if="!isSubAll" class="action-btn" @click="handleAllowSub">订阅消息</button>
+			<button class="action-btn delete-btn" @click="handleDeleteAll" :disabled="total - noReadCount <= 0">
+				<text class="btn-icon">×</text>
+				<text>删除已读</text>
+			</button>
+		</view>
 		<view class="message-list">
 			<view class="message-item" 
 				v-for="(item,index) in messageList" 
 				:key="index" 
+				@click="handleToDetailPage(item)"
 				@longpress="handleDelete(item,index)"
-				@click="handleToDetailPage(item)">
-				<view class="message-other-info">
-					<view class="message-type">
-						{{item.typeName}}消息
-					</view>
-					<!-- <view class="message-type" v-if="item">
-						审核通过
-					</view> -->
-					<view class="message-time">
-						<view class="message-state" v-if="item.state==0">未读</view>
-						<view class="message-state" style="background-color: green;" v-else>已读</view>
-					</view>
+			>
+				<!-- 消息类型标签 -->
+				<view class="message-tag-box">
+					<text class="message-tag">{{item.typeName}}消息</text>
+					<text class="message-status" :class="{'status-read': item.state === 1}">
+						{{item.state === 0 ? '未读' : '已读'}}
+					</text>
 				</view>
-				<view class="message-text">{{item.content}}</view>
-				<view style="display: flex;flex-direction: row-reverse;color: lightgray;font-size: small;">
-					<view style="margin-right: 15rpx;">{{myHandleTime(item.createTime)}}</view>
+				
+				<!-- 消息内容 -->
+				<view class="message-content">
+					<text class="message-text">{{item.content}}</text>
+				</view>
+				
+				<!-- 消息时间 -->
+				<view class="message-footer">
+					<text class="message-time">{{myHandleTime(item.createTime)}}</text>
 				</view>
 			</view>
+			<view v-if="isAll && messageList.length>0" style="display: flex; justify-content: center; align-items: center;height: 32rpx;color: lightgray;">
+				已经到底了哦...
+			</view>
+			<stateComponent v-else></stateComponent>
 		</view>
-		<stateComponent v-if="isAll"></stateComponent>
 	</view>
 </template>
 
 <script>
 	import NavigationSelf from "../common-components/head/head.vue"
-	import {handleTime} from "../../common/common-js.js"
+	import {handleTime, showErr, showSuccess} from "../../common/common-js.js"
 	import stateComponent from "../common-components/stateComponent/stateComponent.vue"
-	import {getMessageByOpenidAPI,getNoReadMessageCountAPI,deleteMessageAPI,modifyMessageAPI,getMessageTypeAPI} from "../../api/MessageApi.js"
+	import {
+		getMessageByOpenidAPI,
+		getNoReadMessageCountAPI,
+		deleteMessageAPI,
+		modifyMessageAPI,
+		getMessageTypeAPI,
+		readAllMessageAPI,
+		deleteAllMessageHasReadedAPI
+		} from "../../api/MessageApi.js"
 	export default {
 		components:{
 			NavigationSelf,
 			stateComponent
 		},
 		onShow(){
+			this.isSubAll = uni.getStorageSync("isSubAll")
+			if(!this.isSubAll){
+				let that = this
+				wx.getSetting({
+				  withSubscriptions: true,
+				  success (res) {
+					  let subComment =  res.subscriptionsSetting.itemSettings["RBrzWLYwJEOo5LO2-AQUgfvSE2-cjeBHWoOKafcibeY"]=="accept"
+					  let subReplayComment =  res.subscriptionsSetting.itemSettings["qyOCpXZUUTZsp_6fImaS-YoSY4LED5gxtltY6dOMmnU"]=="accept"
+					  that.$nextTick(()=>{
+						   that.isSubAll = (subComment && subReplayComment)
+							uni.setStorageSync("isSubAll",true)
+					  })
+				  }
+				})
+			}
 			getMessageTypeAPI().then((res)=>{
 				this.typeList = res.data
 				this.typeList[0].style = "type-item-selected"
@@ -121,12 +157,24 @@
 					pageIndex:1,
 					pageSize:10
 				},
+				isSubAll:false,
 				messageList:[], // 消息列表
 				total:0 ,// 消息总条数
 				noReadCount:0 // 消息未读数量
 			}
 		},
 		methods: {
+			handleAllowSub(){
+				wx.requestSubscribeMessage({
+					tmplIds:["qyOCpXZUUTZsp_6fImaS-YoSY4LED5gxtltY6dOMmnU","RBrzWLYwJEOo5LO2-AQUgfvSE2-cjeBHWoOKafcibeY"],
+					success(res){
+						console.log("调用成功",res)
+					},
+					fail(err){
+						console.log("调用失败",err)
+					}
+				})
+			},
 			// 跳转去消息详细页面
 			handleToDetailPage(message){
 				let postData = {
@@ -180,6 +228,43 @@
 			},
 			myHandleTime(time){
 				return handleTime(time)
+			},
+			handleReadAll(){
+				// 实现一键已读的逻辑
+				let that = this
+				readAllMessageAPI().then((res)=>{
+					if(res.code == 200){
+						showSuccess("操作成功")
+						that.init()
+					}
+					else{
+						showErr("操作失败")
+					}
+				}).catch((err)=>{
+					showErr(err)
+				})
+			},
+			handleDeleteAll(){
+				let that = this
+				// 实现一键删除的逻辑
+				uni.showModal({
+					content:"确定一键删除所有已读信息?",
+					success(option){
+						if(option.confirm){
+							deleteAllMessageHasReadedAPI().then((res)=>{
+								if(res.code == 200){
+									that.init()
+									showSuccess("操作成功")
+								}
+								else{
+									showErr("操作失败")
+								}
+							}).catch((err)=>{
+								showErr("错误"+err)
+							})
+						}
+					}
+				})
 			}
 		},
 		watch:{
@@ -259,60 +344,84 @@
 		align-items: center;
 		background-color: lightgray;
 	}
-	.message-list{
-		width: 100vw;
+	.message-list {
+		padding: 20rpx 30rpx;
+		padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
+	}
+	.message-item {
+		position: relative;
+		background-color: #fff;
+		padding: 24rpx;
+		margin-bottom: 20rpx;
+		border-radius: 12rpx;
+		box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+		z-index: 1;
+	}
+	.message-tag-box {
 		display: flex;
-		flex-direction: column;
+		justify-content: space-between;
 		align-items: center;
-		
+		margin-bottom: 16rpx;
 	}
-	.message-item{
-		width: 97vw;
-		height: 180rpx;
-		display: flex;
-		flex-direction: column;
-		box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-		margin-top: 15rpx;
-		
+	.message-tag {
+		font-size: 26rpx;
+		color: #ff9800;
+		background-color: #fff8e6;
+		padding: 4rpx 16rpx;
+		border-radius: 6rpx;
 	}
-	.message-text{
-		flex-grow: 2;
-		font-family: 'Courier New', Courier, monospace;
-		padding: 10rpx;
+	.message-status {
+		font-size: 24rpx;
+		color: #ff6b6b;
+		background-color: #fff2f2;
+		padding: 4rpx 16rpx;
+		border-radius: 100rpx;
+	}
+	.status-read {
+		color: #52c41a;
+		background-color: #f6ffed;
+	}
+	.message-content {
+		margin-bottom: 16rpx;
+		padding: 0 6rpx;
+	}
+	.message-text {
+		font-size: 28rpx;
+		color: #333;
+		line-height: 1.6;
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-	.message-other-info{
+	.message-footer {
 		display: flex;
-		flex-grow: 1;
-		justify-content: space-between;
-		align-items: center;
-		padding: 0rpx 15rpx;
+		justify-content: flex-end;
+		padding: 0 6rpx;
 	}
-	.message-time{
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		color: lightgray;
+	.message-time {
+		font-size: 24rpx;
+		color: #999;
 	}
-	.message-state{
-		font-size: small;
-		color: white;
-		background-color: darkred;
-		border-radius: 15rpx;
-		margin: 0rpx 15rpx;
-		padding: 10rpx;
+	.message-item:active {
+		opacity: 0.8;
+		transform: scale(0.995);
+		transition: all 0.2s;
 	}
-	.message-type{
-		border-radius: 15rpx;
-		color: white;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background-color: #b95c00;
+	.message-item::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		border-radius: 12rpx;
+		pointer-events: none;
+		transition: background-color 0.3s;
+	}
+	.message-item:active::after {
+		background-color: rgba(0, 0, 0, 0.05);
 	}
 	.scroll-view-item_H {
 			display: inline-block;
@@ -323,4 +432,42 @@
 			font-size: 36rpx;
 			background-color: #2f4052;
 		}
+	.fun-box {
+		position: fixed;
+		bottom: 60rpx;
+		left: 0;
+		right: 0;
+		z-index: 999;
+		height: 0rpx;
+		background-color: #fff;
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+		padding-bottom: env(safe-area-inset-bottom);
+	}
+	.action-btn {
+		flex: 1;
+		margin: 0rpx 15rpx;
+		border: none;
+		border-radius: 40rpx;
+		font-size: 28rpx;
+		color: #fff;
+		background-color: #3582E9;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.3s ease;
+	}
+	.delete-btn {
+		background-color: #ff6b6b;
+	}
+	.btn-icon {
+		font-size: 32rpx;
+		margin-right: 8rpx;
+	}
+	.action-btn:active {
+		opacity: 0.8;
+		transform: scale(0.98);
+	}
 </style>

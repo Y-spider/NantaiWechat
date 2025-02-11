@@ -1,4 +1,8 @@
+// 正式环境
 const BASE_URL = "https://www.chopper.love:39001/api/"
+// 开发环境
+// const BASE_URL = "http://192.168.1.6:8888/"
+
 export function httpOFPost(path, params = {}, loading = true) {
 	// console.log('%c请求拦截：', ' background:orange', params);
 	if (false) {
@@ -61,12 +65,10 @@ export function httpOFGet(path,loading = true){
 			},
 			timeout:60000,
 			async success(res){
-				console.log(res)
 				uni.hideLoading()
 				resolve(res.data) // 将响应数据返回
 				// console.log('响应拦截：', path,res.data);
 				if(res.data?.code == -1){
-					console.log("djajkjdajdlal")
 					uni.showToast({
 						icon:"fail",
 						title:res.data.errMsg,
@@ -101,7 +103,7 @@ export function httpOfGetWithNotToken(path,loading = false){
 		uni.request({
 			url:BASE_URL + path,
 			method:"GET",
-			timeout:5000,
+			timeout:1000*30,
 			async success(res){
 				uni.hideLoading()
 				resolve(res.data) // 将响应数据返回

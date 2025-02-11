@@ -296,10 +296,8 @@
 			gotoDetailPage(index){
 				this.isGotoPostDetailPage = true
 				this.postDetailPageIndex = index
-				// 将对应数据json对象转换为json格式的字符串，通过路径参数传递给详细信息页面
-				let jsonStr = JSON.stringify(this.postDataList[index])
 				uni.navigateTo({
-					url:"/pages/funpage/post-detail/post-detail?postStr="+jsonStr
+					url:"/pages/funpage/post-detail/post-detail?postId="+this.postDataList[index].id
 				})
 			}
 		}

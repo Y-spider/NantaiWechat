@@ -9,7 +9,7 @@ export function getFutherWeatherAPI(path){
 }
 
 export function getPageListAPI(pageIndex,pageSize,name=null){
-	return httpOfGetWithNotToken("post/page?pageIndex="+pageIndex+"&pageSize="+pageSize,false);
+	return httpOFGet("post/page?pageIndex="+pageIndex+"&pageSize="+pageSize,false);
 }
 
 export function getUserLikeOrCollectionAPI(openid){

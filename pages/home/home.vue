@@ -26,12 +26,12 @@
 					<view class="fun-name">联系客服</view>
 					<view class="fun-icon-arrow"><text>1</text></view>
 				</view>
-				<view class="fun-item">
+				<!-- <view class="fun-item">
 					<button @click="about()">1</button>
 					<view class="fun-icon about"><text>1</text></view>
 					<view class="fun-name">关于微校园</view>
 					<view class="fun-icon-arrow"><text>1</text></view>
-				</view>
+				</view> -->
 				<view class="fun-item">
 					<button @click="gotoProticalPage()">1</button>
 					<view class="fun-icon instruction" ><text>1</text></view>
@@ -163,15 +163,15 @@
 					
 					uni.login({
 						success(res){
-							loginAPI("user/login/" + res.code).then((res)=>{
+							loginAPI("user/login?code=" + res.code).then((res)=>{
 								// 判断返回结果，将openid和token存储在本地
-								console.log("res",res)
 								if(res.code == 200){
 									let token = res.data.token
 									uni.setStorageSync("token",token)
 									uni.setStorageSync("flag",true)
 									uni.setStorageSync("userInfo",res.data)
 									that.userInfo = res.data
+									console.log("res.data.avatar",res.data.avatar)
 									that.avatarUrl = that.$baseImageUrl + res.data.avatar +"?"+ new Date().getTime()
 									that.flag = true;
 								}else{
@@ -180,8 +180,8 @@
 										showCancel:false
 									})
 								}
+								uni.hideLoading()
 							});
-							uni.hideLoading()
 						}
 					})
 				}else{

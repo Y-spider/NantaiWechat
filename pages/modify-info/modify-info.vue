@@ -113,7 +113,6 @@
 			addPostCont(){
 				// 增加的规则是起始一次积分为10，依次递增10 这里采用本地缓存进行存储当
 				let additionalCount = uni.getStorageSync("todayAdditionalCount") // 获取今天额外添加次数
-				console.log("todayStr",additionalCount.date != handleDate())
 				if(additionalCount == null || additionalCount.date != handleDate()){
 					let data  = {count:0,date:handleDate()}
 					uni.setStorageSync("todayAdditionalCount",data)
@@ -125,7 +124,7 @@
 				this.nextAddNeedPoint = needPoint + 10
 				if(this.postInfo.point - needPoint < 0){
 					showErr("积分不足")
-				}else if(this.postInfo.todayPost == (this.userInfo.totalPost - this.postedCache.length)){
+				}else if(this.postInfo.todayPost >= (this.userInfo.totalPost - this.postedCache.length)){
 					showErr("已达到最大上限")
 				}
 				else{
@@ -141,6 +140,10 @@
 					content:"确定修改?",
 					success(e){
 						if(e.confirm){
+							uni.showLoading({
+								title:"上传中...",
+								mask:true
+							})
 							// 发起请求
 							modifyUserInfoAPI("user/modify",that.postInfo)
 							.then((res)=>{
@@ -159,10 +162,11 @@
 								else if(res.code == 110){
 									showErr("新昵称包含敏感词汇:"+res.errMsg)
 								}
+								uni.hideLoading()
 							})
 							.catch((err)=>{
-								console.log(err)
 								showErr(err)
+								uni.hideLoading()
 							})
 							
 						}else if(e.cancel){

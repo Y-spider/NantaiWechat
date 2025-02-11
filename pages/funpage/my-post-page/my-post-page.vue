@@ -222,10 +222,8 @@
 			},
 			goToPostDetailPage(index){
 				// 跳转到帖子详细页面
-				// 构造传递帖子数据
-				let postStr = JSON.stringify(this.myPostedDataList[index])
 				uni.navigateTo({
-					url:"/pages/funpage/post-detail/post-detail?postStr="+postStr
+					url:"/pages/funpage/post-detail/post-detail?postId="+this.myPostedDataList[index].id
 				})
 			},
 			removePost(index){

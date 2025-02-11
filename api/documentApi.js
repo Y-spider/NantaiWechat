@@ -28,3 +28,7 @@ export function downloadFileAPI(documentId,url){
 export function getDocumentById(id){
 	return httpOFGet("document?id="+id)
 }
+
+export function getDocumentDownloadUrlAPI(documentId){
+	return httpOFGet("document/getDownloadUrl?documentId="+documentId)
+}

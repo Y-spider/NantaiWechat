@@ -2,11 +2,11 @@
 	<view>
 		<z-paging ref="paging" v-model="postDataList" @query="init">
 		<NavigationSelf slot="top" boxBg="#2f4052" :showBack="false" title="首页"></NavigationSelf>
-		<view slot="top" class="head-box-item,notice-box" style="background-color: #2f4052;height: 36rpx;">
+		<view @click="showNotice" slot="top" class="head-box-item,notice-box" style="background-color: #2f4052;height: 36rpx;">
 			<image src="../../static/公告.png"></image>
 			<view class="swiper-box" style="background-color: #2f4052;">
 				<swiper autoplay :interval="swiperConfig.interval" :disable-touch="true" :duration="swiperConfig.duration" circular style="height: 40rpx;">
-					<swiper-item v-for="notice in noticeList" :key="notice">{{notice.content}}</swiper-item>
+					<swiper-item v-for="(notice,index) in noticeList" :key="notice">{{index+1}}.{{notice.content}}</swiper-item>
 				</swiper>
 			</view>
 		</view>
@@ -233,7 +233,6 @@
 					// 表示数据库已经获取到最后了
 					this.isListAllPost = true
 				}
-				console.log("获取到的帖子信息列表",res)
 				})
 			}
 			
@@ -290,22 +289,28 @@
 			// 开始上传
 			if(updatePostList.length!=0){
 				postBatchUpdateAPI(updatePostList)
-				.then((res)=>{
-					if(res.code == 200){
-						console.log("更新帖子点赞数成功")
-					}
-					else{
-						console.error("更新点赞数失败",res.errMsg)
-					}
-				})
 				.catch((err)=>{
-					console.error("发送错误",err)
+					showErr("发送错误"+err)
 				})
 			}
 			this.copyLikeOrCollectionOfUser = []
 			this.updatePostListIndex = []
 		},
 		methods: {
+			showNotice() {
+			    // 展示公告信息
+			    let noticeContent = "";
+			    for (let i = 0; i < this.noticeList.length; i++) {
+			        let notice = this.noticeList[i];
+			        noticeContent += (i + 1) + ". " + notice.content + "\n"; // 使用 \n 换行
+			    }
+			    uni.showModal({
+			        content: noticeContent,
+			        showCancel: false,
+			        confirmText: "我知道了",
+			        confirmColor: "#4884fd"
+			    });
+			},
 			clear(){
 				this.searchTitle = ""
 			},
@@ -387,7 +392,6 @@
 				}
 				// 获取轮播图配置信息
 				let systemConfigRes = await getSystemConfigAPI()
-				console.log("systemConfigRes=",systemConfigRes)
 				if(res.code == 200){
 					this.swiperConfig.interval = systemConfigRes.data?.interval
 					this.swiperConfig.duration = systemConfigRes.data?.duration
@@ -429,7 +433,7 @@
 						})
 					})
 					.catch((err)=>{
-						console.error("请求错误",err)
+						showErr("请求错误",err)
 					})
 				}
 				else{
@@ -443,7 +447,6 @@
 				// 判断当前时间，修改天气展示背景颜色
 				let now = new Date();
 				let nowHour = now.getHours();
-				console.info("当前时间为:",nowHour,"bac%",this.changebackground)
 				if(nowHour >= 18 && nowHour <= 20 ){
 					this.changebackground = "isBeforeNight"
 				}else if(nowHour >= 21 || nowHour <= 5){
@@ -494,8 +497,6 @@
 							this.weatherSvgUrl[2] = base + res.data.daily[1].iconNight+"-fill.svg"
 							this.weatherSvgUrl[3] = base + res.data.daily[2].iconNight+"-fill.svg"
 						}
-					}else{
-						console.error("服务器错误，获取未来三天天气预测失败:code=",res.code)
 					}
 				}).catch((err)=>{
 					uni.showModal({
@@ -521,13 +522,13 @@
 				
 			},
 			search(){
-				const userInfo = uni.getStorageInfoSync("userInfo")
+				const userInfo = uni.getStorageSync("userInfo")
 				if(!userInfo){
 					uni.showModal({
 						content:"请先登录!是否跳转到登陆页面?",
 						success(confirm){
-							if(confirm){
-								uni.navigateTo({
+							if(!confirm.cancel){
+								uni.switchTab({
 									url:'/pages/home/home'
 								})
 							}
@@ -555,9 +556,8 @@
 				getPostStateByPostIdAPI(this.postDataList[index].id)
 				.then((res)=>{
 					if(res.code == 200){
-						let jsonStr = JSON.stringify(res.data)
 						uni.navigateTo({
-							url:"/pages/funpage/post-detail/post-detail?postStr="+jsonStr
+							url:"/pages/funpage/post-detail/post-detail?postId="+ this.postDataList[index].id
 						})
 					}else if(res.code == 222){
 						uni.showModal({
@@ -574,7 +574,7 @@
 					}
 				})
 				.catch((err)=>{
-					console.error("请求getPostStateByPostIdAPI接口发生错误",err)
+					showErr("请求失败"+err)
 				})
 			}
 		}

@@ -114,12 +114,12 @@
 				<view class="fun-icon-arrow"><text>1</text></view>
 			</view>
 			<view class="fun-item">
-				<button @click="feedbackToMe()">1</button>
+				<button open-type="feedback">1</button>
 				<view class="fun-icon feedback"><text>1</text></view>
 				<view class="fun-name">意见反馈</view>
 				<view class="fun-icon-arrow"><text>1</text></view>
 			</view>
-			<view class="fun-item" @click="logout()">
+			<view class="fun-item" @click="logout">
 				<view class="fun-icon logout" ><text>1</text></view>
 				<view class="fun-name">退出登陆</view>
 				<view class="fun-icon-arrow"><text>1</text></view>
@@ -129,7 +129,7 @@
 </template>
 
 <script>
-	import {navigateToPage,showErr} from "../../common/common-js.js"
+	import {navigateToPage,showErr, showSuccess} from "../../common/common-js.js"
 	import {logoutAPI} from "../../api/HomeApi.js"
 	import  RainCompont from "../common-components/rain/rain.vue"
 	import CloudCompont from "../common-components/cloud/cloud.vue"
@@ -161,6 +161,7 @@
 						uni.switchTab({
 							url:"/pages/index/index"
 						})
+						showSuccess("退出成功!")
 					}else if(res.code == -1){
 						uni.setStorageSync("flag",false)
 						console.error(res.errMsg)

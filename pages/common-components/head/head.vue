@@ -27,12 +27,23 @@
 			showBack:{
 				type:Boolean,
 				default:true
+			},
+			backUrl:{
+				type:String,
 			}
 		},
 		methods:{
 			// 返回上一级
 			goBack(){
-				uni.navigateBack()
+				if(this.backUrl){
+					uni.switchTab({
+						url:"/pages/index/index"
+					})
+				}
+				else{
+					uni.navigateBack()
+				}
+				
 			},
 		}
 	}

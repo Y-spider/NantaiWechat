@@ -5,7 +5,7 @@
 		<PopDocument :isShow="isShowDocumentPop"></PopDocument>
 		<NavigationSelf title="资源共享"></NavigationSelf>
 	
-		<uni-fab ref="fab" :pattern="pattern" :content="content" :horizontal="horizontal" :vertical="vertical"
+		<uni-fab style="z-index: 9999;" ref="fab" :pattern="pattern" :content="content" :horizontal="horizontal" :vertical="vertical"
 					:direction="direction" @trigger="trigger" @fabClick="fabClick" />
 		<view class="search-box">
 			<!-- 搜索栏 -->
@@ -52,7 +52,7 @@
 				<view class="base-info" style="display: flex; align-items: center; justify-content: space-between;">
 					<view style="display: flex;justify-content: center;align-items: center;">
 						<view class="avatar">
-							<image :src="baseImageUrl+document.avatar+'?time='+new Date().getTime()"></image>
+							<image mode="aspectFill" :src="baseImageUrl+document.avatar+'?time='+new Date().getTime()"></image>
 						</view>
 						<view class="post-info" style="color: #ccc; font-size: small;">
 							<view>{{document.name}}</view>
@@ -83,8 +83,8 @@
 							
 						</image>
 					</view>
-					<view style="width: 100%; display: flex; align-items: center;">
-						<button size="mini" style="background-color: #ccc; margin-left: 10rpx;" @click="downloadFile(index)">点击下载</button>
+					<view style="width: 100%; display: flex;flex-direction: row-reverse;">
+						<button size="mini" style="background-color: #332cff; margin:10rpx;color: white;" @click="downloadFile(index)">获取下载链接</button>
 						<!-- <view class="downloadProgress" style="margin-left: 10rpx;" v-if="isShowDocumentDownloadProgress[index]==true">{{downloadProgress}}%</view> -->
 					</view>
 				</view>
@@ -99,7 +99,7 @@
 	import PopWebsite from "../../common-components/website-input-pop/pop-website.vue"
 	import PopDocument from "../../common-components/document-input-pop/pop-document.vue"
 	import {listWebSitePageAPI,modifyWebsiteInfoAPI} from "../../../api/websiteApi.js"
-	import {listDocumentPageAPI,listDocumentImageUrlAPI,downloadFileAPI} from  "../../../api/documentApi.js"
+	import {listDocumentPageAPI,listDocumentImageUrlAPI,getDocumentDownloadUrlAPI} from  "../../../api/documentApi.js"
 	import { showErr, showSuccess ,handleTime,calcFileSize} from "../../../common/common-js";
 	import StateComponent from "../../common-components/stateComponent/stateComponent.vue"
 		export default {
@@ -299,86 +299,39 @@
 					return calcFileSize(size)
 				},
 				downloadFile(index){
-					// 判断是否有相册权限
-					uni.getSetting({
-						success(res){
-							if(!res.authSetting['scope.writePhotosAlbum']){
-								//没有写入图片的权限
-								uni.authorize({
-									scope:"scope.writePhotosAlbum",
-									success(res){
-										console.log("用户授权成功")
-									},
-									fail(err){
-										console.error("用户授权写入图片权限失败")
-										return;
+					let that = this
+					uni.showModal({
+						content:"获取下载链接每次需要花费10积分，有效时间为60分钟。",
+						success(option){
+							if(option.confirm){
+								uni.showLoading({
+									title:"获取中...",
+									mask:false
+								})
+								getDocumentDownloadUrlAPI(that.docDataList[index].id).then((res)=>{
+									if(res.code == 200){
+										let additional = res.cache?"已经获取了链接,无需重复获取:":"获取链接成功:"
+										uni.showModal({
+											content:additional+res.data,
+											showCancel:false,
+											success(option){
+												if(option.confirm){
+													uni.setClipboardData({
+														data:res.data,
+														success(){
+															showSuccess("复制链接成功!")
+														}
+													})
+												}
+											}
+										})
 									}
+								}).catch((err)=>{
+									showErr(err+"")
 								})
 							}
 						}
 					})
-					// 将下载进度条展现出来
-					// if(this.oldShowDocumentDownloadProgressIndex != index){
-					// 	this.$set(this.isShowDocumentDownloadProgress,this.oldShowDocumentDownloadProgressIndex,false)
-					// 	this.oldShowDocumentDownloadProgressIndex = index
-					// }
-					uni.showLoading({
-						title:"下载中...",
-						mask:false
-					})
-					this.$set(this.isShowDocumentDownloadProgress,index,true)
-					// 下载文件
-					let url = this.$fileDownloadPath+"?documentId="+this.docDataList[index].id +"&url="+this.docDataList[index].docPath
-					let docTotalSize = 0;
-					const downloadTask = uni.downloadFile({
-						url,
-						header:{
-							"token":uni.getStorageSync("token")
-						},
-						success(res) {
-							console.log("res=",res)
-							let savePath = wx.env.USER_DATA_PATH + "/123.docx.jpg"
-							docTotalSize = res.dataLength
-							// 下载文件到本地小程序缓存中
-							uni.getFileSystemManager().saveFile({
-								tempFilePath:res.tempFilePath,
-								filePath: savePath,
-								success(saveRes){
-									console.log("saveRes",saveRes)
-									// 由于获取到了相册的访问权限，使用saveImageToPhotosAlbum 将图片保存在相册中
-									uni.saveImageToPhotosAlbum({
-										filePath:savePath,
-										success(imageSaveRes){
-											uni.hideLoading()
-											uni.showModal({
-												content:"下载成功,请在手机文件夹下/Pictures/WeiXin/路径下将下载的图片(名称前缀为mmexportxxxx.jpg)更改后缀即可,详细操作可以查看使用指南",
-												showCancel:false
-											})
-										},
-										fail(err) {
-											uni.hideLoading()
-											uni.showModal({
-												content:err
-											})
-										}
-									})
-									
-								},
-								fail(err){
-									uni.hideLoading()
-									console.error(err)
-								}
-							})
-							
-						}
-					})
-					downloadTask.onProgressUpdate((res) => {
-						this.downloadProgress = (res.totalBytesWritten/this.docDataList[index].docSize).toFixed(2)*100
-						console.log("下载进度",(res.totalBytesWritten/this.docDataList[index].docSize).toFixed(2)*100)
-						console.log('已经下载的数据长度', res.totalBytesWritten)
-						console.log('预期需要下载的数据总长度', res.totalBytesExpectedToWrite)
-					})
-						
 				},
 				showImag(index){
 					uni.previewImage({
@@ -625,7 +578,6 @@
 						nowStyleList[1] = "selected-style"
 						nowStyleList[0] = "no-selected-style"
 					}
-					console.log("nowStyleList=>",nowStyleList)
 					this.$set(this.styleList,index,"selected-style")
 				}
 			}

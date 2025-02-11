@@ -10,7 +10,7 @@
 
 		<!-- 协议前言 -->
 		<view class="intro-section">
-			在使用南泰微校园前，您需要仔细阅读以下协议。如果您对以下协议任何条款表示异议，您可以选择不使用南泰微校园。当您完成登录即表示您已将完全认可本协议中的所有条款。
+			在使用南泰生活助手前，您需要仔细阅读以下协议。如果您对以下协议任何条款表示异议，您可以选择不使用南泰生活助手。当您完成登录即表示您已将完全认可本协议中的所有条款。
 		</view>
 
 		<!-- 协议内容区 -->
@@ -28,10 +28,10 @@
 				</view>
 				<view class="section-content">
 					<text class="paragraph">
-						用户注册或者授权登录成功后，南泰微校园会给予每一个用户创建一个账户并分配一个用户唯一标识，用户应当对其账户进行所有活动和事件负法律责任。
+						用户注册或者授权登录成功后，南泰生活助手会给予每一个用户创建一个账户并分配一个用户唯一标识，用户应当对其账户进行所有活动和事件负法律责任。
 					</text>
 					<text class="paragraph">
-						用户需要对南泰微校园的注册信息的真实性，合法性，有效性承担全部责任，用户不得冒充他人；不得利用他人的名义发布任何信息；不得恶意使用注册账号导致其他用户误认。否则南泰微校园有权利对其停止服务，收回账号并由用户承担所有法律责任。
+						用户需要对南泰生活助手的注册信息的真实性，合法性，有效性承担全部责任，用户不得冒充他人；不得利用他人的名义发布任何信息；不得恶意使用注册账号导致其他用户误认。否则南泰生活助手有权利对其停止服务，收回账号并由用户承担所有法律责任。
 					</text>
 				</view>
 
@@ -53,13 +53,13 @@
 				</view>
 				<view class="section-content">
 					<text class="paragraph">
-						1. 南泰微校园的所有内容，包括但不限于文字、图片、音频、视频、图表、标识、版面设计、电子文档等均受中华人民共和国著作权法及其他相关法律法规的保护。
+						1. 南泰生活助手的所有内容，包括但不限于文字、图片、音频、视频、图表、标识、版面设计、电子文档等均受中华人民共和国著作权法及其他相关法律法规的保护。
 					</text>
 					<text class="paragraph">
-						2. 未经南泰微校园及相关权利人的明确书面许可，任何人不得以任何方式擅自复制、转载、传播、修改、出版、发行、创造衍生作品或以其他任何方式使用这些内容。
+						2. 未经南泰生活助手及相关权利人的明确书面许可，任何人不得以任何方式擅自复制、转载、传播、修改、出版、发行、创造衍生作品或以其他任何方式使用这些内容。
 					</text>
 					<text class="paragraph">
-						3. 用户在平台上发布的原创内容，其著作权归用户本人所有。用户发布的内容即视为授予南泰微校园一项永久的、不可撤销的、免费的、可再许可的使用权。
+						3. 用户在平台上发布的原创内容，其著作权归用户本人所有。用户发布的内容即视为授予南泰生活助手一项永久的、不可撤销的、免费的、可再许可的使用权。
 					</text>
 				</view>
 			</view>
@@ -100,7 +100,7 @@
 				</view>
 				<view class="section-content">
 					<text class="paragraph highlight">
-						1. 南泰微校园是一个由个人开发者维护的信息分享平台，仅为方便校园信息交流使用。平台与任何机构或组织均无从属关系。
+						1. 南泰生活助手是一个由个人开发者维护的信息分享平台，仅为方便校园信息交流使用。平台与任何机构或组织均无从属关系。
 					</text>
 					<text class="paragraph">
 						2. 以下情况，平台开发者不承担任何责任：
@@ -128,13 +128,13 @@
 				</view>
 				<view class="section-content">
 					<text class="paragraph">
-						1. "南泰微校园"：指由个人开发者开发和运营的校园信息服务平台。
+						1. "南泰生活助手"：指由个人开发者开发和运营的校园信息服务平台。
 					</text>
 					<text class="paragraph">
 						2. "用户"：指注册、登录、使用本平台的所有自然人。
 					</text>
 					<text class="paragraph">
-						3. "内容"：指用户使用南泰微校园平台时发布的所有文字、图片、视频、音频等信息。
+						3. "内容"：指用户使用南泰生活助手平台时发布的所有文字、图片、视频、音频等信息。
 					</text>
 					<text class="paragraph highlight">
 						4. 特别说明：本平台为个人开发者独立开发维护的非营利性平台，与任何机构或组织无关。
@@ -172,7 +172,7 @@
 				</view>
 				<view class="section-content">
 					<text class="paragraph">
-						用户在使用南泰微校园服务时须遵守以下规定：
+						用户在使用南泰生活助手服务时须遵守以下规定：
 					</text>
 					<view class="list-items">
 						<text class="list-item">• 遵守中华人民共和国相关法律法规</text>
@@ -324,7 +324,9 @@
 		mounted() {
 			const query = uni.createSelectorQuery().in(this);
 			query.select('.content-section').boundingClientRect(data => {
-				this.scrollViewHeight = data.height;
+				setTimeout(()=>{
+					this.scrollViewHeight = data.height;
+				},100)
 			}).exec();
 			
 			query.select('.content-section >>> :last-child').boundingClientRect(data => {
@@ -336,7 +338,11 @@
 				uni.navigateBack()
 			},
 			handleScroll(e) {
-				this.scrollTop = e.detail.scrollTop;
+				// 使用防抖减少 scrollTop 更新频率
+				if (this.scrollTimeout) clearTimeout(this.scrollTimeout);
+				this.scrollTimeout = setTimeout(() => {
+					this.scrollTop = e.detail.scrollTop;
+				}, 100);
 			},
 			handleScrollToLower() {
 				this.hasReadToBottom = true;
@@ -356,6 +362,12 @@
 				}
 				uni.setStorageSync("isConfirmProtocal", true);
 				uni.navigateBack();
+			},
+			calculateScrollViewHeight() {
+				const query = uni.createSelectorQuery().in(this);
+				query.select('.content-section').boundingClientRect(data => {
+					this.scrollViewHeight = data.height;
+				}).exec();
 			}
 		}
 	}

@@ -31,3 +31,13 @@ export function modifyMessageAPI(data){
 export function getMessageTypeAPI(){
 	return httpOFGet("messageType?messageState=0")
 }
+
+// 一键已读所有未读消息
+export function readAllMessageAPI(){
+	return httpOFPost("message/readAllMessage",null,false)
+}
+
+// 一键删除所有已读消息
+export function deleteAllMessageHasReadedAPI(){
+	return httpOFPost("message/deleteAllMessage",null,false)
+}

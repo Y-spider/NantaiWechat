@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<NavigationSelf :title="postData.title"></NavigationSelf>
+		<NavigationSelf :title="postData.title" :backUrl="backUrl"></NavigationSelf>
 		<view class="poster-info">
 			<view class="post-info-base-info">
 				<view class="avatar">
@@ -29,7 +29,7 @@
 		<view class="post-detail-info-box">
 			<view class="post-content">{{ postData.content }}</view>
 			<view class="image-box">
-				<image v-for="(item, index) in imageUrlList" :key="index" :src="imageBaseUrl + item" @click="showImage(index)">
+				<image mode="aspectFill" v-for="(item, index) in imageUrlList" :key="index" :src="imageBaseUrl + item" @click="showImage(index)">
 				</image>
 			</view>
 		</view>
@@ -132,7 +132,7 @@
 				<StateComponent></StateComponent>
 			</view>
 		</x-skeleton>
-		<view class="comment-input">
+		<view class="comment-input" v-if="postData.openComment">
 			<view v-if="replayTipText != ''" style="color: lightgray;margin-left: 15rpx;display:flex;align-items:center;">
 				<view>回复:<text style="color: #1296db;">{{ replayTipText }}</text></view>
 				<uni-icons type="trash-filled" size="20" style="margin-left: 30rpx;"
@@ -156,6 +156,7 @@ import { getImageUrlAPI, postCommnetAPI, getCommentAPI, batchUpdateCommentAPI, d
 import { showErr, showSuccess, handleTime } from "../../../common/common-js.js"
 import { getUserLikeOrCollectionAPI } from "../../../api/IndexApi.js"
 import StateComponent from "../../common-components/stateComponent/stateComponent.vue"
+import { getPostByPostIdAPI } from "../../../api/PostApi"
 export default {
 	components: {
 		NavigationSelf,
@@ -204,7 +205,8 @@ export default {
 			isNeedUpdateCollection: false, // 标识是否更新收藏状态
 			likeOrCollectionOfCollectionId: null,// 记录当前如果初始状态为收藏状态时的收藏记录id
 			isLoading: true,
-			fcous: false
+			fcous: false,
+			backUrl:"" // 返回上級路徑
 
 		}
 	},
@@ -350,16 +352,21 @@ export default {
 	onLoad(option) {
 		// 在这里将在路径上的post帖子json对象字符串转换为json对象
 		this.userInfo = uni.getStorageSync("userInfo")
-		this.postData = JSON.parse(option.postStr)
-		this.postCommentInfo.postId = this.postData.id
-		this.postCommentInfo.name = this.userInfo.name
-		this.postCommentInfo.openid = this.userInfo.openid
-		this.postCommentInfo.avatar = this.userInfo.avatar
-		this.imageUrl = this.$baseImageUrl + this.postData.avatar + "?time=" + new Date().getTime()
-		if (this.userInfo.openid == this.postData.openid) {
-			this.isShowCollection = false
-		}
-		this.init()
+		this.backUrl = option?.backUrl || ""
+		getPostByPostIdAPI(option.postId).then((res)=>{
+			if(res.code==200){
+				this.postData = res.data
+				this.postCommentInfo.postId = this.postData.id
+				this.postCommentInfo.name = this.userInfo.name
+				this.postCommentInfo.openid = this.userInfo.openid
+				this.postCommentInfo.avatar = this.userInfo.avatar
+				this.imageUrl = this.$baseImageUrl + this.postData.avatar + "?time=" + new Date().getTime()
+				if (this.userInfo.openid == this.postData.openid) {
+					this.isShowCollection = false
+				}
+				this.init()
+			}
+		})
 	},
 	methods: {
 		deletComment(comment, index, parentComment) {
@@ -679,15 +686,24 @@ export default {
 			}
 		},
 		postComment() {
+			if(!this.postCommentInfo.content){
+				return
+			}
 			// 发送评论
+			uni.showLoading({
+				title:"上传中...",
+				mask:true
+			})
 			postCommnetAPI(this.postCommentInfo)
 				.then((res) => {
 					if (res.code == 110) {
 						showErr("含有敏感词汇" + res.data)
+						uni.hideLoading()
 						return
 					}
 					else if (res.code == -1) {
 						showErr("系统错误!请联系管理员")
+						uni.hideLoading()
 						return
 					}
 					this.pageIndex = 1
@@ -695,8 +711,10 @@ export default {
 					showSuccess("评论成功")
 					this.postCommentInfo.content = ""
 					this.init()
+					uni.hideLoading()
 				})
 				.catch((err) => {
+					uni.hideLoading()
 					showErr(err)
 				})
 		},
@@ -839,10 +857,11 @@ export default {
 }
 
 .image-box image {
-	max-width: 160rpx;
-	max-height: 160rpx;
+	width: 160rpx;
+	height: 160rpx;
 	border-radius: 10rpx;
 	margin: 10rpx;
+	object-fit: contain;
 }
 
 .contact-info {

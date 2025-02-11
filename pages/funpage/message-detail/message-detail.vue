@@ -152,18 +152,18 @@
 				})
 			},
 			handleGoToPostDetail(){
-				let jsonStr = JSON.stringify(this.postInfo)
+				let id = this.postInfo.id
 				if(this.reportInfo?.postId){
 					getPostByPostIdAPI(this.reportInfo.postId).then((res)=>{
 						jsonStr = JSON.stringify(res.data)
 						uni.navigateTo({
-							url:"/pages/funpage/post-detail/post-detail?postStr="+jsonStr
+							url:"/pages/funpage/post-detail/post-detail?postId="+id
 						})
 					})
 				}
 				else{
 					uni.navigateTo({
-						url:"/pages/funpage/post-detail/post-detail?postStr="+jsonStr
+						url:"/pages/funpage/post-detail/post-detail?postId="+id
 					})
 				}
 			},

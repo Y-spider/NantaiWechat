@@ -114,9 +114,8 @@
 						}
 					})
 				}else{
-					let postStr = JSON.stringify(this.myCollectionPostDataList[index])
 					uni.navigateTo({
-						url:"/pages/funpage/post-detail/post-detail?postStr="+postStr
+						url:"/pages/funpage/post-detail/post-detail?postId="+this.myCollectionPostDataList[index].id
 					})
 				}
 			}

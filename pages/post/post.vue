@@ -1,105 +1,202 @@
 <template>
-	<view class="root">
-		<view>
+	<view class="container">
+		<view class="header">
 			<NavigationSelf title="发布" :showBack="false"></NavigationSelf>
 		</view>
-		<!-- head头部部分用于编写帖子相关文字描述信息 -->
-		<view class="icon-box">
-			<image src="../../static/编辑.png"></image>
-		</view>
-		<view class="head-box">
-			<view class="head-box-item,title-box">
-				<!-- <view class="box-lable">标题:</view> -->
-				<input v-model="postData.title" type="text" placeholder="4~15个字描述你的需求" maxlength="15"/>
-			</view>
-			<view class="head-box-item,describetion-box">
-				<!-- <view class="box-lable">描述:</view> -->
-				<textarea v-model="postData.content" placeholder="详细描述你的需求,禁止发布重复内容,广告营销类,色情等违法违规内容." maxlength="300"></textarea>
-			</view>
-		</view>
-		<view class="body-box">
-			<view class="body-box-type">
-				<label class="body-box-type-item">类型</label>
-				<picker class="body-box-type-item" mode="selector" :range="typeRangeList" :value="postData.indexType" @change="bindPickerChangeOfType">{{typeRangeList[postData.indexType]}}</picker>
-				<view class="body-box-type-item,right-arrow-icon-box">
-					<image src="../../static/向右箭头 (1).png"></image>
+		
+		<scroll-view scroll-y class="content">
+			<!-- 标题输入区域 -->
+			<view class="form-item">
+				<text class="form-label">标题</text>
+				<view class="input-container">
+					<input 
+						v-model="postData.title" 
+						type="text" 
+						placeholder="简短描述你想发布的内容（4~15字）" 
+						maxlength="15"
+						class="form-input"
+					/>
+					<text class="char-count">{{postData.title.length}}/15</text>
 				</view>
 			</view>
-			<view class="body-box-type-button-box">
+
+			<!-- 内容描述区域 -->
+			<view class="form-item">
+				<text class="form-label">描述</text>
+				<view class="textarea-container">
+					<textarea 
+						v-model="postData.content" 
+						placeholder="详细描述你要发布的内容，可以包括具体信息、价格、时间等（最多300字）" 
+						maxlength="300"
+						class="form-textarea"
+					/>
+					<text class="char-count">{{postData.content.length}}/300</text>
+				</view>
+			</view>
+
+			<!-- 类型选择区域 -->
+			<view class="form-item">
+				<text class="form-label">类型</text>
+				<view class="type-selector">
+					<picker 
+						class="type-picker" 
+						mode="selector" 
+						:range="typeRangeList" 
+						:value="postData.indexType" 
+						@change="bindPickerChangeOfType"
+					>
+						<view class="picker-value">
+							<text>{{typeRangeList[postData.indexType] || '请选择发布类型'}}</text>
+							<text class="picker-arrow">›</text>
+						</view>
+					</picker>
+				</view>
+
+				<!-- 二手类型选择 -->
 				<view class="radio-group-box" v-if="postData.indexType==1">
-					<radio-group class="sell-or-by"  @change="bindRadioGroupChange">
-						<radio  value="sell" color="#3582E9" checked>卖</radio>
-						<radio value="buy" color="#3582E9">买</radio>	
+					<radio-group class="radio-group" @change="bindRadioGroupChange">
+						<label class="radio-item">
+							<radio value="sell" color="#3582E9" checked />
+							<text>卖</text>
+						</label>
+						<label class="radio-item">
+							<radio value="buy" color="#3582E9" />
+							<text>买</text>
+						</label>
 					</radio-group>
 				</view>
+
+				<!-- 兼职类型选择 -->
 				<view class="radio-group-box" v-if="postData.indexType==3">
-					<radio-group class="recruit-or-rent"  @change="bindRadioGroupChange">
-						<radio  value="recruit" color="#3582E9" checked>招聘</radio>
-						<radio value="rent" color="#3582E9">出租</radio>	
+					<radio-group class="radio-group" @change="bindRadioGroupChange">
+						<label class="radio-item">
+							<radio value="recruit" color="#3582E9" checked />
+							<text>招聘</text>
+						</label>
+						<label class="radio-item">
+							<radio value="rent" color="#3582E9" />
+							<text>出租</text>
+						</label>
 					</radio-group>
 				</view>
 			</view>
-			<view class="body-box-upload">
-				<view class="body-box-upload-info">
-					<label>图片上传</label>
-					<view> {{base64ImageListIndex}}/9 </view>
+
+			<!-- 图片上传区域 -->
+			<view class="form-item">
+				<view class="upload-header">
+					<text class="form-label">图片上传</text>
+					<text class="upload-count">{{base64ImageListIndex}}/9</text>
 				</view>
-				<view class="body-box-upload-image">
-					<uni-file-picker 
-						v-model="base64ImageList"
-						fileMediatype="image"
-						file-extname="jpg"
-						mode="grid"
-						size-type="compress"
-						auto-upload="false"
-						:image-styles="imgStyle"
-						@select="select" 
-						@sourceType="album"
-						@success="success" 
-						@fail="fail" 
-						@delete="deleteImg"
+				<uni-file-picker 
+					v-model="base64ImageList"
+					fileMediatype="image"
+					file-extname="jpg"
+					mode="grid"
+					size-type="compress"
+					auto-upload="false"
+					:image-styles="imgStyle"
+					@select="select" 
+					@sourceType="album"
+					@success="success" 
+					@fail="fail" 
+					@delete="deleteImg"
+				/>
+			</view>
+
+			<!-- 设置区域 -->
+			<view class="form-item">
+				<view class="setting-item">
+					<text>开启评论</text>
+					<switch 
+						:checked="postData.openComment" 
+						@change="bindSwitchChangeOfComment" 
+						color="#3582E9" 
+						style="transform: scale(0.8);"
 					/>
 				</view>
-				<view class="body-box-switch-info,flex-displey">
-					<view class="body-box-switch-info-item,open-comment,flex-displey">
-						<view class="label">开启评论</view>
-						<switch v-if="postData.openComment" @change="bindSwitchChangeOfComment" checked color="#FF7F00" style="transform: scale(0.7);"></switch>
-						<switch v-else @change="bindSwitchChangeOfComment" color="#FF7F00" style="transform: scale(0.7);"></switch>
+				<view class="setting-item">
+					<view class="setting-label">
+						<text>置顶</text>
+						<text class="setting-tip">30积分/小时</text>
 					</view>
-					<view class="body-box-switch-info-item,open-comment,flex-displey">
-						<view class="label">置顶</view>
-						<picker v-if="postData.isTop" class="body-box-switch-info-top-picker" mode="selector" :range="topRangeList" :value="postData.indexTop" @change="bindPickerChangeOfTop">{{topRangeList[postData.indexTop]}}</picker>
-						<switch @change="bindSwitchChange" color="#FF7F00" style="transform: scale(0.7);" :checked="postData.isTop"></switch>
+					<view class="top-setting">
+						<picker 
+							class="top-picker" 
+							mode="selector" 
+							:range="topRangeList" 
+							:value="postData.indexTop" 
+							:disabled="!postData.isTop"
+							@change="bindPickerChangeOfTop"
+						>
+							<view class="picker-value" :class="{ 'picker-placeholder': !postData.isTop }">
+								<text>{{ postData.isTop ? topRangeList[postData.indexTop] : '请选择置顶时长' }}</text>
+								<text class="picker-arrow">›</text>
+							</view>
+						</picker>
+						<switch 
+							@change="bindSwitchChange" 
+							color="#3582E9" 
+							style="transform: scale(0.8);" 
+							:checked="postData.isTop"
+						/>
 					</view>
-				</view>
-				<view class="foot-box,flex-displey">
-					<view>联系方式:</view>
-					<view class="contact-info-box">
-						<view class="contact-info-box-item">
-							<label>联系人:</label>
-							<input type="text" v-model="postData.contactor" placeholder="请输入联系人" maxlength="15"/>
-						</view>
-						<view class="contact-info-box-item">
-							<label>手机号:</label>
-							<input type="text" v-model="postData.phone" placeholder="请输入手机号" maxlength="11"/>
-						</view>
-						<view class="contact-info-box-item">
-							<label>微信号:</label>
-							<input type="text" v-model="postData.wechat" placeholder="请输入微信号" maxlength="30"/>
-						</view>
-						<view class="contact-info-box-item">
-							<label>qq号:</label>
-							<input type="text" v-model="postData.qq" placeholder="请输入QQ号" maxlength="20"/>
-						</view>
-					</view>
-				</view>
-				<view class="button-box">
-					<button type="primary" class="post-button" size="mini" @click="post()">发布</button>
-					<button class="post-button" size="mini" @click="save()">保存</button>
 				</view>
 			</view>
+
+			<!-- 联系方式 -->
+			<view class="form-item">
+				<text class="form-label">联系方式</text>
+				<text class="form-tip">至少填写一种联系方式</text>
+				<view class="contact-list">
+					<view class="contact-item">
+						<text class="contact-label">联系人</text>
+						<input 
+							type="text" 
+							v-model="postData.contactor" 
+							placeholder="请填写联系人姓名" 
+							maxlength="15"
+							class="contact-input"
+						/>
+					</view>
+					<view class="contact-item">
+						<text class="contact-label">手机号</text>
+						<input 
+							type="number" 
+							v-model="postData.phone" 
+							placeholder="请填写手机号码" 
+							maxlength="11"
+							class="contact-input"
+						/>
+					</view>
+					<view class="contact-item">
+						<text class="contact-label">微信号</text>
+						<input 
+							type="text" 
+							v-model="postData.wechat" 
+							placeholder="请填写微信号" 
+							maxlength="30"
+							class="contact-input"
+						/>
+					</view>
+					<view class="contact-item">
+						<text class="contact-label">QQ号</text>
+						<input 
+							type="number" 
+							v-model="postData.qq" 
+							placeholder="请填写QQ号码" 
+							maxlength="20"
+							class="contact-input"
+						/>
+					</view>
+				</view>
+			</view>
+		</scroll-view>
+
+		<!-- 底部按钮 -->
+		<view class="button-box">
+			<button class="action-btn primary-btn" @click="post">发布</button>
+			<button class="action-btn" @click="save">保存</button>
 		</view>
-		<canvas canvas-id="compressCanvas"></canvas>
 	</view>
 </template>
 
@@ -140,7 +237,6 @@
 			}
 		},
 		onHide(){
-			console.log("onhide执行..")
 			uni.setStorageSync("isNeedInit",false)
 		},
 		data() {
@@ -157,8 +253,8 @@
 					},
 					"background-color":"loghtgray"
 				},
-				typeRangeList:["请选择圈子","二手闲置","求问求帮","兼职招聘","校园交友","寻人寻物","学习交流"],
-				topRangeList:["1小时30积分哦","1小时","2小时","3小时","4小时","5个小时"],
+				typeRangeList:["请选择帖子类型","二手闲置","求问求帮","兼职招聘","校园交友","寻人寻物","学习交流"],
+				topRangeList: ["1小时", "2小时", "3小时", "4小时", "5小时"],
 				base64ImageList:[],
 				base64ImageListIndex:0,
 				userInfo:null,
@@ -194,14 +290,11 @@
 				}else if(this.postData.type == "兼职招聘"){
 					this.postData.typeSecond = "recruit"
 				}
-				console.log(e)
 			},
 			bindPickerChangeOfTop(e){
 				this.postData.indexTop = e.detail.value
-				console.log(e)
 			},
 			bindRadioGroupChange(e){
-				console.log(e)
 				this.postData.typeSecond = e.detail.value
 			},
 			select(e){
@@ -216,10 +309,8 @@
 								"url":imageBase64Data
 							};
 							this.base64ImageList[this.base64ImageListIndex++] = base64ImgItem;
-							console.log("保存临时图片成功",imageBase64Data)
 						})
 					}catch(err){
-						console.log("保存临时图片error",err);
 						showErr("第"+(i+1)+"张图片上传失败")
 					}
 				}
@@ -227,11 +318,12 @@
 			deleteImg(e){
 				this.base64ImageList.splice(e.index,1)
 				this.base64ImageListIndex--;
-				console.log(e.index)
 			},
 			bindSwitchChange(e){
 				this.postData.isTop = e.detail.value
-				console.log(e.detail.value)
+				if(!this.postData.isTop){
+					this.postData.indexTop = 0
+				}
 			},
 			bindSwitchChangeOfComment(e){
 				this.postData.openComment = e.detail.value
@@ -247,7 +339,6 @@
 				    wx.removeStorageSync(key);
 				  }
 				});
-				console.log("storageInfo",storageInfo);
 				uni.setStorageSync("Base64ImageListIndex",this.base64ImageListIndex);
 				for(let i = 0;i < this.base64ImageListIndex;i++){
 					uni.setStorageSync("Base64ImageList_"+i,this.base64ImageList[i]);
@@ -336,18 +427,16 @@
 							uni.hideLoading()
 						}
 					}).catch((err)=>{
-						// showErr(err)
+						showErr(err)
 						uni.hideLoading()
 					})
 				}
 			},
 			init(){
-				console.log("执行init...")
 				// 模板信息
 				let saveModelData = uni.getStorageSync("modelData")
 				let savePostData = uni.getStorageSync("savePostData")
 				if(savePostData!=''){
-					console.log("使用用户之前保存的帖子信息")
 					this.postData = savePostData
 				}
 				// 如果当前用户没有保存过编辑的帖子信息并且当前模板处于启用状态，则启用模板
@@ -383,144 +472,248 @@
 </script>
 
 <style scoped>
-	*{
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-		font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-	}
-	.root{
-		font-size: small;
-	}
-	.flex-displey{
-		display: flex;
-		flex-direction: column;
-	}
-	.icon-box{
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	.icon-box image{
-		width: 64rpx;
-		height: 64rpx;
-	}
-	.main-box{
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-	input,textarea{
-		width: 100%;
-		border-bottom: 1rpx solid lightgray;
-		background: white;
-	}
-	textarea{
-		margin-left: -5rpx;
-		border:1rpx solid lightgray ;
-		border-radius: 15rpx;
-		height: 200rpx;
-	}
-	.head-box,.body-box{
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		margin-top: 15rpx;
-		border-bottom: 2rpx solid gray;
-	}
-	.body-box{
-		border-bottom: 0rpx;
-	}
-	.head-box-item,.contact-info-box-item{
-		width: 95%;
-		margin-top: 30rpx;
-		display: flex;
-		justify-content:space-between;
-		align-items: center;
-	}
-	.contact-info-box-item{
-		width: 100%;
-		font-size:small;
-		justify-content: space-between;
-	}
-	.contact-info-box-item label{
-		width: 25%;
-		color: lightgray;
-		display: inline;
-	}
-	.describetion-box{
-		align-items: flex-start;
-		border-left:1rpx solid lightgray ;
-		margin-bottom: 30rpx;
-	}
-	.body-box-type{
-		width: 95%;
-		display: flex;
-		justify-content: space-between;
-	}
-	.right-arrow-icon-box,.right-arrow-icon-box image{
-		width: 50rpx;
-		height: 50rpx;
-	}
-	.body-box-type picker,.body-box-switch-info-top-picker{
-		font-size: small;
-		color: #FF7F00;
-		text-decoration-style: solid;
-	}
-	.body-box-type-button-box{
-		width: 95%;
-		height: 60rpx;
-		display: flex;
-		justify-content:center;
-		margin-top: 32rpx;
-	}
-	.body-box-upload{
-		width: 95%;
-		height: 300rpx;
-		margin-top: 6rpx;
-	}
-	.body-box-upload-info{
-		width: 100%;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-	.body-box-upload-info lable{
-		font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-	}
-	.body-box-upload-info view{
-		font-size: small;
-		color: #666666;
-	}
-	.body-box-upload-image{
-		width: 100%;
-		margin-top: 18rpx;
-		border-bottom: 1rpx solid lightgray;
-	}
-	.open-comment{
-		flex-direction: row;
-		justify-content:space-between;
-		align-items: center;
-	}
-	.body-box-switch-info-item{
-		margin: 6rpx 0;
-	}
-	.foot-box{
-		margin-top: 12rpx;
-		border-top: 1rpx solid lightgray;
-	}
-	.button-box{
-		margin-top: 22rpx;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	.button-box button{
-		margin: 60rpx 60rpx;
-	}
-	radio{
-		margin: 0rpx 32rpx;
-	}
-	
+.container {
+	min-height: 100vh;
+	background-color: #f8f8f8;
+	display: flex;
+	flex-direction: column;
+}
+
+.content {
+	flex: 1;
+	padding: 30rpx 30rpx 0; /* 统一上下左右间距 */
+}
+
+.form-item {
+	width: 85%;
+	/* margin-bottom: 24rpx; /* 稍微减小卡片间的间距 */ 
+	background-color: #fff;
+	padding: 30rpx;
+	border-radius: 12rpx;
+	margin: 0rpx 5rpx 24rpx 5rpx; 
+	/* 添加阴影效果增加边距感 */
+	box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.form-label {
+	font-size: 28rpx;
+	color: #333;
+	font-weight: 500;
+	margin-bottom: 20rpx;
+	display: block;
+}
+
+.input-container {
+	position: relative;
+	width: 90%;
+}
+
+.form-input {
+	width: 100%;
+	height: 88rpx;
+	padding: 0 20rpx;
+	border: 2rpx solid #eee;
+	border-radius: 8rpx;
+	font-size: 28rpx;
+}
+
+.textarea-container {
+	position: relative;
+}
+
+.form-textarea {
+	width: 90%;
+	height: 200rpx;
+	padding: 20rpx;
+	border: 2rpx solid #eee;
+	border-radius: 8rpx;
+	font-size: 28rpx;
+}
+
+.char-count {
+	position: absolute;
+	right: 20rpx;
+	bottom: 20rpx;
+	font-size: 24rpx;
+	color: #999;
+}
+
+.type-selector {
+	width: 100%;
+}
+
+.picker-value {
+	height: 88rpx;
+	line-height: 88rpx;
+	padding: 0 20rpx;
+	border: 2rpx solid #eee;
+	border-radius: 8rpx;
+	font-size: 28rpx;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.picker-arrow {
+	color: #999;
+	font-size: 32rpx;
+}
+
+.radio-group {
+	display: flex;
+	margin-top: 20rpx;
+}
+
+.radio-item {
+	margin-right: 40rpx;
+	font-size: 28rpx;
+	display: flex;
+	align-items: center;
+}
+
+.upload-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20rpx;
+}
+
+.upload-count {
+	font-size: 24rpx;
+	color: #999;
+}
+
+.setting-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20rpx 0;
+	font-size: 28rpx;
+}
+
+.setting-label {
+	display: flex;
+	align-items: center;
+	gap: 12rpx;
+}
+
+.setting-tip {
+	font-size: 24rpx;
+	color: #ff6b6b;
+	background-color: #fff2f2;
+	padding: 4rpx 12rpx;
+	border-radius: 100rpx;
+}
+
+.setting-item:not(:last-child) {
+	border-bottom: 2rpx solid #eee;
+}
+
+.top-setting {
+	display: flex;
+	align-items: center;
+	gap: 20rpx;
+	flex: 1;
+	justify-content: flex-end;
+}
+
+.top-picker {
+	flex: 1;
+	max-width: 400rpx;
+}
+
+.picker-value {
+	height: 88rpx;
+	line-height: 88rpx;
+	padding: 0 20rpx;
+	border: 2rpx solid #eee;
+	border-radius: 8rpx;
+	font-size: 28rpx;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: #333;
+}
+
+.picker-placeholder {
+	color: #999;
+}
+
+.picker-arrow {
+	color: #999;
+	font-size: 32rpx;
+	transform: rotate(90deg);
+}
+
+.contact-list {
+	display: flex;
+	flex-direction: column;
+	gap: 20rpx;
+}
+
+.contact-item {
+	display: flex;
+	align-items: center;
+}
+
+.contact-label {
+	width: 120rpx;
+	font-size: 28rpx;
+	color: #666;
+}
+
+.contact-input {
+	flex: 1;
+	height: 80rpx;
+	padding: 0 20rpx;
+	border: 2rpx solid #eee;
+	border-radius: 8rpx;
+	font-size: 28rpx;
+}
+
+.button-box {
+	display: flex;
+	gap: 20rpx;
+	padding: 24rpx 30rpx;
+	margin: 0 30rpx 30rpx; /* 添加左右边距，并确保底部有足够空间 */
+	background-color: #fff;
+	border-radius: 12rpx;
+	box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.action-btn {
+	flex: 1;
+	height: 88rpx;
+	line-height: 88rpx;
+	border: none;
+	border-radius: 44rpx;
+	font-size: 28rpx;
+	font-weight: 500;
+	transition: all 0.3s ease;
+	background-color: #f0f0f0;
+	color: #333;
+}
+
+.primary-btn {
+	background-color: #3582E9;
+	color: white;
+}
+
+.action-btn:active {
+	opacity: 0.8;
+}
+
+.upload-tip {
+	font-size: 24rpx;
+	color: #999;
+	margin-right: auto;
+	margin-left: 20rpx;
+}
+
+.form-tip {
+	font-size: 24rpx;
+	color: #999;
+	margin-bottom: 20rpx;
+	display: block;
+}
 </style>

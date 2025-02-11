@@ -151,6 +151,10 @@
 				}
 				let that = this
 				let userInfo = uni.getStorageSync("userInfo")
+				uni.showLoading({
+					title: "上传中...",
+					mask: true
+				});
 				const uploadTask = wx.uploadFile({
 				  url: this.$fileUploadPath, //仅为示例，非真实的接口地址
 				  filePath: this.fileTempPath,
@@ -170,6 +174,7 @@
 				  success (res){
 					let result = JSON.parse(res.data)
 				    if(result.code == 200){
+						uni.hideLoading();
 						showSuccess("上传成功，等待管理员审核!")
 						that.base64ImageList = [],
 						that.fileSize = "",
@@ -185,14 +190,11 @@
 					}
 				  },
 				  fail(err){
-					  console.log("发送错误"+err)
+					  showErr("发送错误"+err)
 				  }
 				})
 				uploadTask.onProgressUpdate((res) => {
-				  console.log('上传进度', res.progress)
 				  this.uploadProgress = res.progress
-				  console.log('已经上传的数据长度', res.totalBytesSent)
-				  console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend)
 				})
 					
 			},
@@ -222,7 +224,7 @@
 						}
 					},
 					fail(err){
-						console.log("调用失败",err)
+						showErr("调用失败",err)
 					}
 					
 				})
@@ -239,7 +241,7 @@
 	right: 0;
 	bottom: 0;
 	background-color: rgba(0, 0, 0, 0.5);
-	z-index: 8;
+	z-index: 1;
 }
 
 .pop-box {
