@@ -112,6 +112,7 @@
 				<view class="post-item-base-info" @click="gotoDetailPage(index)">
 					<view class="post-item-name" style="width: 40%;"><text style="text-align: left; width: 100%;">{{post.name}}</text></view>
 					<view class="post-item-type">{{post.type}}</view>
+					<view class="post-item-type" style="color: #ff0000; background-color: #ffffff;" v-if="post.type==='二手闲置'">{{post.price}} 元</view>
 					<view v-if="post.isTop" class="post-item-top" :class="state">已置顶</view>
 					<view class="pots-item-avatar">
 						<image :src="baseAvatarUrl + post.avatar +'?time='+ new Date().getTime()"></image>

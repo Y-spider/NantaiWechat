@@ -11,7 +11,7 @@
 					<view class="time">{{ postData.createTime }}</view>
 				</view>
 			</view>
-			<view class="fun-box" v-if="postData.state == 1">
+			<view class="fun-box" v-if="postData.state == 1 ">
 				<view class="like" @click="clickCollection()" v-if="isShowCollection">
 					<image v-if="collectionFlag" src="../../../static/收藏(1).png"></image>
 					<image v-else src="../../../static/收藏.png"></image>
@@ -19,7 +19,14 @@
 				<view class="report" @click="gotoReport('post')">
 					<image src="../../../static/举报.png"></image>
 				</view>
+				<view style=" line-height: 50rpx; background-color: #f5f5f5;position: relative; margin-right: 15rpx; border-radius: 10rpx;">
+					<text style="padding: 5rpx;" v-if="!isSubscribe" @click="subscribeUser"> + 关注 </text>
+					<text style="padding: 5rpx;color: lightgray;" v-else @click="unSubscribeUser"> 已关注 </text>
+				</view>
 			</view>
+		</view>
+		<view v-if="postData.type=='二手闲置'">
+			<view class="price" style="color: #ff0000;">￥ <text style="font-size: larger;">{{postData.price}} </text> <text style="color: #333;"> | {{postData.sendType}}</text></view>
 		</view>
 		<view style="display: flex;align-items: center; margin-top: 30rpx;">
 			<view style="width: 16rpx; height: 16rpx; border-radius: 50%; background-color: yellow; margin-left: 5rpx;">
@@ -147,6 +154,9 @@
 					@click="postComment()"></uni-icons>
 			</view>
 		</view>
+		<!-- <view class="fun">
+			
+		</view> -->
 	</view>
 </template>
 
@@ -155,6 +165,7 @@ import NavigationSelf from "../../common-components/head/head.vue"
 import { getImageUrlAPI, postCommnetAPI, getCommentAPI, batchUpdateCommentAPI, deleteCommentByCommentIdAPI } from "../../../api/postDetailApi.js"
 import { showErr, showSuccess, handleTime } from "../../../common/common-js.js"
 import { getUserLikeOrCollectionAPI } from "../../../api/IndexApi.js"
+import { subscribeClientUserAPI, unSubscribeClientUserAPI,judgeIsSubUserAPI} from "../../../api/subscribeApi.js"
 import StateComponent from "../../common-components/stateComponent/stateComponent.vue"
 import { getPostByPostIdAPI } from "../../../api/PostApi"
 export default {
@@ -206,6 +217,7 @@ export default {
 			likeOrCollectionOfCollectionId: null,// 记录当前如果初始状态为收藏状态时的收藏记录id
 			isLoading: true,
 			fcous: false,
+			isSubscribe:false, // 标识当前用户是否已经被关注
 			backUrl:"" // 返回上級路徑
 
 		}
@@ -369,6 +381,45 @@ export default {
 		})
 	},
 	methods: {
+		unSubscribeUser(){
+			// 取消关注
+			let that = this
+			uni.showModal({
+				content:"是否取消关注?",
+				success(option){
+					if(option.confirm){
+						unSubscribeClientUserAPI(that.postData.openid).then((res)=>{
+							if(res.code == 200){
+								showSuccess("取消关注成功")
+								that.isSubscribe = false
+							}
+						})
+					}
+				}
+			})
+		
+		},
+		subscribeUser(){
+			// 关注用户
+			let data = {
+				openid:this.userInfo.openid,
+				subOpenid:this.postData.openid
+			}
+			let that = this
+			subscribeClientUserAPI(data).then((res)=>{
+				if(res.code == 200){
+					uni.showModal({
+						content:"关注成功，后续会接收该用户的新发帖通知。",
+						showCancel:false,
+						success(option){
+							that.isSubscribe = true
+						}
+					})
+				}
+			}).catch((e)=>{
+				showErr(e+"")
+			})
+		},
 		deletComment(comment, index, parentComment) {
 			// 删除评论
 			let _this = this
@@ -429,6 +480,10 @@ export default {
 						showErr(err)
 					})
 			}
+			// 获取当前用户是否已经被关注
+			judgeIsSubUserAPI(this.postData.openid).then((res)=>{
+				this.isSubscribe = res.data
+			})
 			// 获取到用户的点赞和收藏信息记录
 			getUserLikeOrCollectionAPI(uni.getStorageSync("userInfo").openid)
 				.then((res) => {
@@ -820,7 +875,7 @@ export default {
 
 .fun-box {
 	width: 120rpx;
-	height: 120rpx;
+	min-height: 120rpx;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;

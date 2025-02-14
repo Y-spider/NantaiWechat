@@ -92,6 +92,11 @@
 				<view class="fun-name">我的收藏</view>
 				<view class="fun-icon-arrow"><text>1</text></view>
 			</view>
+			<view class="fun-item" @click="toMySubscribePage()">
+				<view class="fun-icon subscribe"><text>1</text></view>
+				<view class="fun-name">我的关注</view>
+				<view class="fun-icon-arrow"><text>1</text></view>
+			</view>
 			<view class="fun-item" @click="toSigninPage()">
 				<view class="fun-icon sign-in"><text>1</text></view>
 				<view class="fun-name">签到</view>
@@ -198,6 +203,11 @@
 			toMyPostPage(){
 				uni.navigateTo({
 					url:"/pages/funpage/my-post-page/my-post-page"
+				})
+			},
+			toMySubscribePage(){
+				uni.navigateTo({
+					url:"/pages/funpage/my-subscribe/my-subscribe"
 				})
 			},
 			toMyCollectionPage(){
@@ -399,6 +409,9 @@
 	}
 	.mypost{
 		background-image: url("../../static/我的发布.png");
+	}
+	.subscribe{
+		background-image: url("../../static/关注.png");
 	}
 	
 	

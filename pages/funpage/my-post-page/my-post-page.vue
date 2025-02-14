@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<z-paging ref="paging" v-model="myPostedDataList" @query="init">
-		<NavigationSelf slot="top" title="我的发布"></NavigationSelf>
+		<NavigationSelf slot="top" :title="title"></NavigationSelf>
 		<x-skeleton type="list" :loading="loading" :configs="{gridRows:10}">
 		<uni-search-bar @confirm="search" placeholder="请输入帖子标题" v-model="searchTitle"
 						@clear="clear">
@@ -11,6 +11,7 @@
 				<view class="head-line">
 					<view class="post-no" style="margin-left: 10rpx; font-style: initial;" @click="copyValue(post.id)">NO.{{post.id}}</view>
 					<view class="post-type" style="margin-right: 10rpx;">{{post.type}}</view>
+					<view class="post-item-type" style="color: #ff0000; background-color: #ffffff;" v-if="post.type==='二手闲置'">{{post.price}} 元</view>
 				</view>
 				<view class="content-line-1"  @click="goToPostDetailPage(index)">
 					<view class="post-name" style="margin-left: 10rpx; font-size: normal; margin-left: 30rpx;">标题: {{post.title}}</view>
@@ -46,11 +47,11 @@
 							<button v-if="post.state==1" size="mini" type="primary" style="margin-left: 5rpx;" @click="removePost(index)">下架</button>
 							<button v-if="post.state==0" size="mini" type="primary" style="margin-left: 5rpx;" @click="removePost(index)">上架</button>
 						</view> -->
-						<view class="change-open-commnet-radio">
+						<view class="change-open-commnet-radio" v-if="!flag">
 							<switch style="transform: scale(0.7);" :checked="post.openComment" @change="changeCommentState(index)">开启评论</switch>
 						</view>
 					</view>
-					<view class="fun-line-box-2">
+					<view class="fun-line-box-2" v-if="!flag">
 						<view class="delete-post">
 							<button size="mini" type="warn" @click="deletePost(index)">删除</button>
 						</view>
@@ -74,9 +75,16 @@
 			NavigationSelf,
 			StateComponent
 		},
-		onLoad(){
+		onLoad(option){
 			// 从本地缓存中获取到发帖数据
-			this.userInfo = uni.getStorageSync("userInfo")
+			if(!option.opnid){
+				this.openid = uni.getStorageSync("userInfo").openid
+			}
+			else{
+				this.openid = option.openid
+			}
+			this.title = option.title?option.title:"我的发布"
+			this.flag = option.flag?option.flag:false
 			this.init()
 		},
 		data() {
@@ -86,11 +94,13 @@
 				isNeedUpdateCommentStatePostIndex:[],
 				expireTimelist:[],
 				searchTitle:"",
-				userInfo:{},
+				openid:"",
+				title:"",
 				loading:true,
 				configs:{
 					gridRows:10
-				}
+				},
+				flag:false, // 标识当前是粉丝进入页面true还是本人进入页面false
 			}
 		},
 		destroyed(){
@@ -119,7 +129,7 @@
 			},
 			init(){
 				this.loading = true
-				getMyPostAPI(this.userInfo.openid,this.searchTitle).then((res)=>{
+				getMyPostAPI(this.openid,this.searchTitle).then((res)=>{
 					this.myPostedDataList = res.data
 					for(let i = 0;i<this.myPostedDataList.length;i++){
 						// 循环处理日期
@@ -127,7 +137,6 @@
 						this.myPostedDataList[i].createTime = handleTime(this.myPostedDataList[i].createTime)
 						this.isChangeOpenCommentFlagList[i] = false
 						if(this.myPostedDataList[i].isTop==true){
-							console.log("do")
 							this.calcRemindTopTime(i)
 						}
 					}
@@ -186,11 +195,11 @@
 				// 构建上传对象
 				let that = this
 				let postData = {
-					openid:uni.getStorageSync("userInfo").openid,
+					openid:this.openid,
 					id:this.myPostedDataList[index].id
 				}
 				uni.showModal({
-					title:"确认删除，删除后15天可找管理员恢复!!!",
+					title:"确认删除!",
 					success(e){
 						if(e.confirm){
 							deletPostAPI(postData)
@@ -232,7 +241,7 @@
 				if(this.myPostedDataList[index].state==1){
 					postDataList[0] = {
 						id:this.myPostedDataList[index].id,
-						openid:uni.getStorageSync("userInfo").openid,
+						openid:this.openid,
 						requestType:"removePost",
 						state:0
 					}
@@ -240,7 +249,7 @@
 				else{
 					postDataList[0] = {
 						id:this.myPostedDataList[index].id,
-						openid:uni.getStorageSync("userInfo").openid,
+						openid:this.openid,
 						requestType:"removePost",
 						state:1
 					}

@@ -65,6 +65,38 @@
 						</label>
 					</radio-group>
 				</view>
+				<!-- 商品价格 -->
+				<view v-if="postData.indexType==1">
+					<text class="form-label">价格</text>
+					<view class="input-container">
+						<input 
+							v-model="postData.price" 
+							type="number" 
+							placeholder="请输入商品价格" 
+							maxlength="15"
+							class="form-input"
+						/>
+						<text class="char-count">元</text>
+					</view>
+				</view>
+				<!-- 邮寄方式 -->
+				<view v-if="postData.indexType==1">
+					<text class="form-label">发货方式</text>
+					<view class="type-selector">
+						<picker 
+							class="type-picker" 
+							mode="selector" 
+							:range="sendTypeList" 
+							:value="sendTypeIndex" 
+							@change="bindPickerSendType"
+						>
+							<view class="picker-value">
+								<text>{{sendTypeList[sendTypeIndex]}}</text>
+								<text class="picker-arrow">›</text>
+							</view>
+						</picker>
+					</view>
+				</view>
 
 				<!-- 兼职类型选择 -->
 				<view class="radio-group-box" v-if="postData.indexType==3">
@@ -253,6 +285,7 @@
 					},
 					"background-color":"loghtgray"
 				},
+				sendTypeList:["包邮","无需邮寄","顺丰到付"], // 邮寄方式
 				typeRangeList:["请选择帖子类型","二手闲置","求问求帮","兼职招聘","校园交友","寻人寻物","学习交流"],
 				topRangeList: ["1小时", "2小时", "3小时", "4小时", "5小时"],
 				base64ImageList:[],
@@ -272,13 +305,16 @@
 					wechat:"",
 					qq:"",
 					openid:"",
-					indexType:0,
+					indexType:0, // 发帖类型下标
 					indexTop:0,
 					isTop:false,
 					base64ImageList:[],
 					avatar:"",
-					name:""
-				}
+					name:"",
+					price:0, // 商品价格
+					sendType:"邮寄" //邮寄方式
+				},
+				sendTypeIndex:0,//
 			}
 		},
 		methods: {
@@ -290,6 +326,11 @@
 				}else if(this.postData.type == "兼职招聘"){
 					this.postData.typeSecond = "recruit"
 				}
+			},
+			// 选择邮寄方式
+			bindPickerSendType(e){
+				this.sendTypeIndex = e.detail.value
+				this.postData.sendType = this.sendTypeList[e.detail.value]
 			},
 			bindPickerChangeOfTop(e){
 				this.postData.indexTop = e.detail.value
@@ -368,6 +409,13 @@
 				}
 				else if(this.postedCache.length+1 > 20){
 					showErr("已到达最大发帖数")
+				}
+				else if(this.postData.price<=0 && this.postData.indexType == 1){
+					showErr("价格不能小于0")
+				}
+				else if(this.postData.indexType!=1){
+					this.postData.price = 0
+					this.postData.sendType = ""
 				}
 				else{
 					this.userInfo.todayPost-=1

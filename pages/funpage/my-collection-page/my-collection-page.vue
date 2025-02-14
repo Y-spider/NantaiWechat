@@ -11,6 +11,7 @@
 					<view class="post-item-type">{{post.type}}</view>
 					<view v-if="post.isDelete" class="post-item-delete">帖子已删除</view>
 					<view v-if="post.isTop" class="post-item-top" :class="state">已置顶</view>
+					<view class="post-item-type" style="color: #ff0000; background-color: #ffffff;" v-if="post.type==='二手闲置'">{{post.price}} 元</view>
 					<view class="pots-item-avatar">
 						<image :src="baseAvatarUrl + post.avatar +'?time='+ new Date().getTime()"></image>
 					</view>
