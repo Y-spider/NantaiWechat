@@ -20,8 +20,8 @@
 					<image src="../../../static/举报.png"></image>
 				</view>
 				<view style=" line-height: 50rpx; background-color: #f5f5f5;position: relative; margin-right: 15rpx; border-radius: 10rpx;">
-					<text style="padding: 5rpx;" v-if="!isSubscribe" @click="subscribeUser"> + 关注 </text>
-					<text style="padding: 5rpx;color: lightgray;" v-else @click="unSubscribeUser"> 已关注 </text>
+					<text style="padding: 5rpx; width: 120rpx;" v-if="!isSubscribe" @click="subscribeUser"> + 关注 </text>
+					<text style="padding: 5rpx;color: lightgray;width: 120rpx;" v-else @click="unSubscribeUser"> 已关注 </text>
 				</view>
 			</view>
 		</view>
@@ -139,24 +139,128 @@
 				<StateComponent></StateComponent>
 			</view>
 		</x-skeleton>
-		<view class="comment-input" v-if="postData.openComment">
-			<view v-if="replayTipText != ''" style="color: lightgray;margin-left: 15rpx;display:flex;align-items:center;">
-				<view>回复:<text style="color: #1296db;">{{ replayTipText }}</text></view>
-				<uni-icons type="trash-filled" size="20" style="margin-left: 30rpx;"
-					@click="resetPostCommentForm"></uni-icons>
-
-			</view>
-			<view ref="commentInput" style="display: flex; justify-content: space-between; align-items: center;">
-				<view style="margin-left: 30rpx; width: 80%;"><uni-easyinput v-model="postCommentInfo.content"
-						borderColor="#fff" style="border: #1296db; margin-left: 15rpx;" placeholder="请输入评论"
-						:focus="fcous"></uni-easyinput></view>
-				<uni-icons type="paperplane-filled" size="30" style="color: #2f4052;margin:0 20rpx;"
-					@click="postComment()"></uni-icons>
-			</view>
+		<view class="comment-input" v-if="postData.openComment" style="padding: 20rpx 25rpx; background-color: #f8f9fa; border-radius: 16rpx;">
+		    <view 
+		        v-if="replayTipText != ''" 
+		        style="
+		            display: flex;
+		            align-items: center;
+		            justify-content: space-between;
+		            padding: 12rpx 20rpx;
+		            margin-bottom: 20rpx;
+		            background-color: #e9f5fe;
+		            border-radius: 8rpx;
+		            color: #666;
+		            font-size: 26rpx;
+		        ">
+		        <view>回复：<text style="color: #1296db; margin-left: 10rpx;">{{ replayTipText }}</text></view>
+		        <uni-icons 
+		            type="trash-filled" 
+		            size="20" 
+		            style="color: #ff4d4f; padding: 8rpx;"
+		            @click="resetPostCommentForm"
+		        ></uni-icons>
+		    </view>
+		
+		    <view 
+		        ref="commentInput" 
+		        style="
+		            display: flex;
+		            align-items: center;
+		            background: #fff;
+		            border-radius: 40rpx;
+		            padding: 12rpx 20rpx;
+		            box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+		        ">
+		        <view style="flex: 1; margin-right: 20rpx;">
+		            <uni-easyinput 
+		                v-model="postCommentInfo.content"
+		                placeholder="请输入精彩评论..."
+		                :focus="fcous"
+		                style="
+		                    padding: 16rpx 24rpx;
+		                    font-size: 28rpx;
+		                    min-height: 72rpx;
+		                    box-sizing: border-box;
+		                "
+		                borderColor="transparent"
+		            ></uni-easyinput>
+		        </view>
+		        <uni-icons 
+		            type="paperplane-filled" 
+		            size="36" 
+		            style="
+		                color: #1296db;
+		                padding: 12rpx;
+		                background: #e9f5fe;
+		                border-radius: 50%;
+		                margin-left: auto;
+		            "
+		            @click="postComment()"
+		        ></uni-icons>
+		    </view>
+		
+		    <view 
+		        class="talk_buy" 
+		        style="
+		            display: flex;
+					justify-content: space-around;
+		            margin-bottom: 60rpx;
+		        ">
+		        <button
+				v-if="postData.openid!=userInfo.openid"
+					@click="toChat"
+		            class="talk"
+		            style="
+						width: 300rpx;
+		                background: #1296db;
+		                color: white;
+		                font-size: 24rpx;
+		                padding: 18rpx 0;
+		                border-radius: 40rpx;
+		                transition: opacity 0.2s;
+		                box-shadow: 0 4rpx 12rpx rgba(18,150,219,0.2);
+		            "
+		            hover-class="hover-opacity"
+		        >
+		            聊一聊
+		        </button>
+				<button
+					v-else
+					@click="toMyPostPage"
+				    class="talk"
+				    style="
+						width: 300rpx;
+				        background: #1296db;
+				        color: white;
+				        font-size: 24rpx;
+				        padding: 18rpx 0;
+				        border-radius: 40rpx;
+				        transition: opacity 0.2s;
+				        box-shadow: 0 4rpx 12rpx rgba(18,150,219,0.2);
+				    "
+				    hover-class="hover-opacity"
+				>
+				    管理
+				</button>
+		        <button 
+		            class="buy"
+		            style="
+						width: 300rpx;
+		                background: #ff4d4f;
+		                color: white;
+		                font-size: 24rpx;
+		                padding: 18rpx 0;
+		                border-radius: 40rpx;
+		                transition: opacity 0.2s;
+		                box-shadow: 0 4rpx 12rpx rgba(255,77,79,0.2);
+		            "
+		            hover-class="hover-opacity"
+		        >
+		            立即购买
+		        </button>
+		    </view>
 		</view>
-		<!-- <view class="fun">
-			
-		</view> -->
 	</view>
 </template>
 
@@ -381,6 +485,18 @@ export default {
 		})
 	},
 	methods: {
+		toMyPostPage(){
+			//前往管理页面
+			uni.navigateTo({
+				url:"/pages/funpage/my-post-page/my-post-page"
+			})
+		},
+		toChat(){
+			// 前往聊天页面
+			uni.navigateTo({
+				url:`/pages/funpage/chat-page/chat-page?title=${this.postData.name}&openid=${this.postData.openid}&postId=${this.postData.id}`
+			})
+		},
 		unSubscribeUser(){
 			// 取消关注
 			let that = this
@@ -429,7 +545,7 @@ export default {
 					title: "警告",
 					content: "您删除评论后所有的回复也将同步删除!!!",
 					success(confirm) {
-						if (confirm) {
+						if (confirm.confirm) {
 							deleteCommentByCommentIdAPI(comment.commentId).then((res) => {
 								if (res.code == 200) {
 									_this.commentList.splice(index, 1)

@@ -27,7 +27,7 @@
 				<text class="btn-icon">✓</text>
 				<text>一键已读</text>
 			</button>
-			<button v-if="!isSubAll" class="action-btn" @click="handleAllowSub">订阅消息</button>
+			<button v-if="!isSubAll || true" class="action-btn" @click="handleAllowSub">订阅消息</button>
 			<button class="action-btn delete-btn" @click="handleDeleteAll" :disabled="total - noReadCount <= 0">
 				<text class="btn-icon">×</text>
 				<text>删除已读</text>
@@ -93,8 +93,9 @@
 				  success (res) {
 					  let subComment =  res.subscriptionsSetting.itemSettings["RBrzWLYwJEOo5LO2-AQUgfvSE2-cjeBHWoOKafcibeY"]=="accept"
 					  let subReplayComment =  res.subscriptionsSetting.itemSettings["qyOCpXZUUTZsp_6fImaS-YoSY4LED5gxtltY6dOMmnU"]=="accept"
+					  let cahtMessageNotice =  res.subscriptionsSetting.itemSettings["dNDp7kmovqSoVcp5CrKH8GYUM_LfHlEVI148H9OYuCQ"]=="accept"
 					  that.$nextTick(()=>{
-						   that.isSubAll = (subComment && subReplayComment)
+						   that.isSubAll = (subComment && subReplayComment && cahtMessageNotice)
 							uni.setStorageSync("isSubAll",true)
 					  })
 				  }
@@ -166,7 +167,7 @@
 		methods: {
 			handleAllowSub(){
 				wx.requestSubscribeMessage({
-					tmplIds:["qyOCpXZUUTZsp_6fImaS-YoSY4LED5gxtltY6dOMmnU","RBrzWLYwJEOo5LO2-AQUgfvSE2-cjeBHWoOKafcibeY"],
+					tmplIds:["qyOCpXZUUTZsp_6fImaS-YoSY4LED5gxtltY6dOMmnU","RBrzWLYwJEOo5LO2-AQUgfvSE2-cjeBHWoOKafcibeY","dNDp7kmovqSoVcp5CrKH8L6N1vCyeBPOxszSQWZsN3I"],
 					success(res){
 						console.log("调用成功",res)
 					},
@@ -180,6 +181,13 @@
 				let postData = {
 					id:message.id,
 					state:1
+				}
+				if(message.type==6){
+					// 跳转到聊天页面
+					uni.navigateTo({
+						url:`/pages/funpage/chat-page/chat-page?title=聊天&openid=${message.accepterOpenid}&postId=${message.postId}`
+					})
+					return
 				}
 				modifyMessageAPI(postData).then((res)=>{
 					// console.log("修改成功")
@@ -296,7 +304,7 @@
 		width: 100vw;
 		white-space: nowrap;
 		display: flex;
-		justify-content: space-around;
+		/* justify-content: space-around; */
 		align-items: center;
 		background-color: #2f4052;
 	}

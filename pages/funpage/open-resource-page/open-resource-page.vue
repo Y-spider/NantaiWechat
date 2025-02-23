@@ -5,7 +5,7 @@
 		<PopDocument :isShow="isShowDocumentPop"></PopDocument>
 		<NavigationSelf title="资源共享"></NavigationSelf>
 	
-		<uni-fab style="z-index: 9999;" ref="fab" :pattern="pattern" :content="content" :horizontal="horizontal" :vertical="vertical"
+		<uni-fab ref="fab" :pattern="pattern" :content="content" :horizontal="horizontal" :vertical="vertical"
 					:direction="direction" @trigger="trigger" @fabClick="fabClick" />
 		<view class="search-box">
 			<!-- 搜索栏 -->
@@ -13,11 +13,11 @@
 		</view>
 		<view class="navigate-bar">
 			<view class="navigate-item,website" >
-				<view :class="styleList[0]" @click="changeChoose(0)" >常用网站</view>
+				<view :class="styleList[0]" @click="changeChoose(0)" >网站</view>
 			</view>
 			<view class="show-type-picker"> <picker :range="showTypeList"  @change="changeShowType">{{realShowTypeContentList[pageType]}}</picker></view>
 			<view class="navigate-item,doucment">
-				<view :class="styleList[1]" @click="changeChoose(1)" >文档下载</view>
+				<view :class="styleList[1]" @click="changeChoose(1)" >文档</view>
 			</view>
 		</view>
 		<view class="website-content-box" v-if="selectedIndex==0">
@@ -83,7 +83,7 @@
 							
 						</image>
 					</view>
-					<view style="width: 100%; display: flex;flex-direction: row-reverse;">
+					<view style="width: 100%; display: flex;flex-direction: row-reverse;" v-if="document.state!=0">
 						<button size="mini" style="background-color: #332cff; margin:10rpx;color: white;" @click="downloadFile(index)">获取下载链接</button>
 						<!-- <view class="downloadProgress" style="margin-left: 10rpx;" v-if="isShowDocumentDownloadProgress[index]==true">{{downloadProgress}}%</view> -->
 					</view>

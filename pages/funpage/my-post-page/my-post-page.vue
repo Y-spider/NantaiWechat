@@ -68,7 +68,7 @@
 <script>
 	import NavigationSelf from "../../common-components/head/head.vue";
 	import {handleTime, showErr, showSuccess} from "../../../common/common-js"
-	import {postBatchUpdateAPI,deletPostAPI,getTopPostByPostIdAPI,getMyPostAPI} from "../../../api/PostApi.js"
+	import {postBatchUpdateAPI,deletPostAPI,getTopPostByPostIdAPI,getPostByOpenidAPI} from "../../../api/PostApi.js"
 	import StateComponent from "../../common-components/stateComponent/stateComponent.vue"
 	export default {
 		components:{
@@ -77,7 +77,7 @@
 		},
 		onLoad(option){
 			// 从本地缓存中获取到发帖数据
-			if(!option.opnid){
+			if(!option.openid){
 				this.openid = uni.getStorageSync("userInfo").openid
 			}
 			else{
@@ -129,7 +129,7 @@
 			},
 			init(){
 				this.loading = true
-				getMyPostAPI(this.openid,this.searchTitle).then((res)=>{
+				getPostByOpenidAPI(this.openid,this.searchTitle).then((res)=>{
 					this.myPostedDataList = res.data
 					for(let i = 0;i<this.myPostedDataList.length;i++){
 						// 循环处理日期
