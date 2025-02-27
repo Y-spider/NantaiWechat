@@ -91,9 +91,9 @@
 				wx.getSetting({
 				  withSubscriptions: true,
 				  success (res) {
-					  let subComment =  res.subscriptionsSetting.itemSettings["RBrzWLYwJEOo5LO2-AQUgfvSE2-cjeBHWoOKafcibeY"]=="accept"
-					  let subReplayComment =  res.subscriptionsSetting.itemSettings["qyOCpXZUUTZsp_6fImaS-YoSY4LED5gxtltY6dOMmnU"]=="accept"
-					  let cahtMessageNotice =  res.subscriptionsSetting.itemSettings["dNDp7kmovqSoVcp5CrKH8GYUM_LfHlEVI148H9OYuCQ"]=="accept"
+					  let subComment =  res.subscriptionsSetting.itemSettings["-dW5f0x9CPMCGhBk0ITWfsE3XlZwYCidRyZjQ1kr0dQ"]=="accept"
+					  let subReplayComment =  res.subscriptionsSetting.itemSettings["U2UqvpGWD6ZUcxiH5a7vqyF9dVb0JzLD2kDhPU9ecdU"]=="accept"
+					  let cahtMessageNotice =  res.subscriptionsSetting.itemSettings["Oqr81VmJ0iH03UtLY3F_eJ_0izhVCTNOCcQkTOzr8q0"]=="accept"
 					  that.$nextTick(()=>{
 						   that.isSubAll = (subComment && subReplayComment && cahtMessageNotice)
 							uni.setStorageSync("isSubAll",true)
@@ -167,7 +167,7 @@
 		methods: {
 			handleAllowSub(){
 				wx.requestSubscribeMessage({
-					tmplIds:["qyOCpXZUUTZsp_6fImaS-YoSY4LED5gxtltY6dOMmnU","RBrzWLYwJEOo5LO2-AQUgfvSE2-cjeBHWoOKafcibeY","dNDp7kmovqSoVcp5CrKH8L6N1vCyeBPOxszSQWZsN3I"],
+					tmplIds:["-dW5f0x9CPMCGhBk0ITWfsE3XlZwYCidRyZjQ1kr0dQ","U2UqvpGWD6ZUcxiH5a7vqyF9dVb0JzLD2kDhPU9ecdU","Oqr81VmJ0iH03UtLY3F_eJ_0izhVCTNOCcQkTOzr8q0"],
 					success(res){
 						console.log("调用成功",res)
 					},

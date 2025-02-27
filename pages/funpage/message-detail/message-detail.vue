@@ -1,7 +1,7 @@
 <!-- 消息详细信息页面 -->
 <template>
 	<view style="background-color: #e3e3e3;height: 100vh;">
-		<NavigationSelf title="模块"></NavigationSelf>
+		<NavigationSelf :showBack="true"></NavigationSelf>
 		<!--消息详细展示区域 -->
 		<view class="box">
 			<view class="info-box">
@@ -69,6 +69,7 @@
 				</view>
 				<view class="message-content">
 					<view class="info-item">消息内容: <text class="text-content">{{message.content}}</text></view>
+					<view class="copy-button" v-if="message.type==3"><button size="mini" style="background-color: skyblue;" @click="copyContent">复制内容</button></view>
 				</view>
 				<view class="fun-button-box">
 					<view v-if="message.postId || reportInfo.postId"><button class="fun-button" @click="handleGoToPostDetail()">查看帖子</button></view>
@@ -108,6 +109,31 @@
 			}
 		},
 		methods: {
+			copyContent() {
+			    // 假设 this.message.content 是一个包含 URL 的字符串
+			    const content = this.message.content;
+			
+			    // 使用正则表达式提取 URL
+			    const urlRegex = /https?:\/\/\S+/; // 匹配以 http 或 https 开头的 URL
+			    const match = content.match(urlRegex);
+			
+			    if (match) {
+			        const copyData = match[0]; // 提取第一个匹配的 URL
+			
+			        // 将提取的 URL 复制到剪贴板
+			        uni.setClipboardData({
+			            data: copyData,
+			            success() {
+			                showSuccess("内容复制成功");
+			            },
+			            fail() {
+			                console.error("复制失败");
+			            }
+			        });
+			    } else {
+			        console.error("未找到 URL");
+			    }
+			},
 			init(){
 				getMessageByIdAPI(this.id).then((res1)=>{
 					this.message = res1.data
