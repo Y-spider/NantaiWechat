@@ -1,13 +1,13 @@
 // 正式环境
-// const BASE_URL = "https://www.chopper.love:39001/api/"
+const BASE_URL = "https://www.chopper.love:39001/api/"
 // 开发环境
-const BASE_URL = "http://192.168.187.22:8888/"
+// const BASE_URL = "http://192.168.31.19:8888/"
 
 export function httpOFPost(path, params = {}, loading = true) {
 	// console.log('%c请求拦截：', ' background:orange', params);
 	if (false) {
 		uni.showLoading({
-			title: "加载中",
+			title: "加载中",	
 			mask: true
 		});
 	};
