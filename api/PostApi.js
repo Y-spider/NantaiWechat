@@ -52,3 +52,23 @@ export function getChatHistoryAPI(sender,accepter,postId,pageIndex,pageSize){
 export function deleteChatHistoryAPI(id){
 	return httpOFGet(`chat/delete?id=${id}`)
 }
+
+// 帖子浏览热度添加
+export function addPostLookHotAPI(data){
+	return httpOFPost("post/hot/look",data)
+}
+
+// 帖子聊天热度添加
+export function addPostChatHotAPI(data){
+	return httpOFPost("post/hot/chat",data)
+}
+
+// 帖子评论热度添加
+export function addPostCommentHotAPI(data){
+	return httpOFPost("post/hot/comment",data)
+}
+
+// 添加帖子浏览记录
+export function addBroswingHistoryAPI(data){
+	return httpOFPost("browsing/history/add",data)
+}

@@ -94,8 +94,10 @@
 					  let subComment =  res.subscriptionsSetting.itemSettings["-dW5f0x9CPMCGhBk0ITWfsE3XlZwYCidRyZjQ1kr0dQ"]=="accept"
 					  let subReplayComment =  res.subscriptionsSetting.itemSettings["U2UqvpGWD6ZUcxiH5a7vqyF9dVb0JzLD2kDhPU9ecdU"]=="accept"
 					  let cahtMessageNotice =  res.subscriptionsSetting.itemSettings["Oqr81VmJ0iH03UtLY3F_eJ_0izhVCTNOCcQkTOzr8q0"]=="accept"
+					  let cahtNeedPayOrder =  res.subscriptionsSetting.itemSettings["mmCr4sUX-o8XytQkr3MZnH68n-gG_ucL9weo9Cu5Vmk"]=="accept"
+					  let cahtSuccessOrder =  res.subscriptionsSetting.itemSettings["0HfSDVknCcY18K8VXrIoL4dIHKXwbqgO70eQgpEtQCE"]=="accept"
 					  that.$nextTick(()=>{
-						   that.isSubAll = (subComment && subReplayComment && cahtMessageNotice)
+						   that.isSubAll = (subComment && subReplayComment && cahtMessageNotice && cahtNeedPayOrder && cahtSuccessOrder)
 							uni.setStorageSync("isSubAll",true)
 					  })
 				  }
@@ -141,6 +143,7 @@
 		},
 		data() {
 			return {
+				clickButton:true, // 记录是不是第一次点击
 				// <!-- 消息类型选择列表  包含全部 收藏 评论 审核 系统	-->
 				typeList:[
 					// {icon:"../../static/全部消息.png",text:"全部",style:"type-item-selected",typeCode:-1},
@@ -165,16 +168,39 @@
 			}
 		},
 		methods: {
-			handleAllowSub(){
-				wx.requestSubscribeMessage({
-					tmplIds:["-dW5f0x9CPMCGhBk0ITWfsE3XlZwYCidRyZjQ1kr0dQ","U2UqvpGWD6ZUcxiH5a7vqyF9dVb0JzLD2kDhPU9ecdU","Oqr81VmJ0iH03UtLY3F_eJ_0izhVCTNOCcQkTOzr8q0"],
-					success(res){
-						console.log("调用成功",res)
-					},
-					fail(err){
-						console.log("调用失败",err)
-					}
-				})
+			handleAllowSub() {
+				if(this.clickButton){
+					// 第一次调用，传入3个模板id
+					wx.requestSubscribeMessage({
+					  tmplIds: [
+					    "-dW5f0x9CPMCGhBk0ITWfsE3XlZwYCidRyZjQ1kr0dQ",
+					    "U2UqvpGWD6ZUcxiH5a7vqyF9dVb0JzLD2kDhPU9ecdU",
+					    "Oqr81VmJ0iH03UtLY3F_eJ_0izhVCTNOCcQkTOzr8q0"
+					  ],
+					  success(res) {
+					    console.log("第一次调用成功", res);
+					    // 第二次调用，传入另外2个模板id
+					  },
+					  fail(err) {
+					    console.log("第一次调用失败", err);
+					  }
+					});
+				}
+				else{
+					wx.requestSubscribeMessage({
+					  tmplIds: [
+					    "mmCr4sUX-o8XytQkr3MZnH68n-gG_ucL9weo9Cu5Vmk",
+					    "0HfSDVknCcY18K8VXrIoL4dIHKXwbqgO70eQgpEtQCE"
+					  ],
+					  success(res) {
+					    console.log("第二次调用成功", res);
+					  },
+					  fail(err) {
+					    console.log("第二次调用失败", err);
+					  }
+					});
+				}
+				this.clickButton=!this.clickButton
 			},
 			// 跳转去消息详细页面
 			handleToDetailPage(message){

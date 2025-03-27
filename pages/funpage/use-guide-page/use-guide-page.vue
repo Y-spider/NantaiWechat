@@ -17,7 +17,7 @@
 						<text class="guide-title">首页指南</text>
 						<text class="guide-desc">快速了解首页功能</text>
 					</view>
-					<image class="guide-image" src="https://www.chopper.love:6134/icon/index_1.png" mode="aspectFit" @click="previewImage('/index_1.png')"></image>
+					<image class="guide-image" :src="baseImageUrl+'icon/index_1.png'" mode="aspectFit" @click="previewImage('icon/index_1.png')"></image>
 					<view class="guide-steps">
 						<view class="step-item">
 							<text class="step-num">1</text>
@@ -40,7 +40,7 @@
 						<text class="guide-title">发布信息</text>
 						<text class="guide-desc">快速发布你的校园信息</text>
 					</view>
-					<image class="guide-image" src="https://www.chopper.love:6134/icon/post_1.png" mode="aspectFit" @click="previewImage('/post_1.png')"></image>
+					<image class="guide-image" :src="baseImageUrl+'icon/post_1.png'" mode="aspectFit" @click="previewImage('icon/post_1.png')"></image>
 					<view class="guide-steps">
 						<view class="step-item">
 							<text class="step-num">1</text>
@@ -71,7 +71,7 @@
 						<text class="guide-title">消息通知</text>
 						<text class="guide-desc">及时接收互动消息</text>
 					</view>
-					<image class="guide-image" src="https://www.chopper.love:6134/icon/message_1.png" mode="aspectFit" @click="previewImage('/message_1.png')"></image>
+					<image class="guide-image" :src="baseImageUrl+'icon/message_1.png'" mode="aspectFit" @click="previewImage('icon/message_1.png')"></image>
 					<view class="guide-steps">
 						<view class="step-item">
 							<text class="step-num">1</text>
@@ -92,7 +92,7 @@
 						<text class="guide-title">发帖规则</text>
 						<text class="guide-desc">快速了解系统帖子发帖规则</text>
 					</view>
-					<image class="guide-image" src="https://www.chopper.love:6134/icon/id_info_1.png" mode="aspectFit" @click="previewImage('/id_info_1.png')"></image>
+					<image class="guide-image" :src="baseImageUrl+'icon/id_info_1.png'" mode="aspectFit" @click="previewImage('icon/id_info_1.png')"></image>
 					<view class="guide-steps">
 						<view class="step-item">
 							<text class="step-num">1</text>
@@ -110,7 +110,7 @@
 						<text class="guide-title">模版管理</text>
 						<text class="guide-desc">快速了解模版使用规则</text>
 					</view>
-					<image class="guide-image" src="https://www.chopper.love:6134/icon/template_1.png" mode="aspectFit" @click="previewImage('/template_1.png')"></image>
+					<image class="guide-image" :src="baseImageUrl+'icon/template_1.png'" mode="aspectFit" @click="previewImage('icon/template_1.png')"></image>
 					<view class="guide-steps">
 						<view class="step-item">
 							<text class="step-num">1</text>
@@ -135,7 +135,7 @@
 						<text class="guide-title">资源板块</text>
 						<text class="guide-desc">快速了解资源共享</text>
 					</view>
-					<image class="guide-image" src="https://www.chopper.love:6134/icon/resource_1.png" mode="aspectFit" @click="previewImage('/resource_1.png')"></image>
+					<image class="guide-image" :src="baseImageUrl+'icon/resource_1.png'" mode="aspectFit" @click="previewImage('icon/resource_1.png')"></image>
 					<view class="guide-steps">
 						<view class="step-item">
 							<text class="step-num">1</text>
@@ -156,7 +156,7 @@
 						<text class="guide-title">首页不显示数据问题</text>
 						<text class="guide-desc">解决登陆后首页不显示数据问题</text>
 					</view>
-					<image class="guide-image" src="https://www.chopper.love:6134/icon/pull_fresh_1.png" mode="aspectFit" @click="previewImage('/pull_fresh_1.png')"></image>
+					<image class="guide-image" :src="baseImageUrl+'icon/pull_fresh_1.png'" mode="aspectFit" @click="previewImage('/pull_fresh_1.png')"></image>
 					<view class="guide-steps">
 						<view class="step-item">
 							<text class="step-num">1</text>
@@ -175,8 +175,8 @@
 						<text class="guide-title">文档下载</text>
 						<text class="guide-desc">了解文档下载规则</text>
 					</view>
-					<image class="guide-image" src="https://www.chopper.love:6134/icon/document_1.png" mode="aspectFit" @click="previewImage('/document_1.png')"></image>
-					<image class="guide-image" src="https://www.chopper.love:6134/icon/document_2.png" mode="aspectFit" @click="previewImage('/document_2.png')"></image>
+					<image class="guide-image" :src="baseImageUrl+'icon/document_1.png'" mode="aspectFit" @click="previewImage('icon/document_1.png')"></image>
+					<image class="guide-image" :src="baseImageUrl+'icon/document_2.png'" mode="aspectFit" @click="previewImage('icon/document_2.png')"></image>
 					<view class="guide-steps">
 						<view class="step-item">
 							<text class="step-num">1</text>
@@ -197,12 +197,12 @@
 		},
 		data() {
 			return {
-				
+				baseImageUrl:this.$baseImageUrl
 			}
 		},
 		methods: {
 			previewImage(url){
-				let baseUrl = "https://www.chopper.love:6134/icon"
+				let baseUrl = this.baseImageUrl
 				uni.previewImage({
 					urls:[baseUrl+url]
 				})

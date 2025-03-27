@@ -1,15 +1,15 @@
 <!-- 聊天页面 -->
 <template>
-	<view>
+	<view style="background-color: #f1f1f1;">
 		<NavigationSelf :title="title" :backUrl="backUrl"></NavigationSelf>
-		<scroll-view class="cu-chat" style="position: relative;top: -35rpx;height: 95vh;" 
+		<scroll-view class="cu-chat" style="position: relative;top: -35rpx;height: 86vh;" 
 		scroll-y 
 		@scrolltoupper="handleScrollToUpper"
 		:scroll-with-animation="true"
 		>
 			<view id="scroll-view-content">
 				<view v-for="(message,index) in messageList" @longpress="deleteChat(message,index)">
-					<view class="cu-item self" v-if="message.sender == userInfo.openid">
+					<view class="cu-item self" v-if="message.sender == userInfo.openid && message.content!='dG5*cB0<oZ4.qW6'">
 						<view class="main">
 							<view class="content bg-green shadow">
 								<text>{{message.content}}</text>
@@ -17,6 +17,28 @@
 						</view>
 						<view class="cu-avatar radius" :style="senderUserInfo.avatar"></view>
 						<view class="date">{{ myHandTime(message.timeStamp) }}</view>
+					</view>
+					<!-- 商品介绍卡片 -->
+					<view @click="toByPage" v-else-if="message.content=='dG5*cB0<oZ4.qW6'" class="cu-card article" :class="isCard?'no-card':''" style="
+					 width: 80vw;
+					  margin-left: 10vw;
+					 border-radius: 15rpx;
+					 box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;"
+					 >
+						<view class="cu-item shadow">
+							<view class="title"><view class="text-cut">{{postData.title}}</view></view>
+							<view class="content">
+								<image :src="baseImageUrl+postImageUrl[0]"
+								 mode="aspectFill" alt="商品图片"></image>
+								<view class="desc">
+									<view class="text-content"> {{postData.content}}</view>
+									<view>
+										<view class="cu-tag bg-red light sm round">{{postData.price}}</view>
+										<view class="cu-tag bg-green light sm round">{{postData.sendType}}</view>
+									</view>
+								</view>
+							</view>
+						</view>
 					</view>
 					<view class="cu-item" v-else>
 						<view class="cu-avatar radius" :style="accepterUserInfo.avatar"></view>
@@ -31,6 +53,44 @@
 			</view>
 		</scroll-view>
 		<!-- 聊天框 -->
+		<view v-if="showGoodsCard">
+			<view style="display: flex;flex-direction: row;
+			gap: 15rpx;position: fixed;width: 94vw;
+			margin-left: 3vw;
+			height: 200rpx;
+			border-radius: 30rpx;
+			bottom: 100rpx;background-color: #ffffff;
+			z-index: 99999;">
+				<view class="title" style="display: flex;flex-direction: column;gap: 15rpx;">
+					<view>
+						<image style="height: 200rpx; width: 200rpx;" :src="baseImageUrl+postImageUrl[0]"
+						 mode="aspectFill" alt="商品图片"></image>
+					</view>
+				</view>
+				<view class="content" style="flex: 1;height: 100%;">
+					<view class="desc" style="height: 100%; display: flex;flex-direction: column;justify-content: space-between;margin: 15rpx;">
+						<view class="text-cut" style="display: flex;justify-content: space-between;">
+							<text style="font-size: larger; font-weight: bolder;margin-left: 15rpx;">{{postData.title}}</text>
+							<text style="margin-right: 30rpx;" @click="showGoodsCard=false">X</text>
+						</view>
+						<view style="display: flex;justify-content: space-between;align-items: center;margin-bottom: 30rpx;">
+							<view style="color: red;">￥{{postData.price}}</view>
+							<view style="
+							padding: 15rpx; 
+							border-radius: 15rpx;
+							justify-content: center;
+							align-items: center;
+							margin-right: 30rpx;
+							display: flex;
+							background-color: #39b54a;
+							color: white;width: 128rpx;"
+							@click="sendGoodsCard"
+							 >发送</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
 		<view class="cu-bar foot input" :style="[{bottom:InputBottom+'px'}]">
 			<view class="action">
 				<text class="cuIcon-sound text-grey"></text>
@@ -50,13 +110,19 @@
 	import NavigationSelf from "../../common-components/head/head.vue"
 	import {showErr,showSuccess,handleTime} from "../../../common/common-js.js"
 	import {getCurrentUserInfoAPI} from "@/api/HomeApi.js"
-	import {getChatHistoryAPI,deleteChatHistoryAPI} from "@/api/PostApi.js"
+	import {getChatHistoryAPI,deleteChatHistoryAPI,getPostByPostIdAPI} from "@/api/PostApi.js"
+	import {getImageUrlAPI} from "@/api/postDetailApi.js"
 	export default {
 		components:{
 			NavigationSelf
 		},
 		data() {
 			return {
+				showGoodsCard:true,
+				isCard:true,
+				baseImageUrl:this.$baseImageUrl,
+				postData:null,
+				postImageUrl:[],
 				InputBottom: 0,
 				socket:null,
 				userInfo:null,
@@ -83,6 +149,12 @@
 				this.accepterUserInfo = res.data
 				this.accepterUserInfo.avatar = `background-image:url(${this.$baseImageUrl+res.data.avatar});`
 			})
+			getPostByPostIdAPI(this.postId).then((res)=>{
+				this.postData = res.data
+			})
+			getImageUrlAPI(this.postId).then((res)=>{
+				this.postImageUrl = res.data
+			})
 			let senderUserInfo = uni.getStorageSync("userInfo")
 			this.senderUserInfo.avatar = `background-image:url(${this.$baseImageUrl+senderUserInfo.avatar});`
 			this.connectWebSocket()
@@ -101,6 +173,32 @@
 				})
 		},
 		methods: {
+			sendGoodsCard(){
+				// 发送商品卡片信息
+				let message = {
+					sender:this.userInfo.openid,
+					accepter:this.accepterOpenid,
+					content:"dG5*cB0<oZ4.qW6",
+					postId:this.postId
+				}
+				let that = this
+				uni.sendSocketMessage({
+					data:JSON.stringify(message),
+					success(){
+						that.$set(that.messageList,that.messageList.length,message)
+					},
+					fail(err){
+						that.reSendMessage()
+					},
+				})
+				this.showGoodsCard = false
+			},
+			toByPage(){
+				// 点击卡片直接跳转到购买页面
+				uni.navigateTo({
+					url:`/pages/funpage/pay-page/pay-page?postId=${this.postData.id}`
+				})
+			},
 			deleteChat(message,index){
 				// 长按删除聊天记录
 				let that = this
@@ -141,12 +239,13 @@
 					header:{
 						"token":this.userInfo.token
 					},
-					url:`wss://${this.$socketUrl}/chat?openid=${this.userInfo.openid}&postId=${this.postId}`,
+					url:`ws:${this.$socketUrl}/chat?openid=${this.userInfo.openid}&postId=${this.postId}`,
 					success(res){
 						showSuccess("连接成功")
 					},
-					fail(){
+					fail(e){
 						isSuccess = false
+						console.log("socket连接失败",e)
 					},
 					complete(){
 						if(!isSuccess){
@@ -173,7 +272,7 @@
 						header:{
 							"token":this.userInfo.token
 						},
-						url:`wss://${this.$socketUrl}/chat?openid=${this.userInfo.openid}&postId=${this.postId}`,
+						url:`ws:${this.$socketUrl}/chat?openid=${this.userInfo.openid}&postId=${this.postId}`,
 						success(){
 							that.sendMessage()
 						},

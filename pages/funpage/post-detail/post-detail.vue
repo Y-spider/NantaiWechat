@@ -43,13 +43,13 @@
 		<view class="contact-info">
 			<text style="color: #1296db;" @click="isShowContactMethod = !isShowContactMethod">联系方式</text></text>
 			<view v-if="isShowContactMethod" class="contact">
-				<view @click="copyInfo(postData.contactor)">联系人: <text>{{ postData.contactor }}</text><text
-						v-if="postData.contactor" style="color: red;">【点击复制】</text></view>
-				<view @click="copyInfo(postData.phone)">电话: <text>{{ postData.phone }}</text><text v-if="postData.phone"
+				<view v-if="postData.contactor"  @click="copyInfo(postData.contactor)">联系人: <text>{{ postData.contactor }}</text><text
+						 style="color: red;">【点击复制】</text></view>
+				<view v-if="postData.phone" @click="toPhone(postData.phone)">电话: <text>{{ postData.phone }}</text><text v-if="postData.phone"
+						style="color: red;">【点击拨号】</text></view>
+				<view v-if="postData.wechat" @click="copyInfo(postData.wechat)">微信: <text>{{ postData.wechat }}</text><text v-if="postData.wechat"
 						style="color: red;">【点击复制】</text></view>
-				<view @click="copyInfo(postData.wechat)">微信: <text>{{ postData.wechat }}</text><text v-if="postData.wechat"
-						style="color: red;">【点击复制】</text></view>
-				<view @click="copyInfo(postData.qq)">QQ: <text>{{ postData.qq }}</text><text v-if="postData.qq"
+				<view v-if="postData.qq" @click="copyInfo(postData.qq)">QQ: <text>{{ postData.qq }}</text><text v-if="postData.qq"
 						style="color: red;">【点击复制】</text></view>
 			</view>
 		</view>
@@ -244,6 +244,7 @@
 				    管理
 				</button>
 		        <button 
+				v-if="postData.openid!=userInfo.openid"
 		            class="buy"
 		            style="
 						width: 300rpx;
@@ -256,6 +257,7 @@
 		                box-shadow: 0 4rpx 12rpx rgba(255,77,79,0.2);
 		            "
 		            hover-class="hover-opacity"
+					@click="gotoByPage"
 		        >
 		            立即购买
 		        </button>
@@ -271,7 +273,7 @@ import { showErr, showSuccess, handleTime } from "../../../common/common-js.js"
 import { getUserLikeOrCollectionAPI } from "../../../api/IndexApi.js"
 import { subscribeClientUserAPI, unSubscribeClientUserAPI,judgeIsSubUserAPI} from "../../../api/subscribeApi.js"
 import StateComponent from "../../common-components/stateComponent/stateComponent.vue"
-import { getPostByPostIdAPI } from "../../../api/PostApi"
+import { getPostByPostIdAPI,addPostChatHotAPI,addPostCommentHotAPI} from "../../../api/PostApi"
 export default {
 	components: {
 		NavigationSelf,
@@ -279,7 +281,7 @@ export default {
 	},
 	data() {
 		return {
-			isShowContactMethod: false,  // 是否展开联系方式
+			isShowContactMethod: true,  // 是否展开联系方式
 			postData: {},
 			userInfo: null,
 			isLike: false,
@@ -485,6 +487,16 @@ export default {
 		})
 	},
 	methods: {
+		toPhone(phone){
+			uni.makePhoneCall({
+				phoneNumber:phone,
+			})
+		},
+		gotoByPage(){
+			uni.navigateTo({
+				url:`/pages/funpage/pay-page/pay-page?postId=${this.postData.id}`
+			})
+		},
 		toMyPostPage(){
 			//前往管理页面
 			uni.navigateTo({
@@ -492,6 +504,7 @@ export default {
 			})
 		},
 		toChat(){
+			addPostChatHotAPI({id:this.postData.id})
 			// 前往聊天页面
 			uni.navigateTo({
 				url:`/pages/funpage/chat-page/chat-page?title=${this.postData.name}&openid=${this.postData.openid}&postId=${this.postData.id}`
@@ -865,6 +878,7 @@ export default {
 				title:"上传中...",
 				mask:true
 			})
+			let that = this
 			postCommnetAPI(this.postCommentInfo)
 				.then((res) => {
 					if (res.code == 110) {
@@ -883,6 +897,7 @@ export default {
 					this.postCommentInfo.content = ""
 					this.init()
 					uni.hideLoading()
+					addPostCommentHotAPI({id:that.postData.id})
 				})
 				.catch((err) => {
 					uni.hideLoading()

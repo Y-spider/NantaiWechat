@@ -27,6 +27,10 @@
 					<view class="post-item-name" style="width: 30%;"><text style="text-align: left; width: 100%;">{{post.name}}</text></view>
 					<view class="post-item-type">{{post.type}}</view>
 					<view v-if="post.isTop" class="post-item-top" :class="state">已置顶</view>
+					<view v-if="post.isHot && type=='热门帖子'" class="post-item-top" :class="state">
+						<image src="../../../static/热度.png" style="width: 54rpx;height: 54rpx; background-color: #ffffff;"></image>
+						{{post.hot}}
+					</view>
 					<view class="pots-item-avatar">
 						<image :src="baseAvatarUrl + post.avatar +'?time='+ new Date().getTime()"></image>
 					</view>
@@ -72,7 +76,7 @@
 	import {showErr,showSuccess,handleTime} from "../../../common/common-js.js"
 	import {getPostByTypeAPI,getPostBySearchAPI} from "../../../api/PostPageOfTypeApi.js"
 	import {getUserLikeOrCollectionAPI} from "../../../api/IndexApi.js"
-	import {postBatchUpdateAPI} from "../../../api/PostApi.js"
+	import {postBatchUpdateAPI,addBroswingHistoryAPI,addPostLookHotAPI} from "../../../api/PostApi.js"
 	import StateComponent from "../../common-components/stateComponent/stateComponent.vue"
 	export default {
 		components:{
@@ -294,6 +298,8 @@
 				}
 			},
 			gotoDetailPage(index){
+				addPostLookHotAPI({id:this.postDataList[index].id})
+				addBroswingHistoryAPI({postId:this.postDataList[index].id})
 				this.isGotoPostDetailPage = true
 				this.postDetailPageIndex = index
 				uni.navigateTo({

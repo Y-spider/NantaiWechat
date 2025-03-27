@@ -391,6 +391,7 @@
 			},
 			post(){
 				// 发布帖子
+				console.log("index="+this.postData.indexType)
 				// 1. 检验请求信息是否完善 这里标题 和 类型是必填项
 				if(this.postData.title == ""){
 					showErr("标题不能为空")
@@ -413,11 +414,14 @@
 				else if(this.postData.price<=0 && this.postData.indexType == 1){
 					showErr("价格不能小于0")
 				}
-				else if(this.postData.indexType!=1){
-					this.postData.price = 0
-					this.postData.sendType = ""
-				}
 				else{
+					if(this.postData.indexType != 1){
+						this.postData.price = 0
+						this.postData.sendType = ""
+					}
+					else{
+						this.postData.sendType = this.sendTypeList[this.sendTypeIndex]
+					}
 					this.userInfo.todayPost-=1
 					// 2. 数据验证通过 ，构造数据发起请求
 					for(let i = 0;i < this.base64ImageListIndex;i++){

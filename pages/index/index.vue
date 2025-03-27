@@ -159,7 +159,7 @@
 <script>
 	import NavigationSelf from "../common-components/head/head.vue"
 	import {getWeatherAPI,getFutherWeatherAPI,getPageListAPI,getUserLikeOrCollectionAPI,getNoticeAPI} from "../../api/IndexApi.js"
-	import {postBatchUpdateAPI,getPostStateByPostIdAPI} from "../../api/PostApi.js"
+	import {postBatchUpdateAPI,getPostStateByPostIdAPI,addPostLookHotAPI,addBroswingHistoryAPI} from "../../api/PostApi.js"
 	import {handleTime, showErr, showSuccess} from "../../common/common-js.js"
 	import StateComponent from "../common-components/stateComponent/stateComponent.vue"
 	import {getSystemConfigAPI} from "../../api/systemConfigApi.js"
@@ -188,7 +188,7 @@
 					{"icon":"../../static/校园交友.png","des":"校园交友"},
 					{"icon":"../../static/学习交流.png","des":"学习交流"},
 					{"icon":"../../static/共享资源.png","des":"共享资源"},
-					{"icon":"../../static/优质店铺.png","des":"优质商家"},
+					{"icon":"../../static/热门帖子.png","des":"热门帖子"},
 					],
 					futherThreeDayWeather:{}, // 未来三天天气预测信息
 					todayWeather:{},  // 当前天气，服务器端为10分钟更新一次
@@ -214,7 +214,13 @@
 					
 			}
 		},
-		
+		onShow(){
+			// 有30%的概率可以刷新出现公告
+			let precent = Math.floor(Math.random()*100)
+			if(precent <= 10){
+				this.showNotice()
+			}
+		},
 		onReachBottom(){
 			// 当上滑到底部时触发，主要用于上滑刷新
 			if(!this.isListAllPost){
@@ -306,6 +312,7 @@
 			        noticeContent += (i + 1) + ". " + notice.content + "\n"; // 使用 \n 换行
 			    }
 			    uni.showModal({
+					title:"公告",
 			        content: noticeContent,
 			        showCancel: false,
 			        confirmText: "我知道了",
@@ -329,7 +336,7 @@
 					return;
 				}
 				uni.navigateTo({
-					url:"/pages/funpage/post-page-of-type/post-page-of-type?type="+typeDes
+					url:"/pages/funpage/post-page-of-type/post-page-of-type?type=" + typeDes
 				})
 			},
 			checkPostIsMyLike(index){
@@ -554,6 +561,8 @@
 				this.postDetailPageIndex = index
 				// 将对应数据json对象转换为json格式的字符串，通过路径参数传递给详细信息页面
 				// 访问数据库，查看当前帖子状态
+				addPostLookHotAPI({id:this.postDataList[index].id})
+				addBroswingHistoryAPI({postId:this.postDataList[index].id})
 				getPostStateByPostIdAPI(this.postDataList[index].id)
 				.then((res)=>{
 					if(res.code == 200){

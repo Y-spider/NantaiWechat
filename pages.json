@@ -164,6 +164,30 @@
 				"navigationBarTitleText" : "",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/funpage/pay-page/pay-page",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/funpage/address/address",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/funpage/add-address/add-address",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	  "window": {

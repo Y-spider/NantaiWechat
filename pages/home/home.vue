@@ -49,6 +49,7 @@
 			:showWeatherFlagList="showWeatherFlagList"
 			:showWeatherBackground="showWeatherBackground"
 			:showWeatherIndex="showWeatherIndex"
+			:staticData="staticData"
 			></HomeSuccessPage>
 		</veiw>
 	</view>
@@ -57,7 +58,7 @@
 <script>
 	import HomeSuccessPage from '../home-success/home-success.vue'
 	import NavigationSelf from "../common-components/head/head.vue"
-	import {loginAPI,getCurrentUserInfoAPI} from "../../api/HomeApi.js"
+	import {loginAPI,getCurrentUserInfoAPI,getUserStaticAPI} from "../../api/HomeApi.js"
 	import  RainCompont from "../common-components/rain/rain.vue"
 	import {showErr,removeAllStorage} from "../../common/common-js.js"
 	import {getPostByOpenidAPI} from "../../api/PostApi.js"
@@ -72,6 +73,7 @@
 				flag: false, // 标记当前展示页面 false 表示是登录页面 true表示是登录成功页面
 				userInfo:"",
 				avatarUrl:"",
+				staticData:null,
 				postedDataList:[],
 				showWeatherFlagList:[false,false,false,false,false], // 展示天气背景状态标记数组 0 表示晴天 1 表示多云 2 表示小雨 3表示大雨
 				showWeatherBackground:["#fbac13 ;","skyblue ;","#595c5f ;"] ,// 0表示晴天背景颜色 2表示雨天背景颜色 1表示多云背景颜色
@@ -105,6 +107,9 @@
 			}
 		},
 		onShow() {
+			getUserStaticAPI().then((res)=>{
+				this.staticData = res.data
+			})
 			uni.setStorageSync("isNeedInit",true)
 			this.flag = uni.getStorageSync("flag")
 			// 获取用户信息,当用户处于登陆状态
