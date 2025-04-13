@@ -80,7 +80,7 @@
 					</view>
 				</view>
 				<!-- 邮寄方式 -->
-				<view v-if="postData.indexType==1">
+				<view v-if="postData.indexType==1 && false">
 					<text class="form-label">发货方式</text>
 					<view class="type-selector">
 						<picker 
@@ -287,7 +287,7 @@
 				},
 				sendTypeList:["包邮","无需邮寄","顺丰到付"], // 邮寄方式
 				typeRangeList:["请选择帖子类型","二手闲置","求问求帮","兼职招聘","校园交友","寻人寻物","学习交流"],
-				topRangeList: ["1小时", "2小时", "3小时", "4小时", "5小时"],
+				topRangeList: ["请选择","1小时", "2小时", "3小时", "4小时", "5小时"],
 				base64ImageList:[],
 				base64ImageListIndex:0,
 				userInfo:null,
@@ -391,28 +391,34 @@
 			},
 			post(){
 				// 发布帖子
-				console.log("index="+this.postData.indexType)
 				// 1. 检验请求信息是否完善 这里标题 和 类型是必填项
 				if(this.postData.title == ""){
 					showErr("标题不能为空")
+					return
 				}else if(this.postData.type == "" || this.postData.indexType==0){
 					showErr("请选择类型")
+					return
 				}
 				else if(this.postData.isTop && this.postData.indexTop == 0){
 					showErr("请选择置顶时间")
+					return
 				}
 				else if(this.postData.isTop && this.postData.indexTop *30 - this.userInfo.point > 0){
 					// 检验当前积分是否足够,注意置顶规则为1小时30积分
 					showErr("积分不足")
+					return
 				}
 				else if(this.userInfo.todayPost-1 < 0){
 					showErr("今日剩余发帖数为0")
+					return
 				}
-				else if(this.postedCache.length+1 > 20){
+				else if(this.postedCache.length+1 > 10){
 					showErr("已到达最大发帖数")
+					return
 				}
 				else if(this.postData.price<=0 && this.postData.indexType == 1){
 					showErr("价格不能小于0")
+					return
 				}
 				else{
 					if(this.postData.indexType != 1){
@@ -422,7 +428,6 @@
 					else{
 						this.postData.sendType = this.sendTypeList[this.sendTypeIndex]
 					}
-					this.userInfo.todayPost-=1
 					// 2. 数据验证通过 ，构造数据发起请求
 					for(let i = 0;i < this.base64ImageListIndex;i++){
 						this.postData.base64ImageList[i] = this.base64ImageList[i].url
@@ -436,6 +441,7 @@
 					postAPI(this.postData)
 					.then((res)=>{
 						if(res.code == 200){
+							this.userInfo.todayPost-=1
 							// 上传成功，将数据进行清空，包括保存的数据哦
 							uni.removeStorageSync("savePostData")
 							for(let i = 0;i < this.base64ImageListIndex;i++){

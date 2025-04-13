@@ -1,7 +1,7 @@
 <template>
 	<!-- 云多组件 -->
 	<view>
-		<view class="cloud-box" :style="{'background-color': bg}">
+		<view class="cloud-box" :style="{'background-color': bg}" :class="animated ? 'cloud-animate' : ''">
 			<view class="cloud" :style="{'background-color': bg}">
 				<view class="cloud-item-1" :style="{'background-color': bg}"></view>
 				<view class="cloud-item-2" :style="{'background-color': bg}"></view>
@@ -13,7 +13,16 @@
 <script>
 	export default{
 		name:"CloudCompont",
-		props:["bg"]  //接收云朵的背景颜色，默认为白色
+		props:{
+			bg: {
+				type: String,
+				default: 'white'
+			},
+			animated: {
+				type: Boolean,
+				default: true
+			}
+		}
 	}
 </script>
 
@@ -50,5 +59,27 @@
 		 border-radius: 50%;
 		 margin-left: -30rpx;
 		 margin-top: -40rpx;
+	 }
+	
+	 .cloud-animate {
+		 animation: float 6s ease-in-out infinite;
+	 }
+	
+	 @keyframes float {
+		 0% {
+			 transform: translate(0, 0);
+		 }
+		 25% {
+			 transform: translate(-8rpx, -6rpx);
+		 }
+		 50% {
+			 transform: translate(8rpx, -10rpx);
+		 }
+		 75% {
+			 transform: translate(-5rpx, -3rpx);
+		 }
+		 100% {
+			 transform: translate(0, 0);
+		 }
 	 }
 </style>

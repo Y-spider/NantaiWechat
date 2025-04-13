@@ -4,7 +4,7 @@
 		<PopWebsite :isShow="isShowWebSitePop"></PopWebsite>
 		<PopDocument :isShow="isShowDocumentPop"></PopDocument>
 		<NavigationSelf title="资源共享"></NavigationSelf>
-	
+		
 		<uni-fab ref="fab" :pattern="pattern" :content="content" :horizontal="horizontal" :vertical="vertical"
 					:direction="direction" @trigger="trigger" @fabClick="fabClick" />
 		<view class="search-box">

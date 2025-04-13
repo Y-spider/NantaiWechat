@@ -1,7 +1,7 @@
 // 正式环境
-// const BASE_URL = "https://www.chopper.love:39001/api/"
+const BASE_URL = "https://www.nantaischool.cn:39001/api/"
 // 开发环境
-const BASE_URL = "http://192.168.31.19:8888/"
+// const BASE_URL = "http://192.168.31.19:8888/"
 
 export function httpOFPost(path, params = {}, loading = true) {
 	// console.log('%c请求拦截：', ' background:orange', params);
@@ -27,6 +27,14 @@ export function httpOFPost(path, params = {}, loading = true) {
 				// res.data?.code表示先判断res.data是否为null或undefined，
 				//如果不是，则访问其code属性。这样可以有效避免在对象为null或undefined时造成的错误
 				if (res.data?.code == -1) {
+					uni.showToast({
+						icon: "error",
+						duration: 2000,
+						title: res.data.errMsg
+					});
+					reject(res.data)
+				}
+				else if(res.data?.code == 110){
 					uni.showToast({
 						icon: "error",
 						duration: 2000,
@@ -114,7 +122,15 @@ export function httpOfGetWithNotToken(path,loading = false){
 						title:res.data.errMsg,
 						duration:2000
 					});
-				};
+				}
+				else if(res.data?.code == 110){
+					uni.showToast({
+						icon: "error",
+						duration: 2000,
+						title: res.data.errMsg
+					});
+					reject(res.data)
+				}
 			},
 			fail(err){
 				uni.hideLoading();

@@ -1,12 +1,15 @@
 <template>
 	<view>
 		<NavigationSelf :title="postData.title" :backUrl="backUrl"></NavigationSelf>
+		<!-- 聊天通道悬浮框 -->
+		<uni-fab v-if="false && postData.openid!=userInfo.openid" ref="fab" :pattern="pattern" :content="content" :horizontal="horizontal" :vertical="vertical"
+					:direction="direction" @trigger="trigger" @fabClick="fabClick" />
 		<view class="poster-info">
 			<view class="post-info-base-info">
 				<view class="avatar">
 					<image :src="imageUrl"></image>
 				</view>
-				<view class="name-time-box">
+				<view class="name-time-box">	
 					<view class="name">{{ postData.name }}</view>
 					<view class="time">{{ postData.createTime }}</view>
 				</view>
@@ -19,14 +22,14 @@
 				<view class="report" @click="gotoReport('post')">
 					<image src="../../../static/举报.png"></image>
 				</view>
-				<view style=" line-height: 50rpx; background-color: #f5f5f5;position: relative; margin-right: 15rpx; border-radius: 10rpx;">
-					<text style="padding: 5rpx; width: 120rpx;" v-if="!isSubscribe" @click="subscribeUser"> + 关注 </text>
+				<view v-if="isShowCollection" style=" line-height: 50rpx; background-color: #f5f5f5;position: relative; margin-right: 15rpx; border-radius: 10rpx;">
+					<text style="padding: 5rpx; width: 160rpx;" v-if="!isSubscribe" @click="subscribeUser"> + 关注 </text>
 					<text style="padding: 5rpx;color: lightgray;width: 120rpx;" v-else @click="unSubscribeUser"> 已关注 </text>
 				</view>
 			</view>
 		</view>
 		<view v-if="postData.type=='二手闲置'">
-			<view class="price" style="color: #ff0000;">￥ <text style="font-size: larger;">{{postData.price}} </text> <text style="color: #333;"> | {{postData.sendType}}</text></view>
+			<view class="price" style="color: #ff0000;">￥ <text style="font-size: larger;">{{postData.price}} </text> <text style="color: #333;"></text></view>
 		</view>
 		<view style="display: flex;align-items: center; margin-top: 30rpx;">
 			<view style="width: 16rpx; height: 16rpx; border-radius: 50%; background-color: yellow; margin-left: 5rpx;">
@@ -199,69 +202,6 @@
 		            @click="postComment()"
 		        ></uni-icons>
 		    </view>
-		
-		    <view 
-		        class="talk_buy" 
-		        style="
-		            display: flex;
-					justify-content: space-around;
-		            margin-bottom: 60rpx;
-		        ">
-		        <button
-				v-if="postData.openid!=userInfo.openid"
-					@click="toChat"
-		            class="talk"
-		            style="
-						width: 300rpx;
-		                background: #1296db;
-		                color: white;
-		                font-size: 24rpx;
-		                padding: 18rpx 0;
-		                border-radius: 40rpx;
-		                transition: opacity 0.2s;
-		                box-shadow: 0 4rpx 12rpx rgba(18,150,219,0.2);
-		            "
-		            hover-class="hover-opacity"
-		        >
-		            聊一聊
-		        </button>
-				<button
-					v-else
-					@click="toMyPostPage"
-				    class="talk"
-				    style="
-						width: 300rpx;
-				        background: #1296db;
-				        color: white;
-				        font-size: 24rpx;
-				        padding: 18rpx 0;
-				        border-radius: 40rpx;
-				        transition: opacity 0.2s;
-				        box-shadow: 0 4rpx 12rpx rgba(18,150,219,0.2);
-				    "
-				    hover-class="hover-opacity"
-				>
-				    管理
-				</button>
-		        <button 
-				v-if="postData.openid!=userInfo.openid"
-		            class="buy"
-		            style="
-						width: 300rpx;
-		                background: #ff4d4f;
-		                color: white;
-		                font-size: 24rpx;
-		                padding: 18rpx 0;
-		                border-radius: 40rpx;
-		                transition: opacity 0.2s;
-		                box-shadow: 0 4rpx 12rpx rgba(255,77,79,0.2);
-		            "
-		            hover-class="hover-opacity"
-					@click="gotoByPage"
-		        >
-		            立即购买
-		        </button>
-		    </view>
 		</view>
 	</view>
 </template>
@@ -281,6 +221,24 @@ export default {
 	},
 	data() {
 		return {
+			pattern: {
+				color: '#7A7E83',
+				backgroundColor: '#fff',
+				selectedColor: '#007AFF',
+				buttonColor: '#ccc',
+				iconColor: '#fff'
+			},
+			content:[
+					{	iconPath:this.$baseImageUrl+"/message-type-icon/聊天.png",
+						selectedIconPath: '',
+						text: '聊一聊',
+						active: false
+					},
+					
+				],
+			horizontal: 'right',
+			vertical: 'bottom',
+			direction: 'horizontal',
 			isShowContactMethod: true,  // 是否展开联系方式
 			postData: {},
 			userInfo: null,
@@ -487,27 +445,19 @@ export default {
 		})
 	},
 	methods: {
-		toPhone(phone){
-			uni.makePhoneCall({
-				phoneNumber:phone,
-			})
-		},
-		gotoByPage(){
-			uni.navigateTo({
-				url:`/pages/funpage/pay-page/pay-page?postId=${this.postData.id}`
-			})
-		},
-		toMyPostPage(){
-			//前往管理页面
-			uni.navigateTo({
-				url:"/pages/funpage/my-post-page/my-post-page"
-			})
-		},
-		toChat(){
+		trigger(e){
 			addPostChatHotAPI({id:this.postData.id})
 			// 前往聊天页面
 			uni.navigateTo({
 				url:`/pages/funpage/chat-page/chat-page?title=${this.postData.name}&openid=${this.postData.openid}&postId=${this.postData.id}`
+			})
+		},
+		fabClick(){
+			
+		},
+		toPhone(phone){
+			uni.makePhoneCall({
+				phoneNumber:phone,
 			})
 		},
 		unSubscribeUser(){
@@ -1172,4 +1122,8 @@ export default {
 
 .delet {
 	margin: 10rpx;
-}</style>
+}
+::v-deep .uni-fab--rightBottom, ::v-deep .uni-fab__circle {
+	bottom:160rpx !important;
+}
+</style>

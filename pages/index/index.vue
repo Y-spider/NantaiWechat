@@ -183,7 +183,7 @@
 				funList:[
 					{"icon":"../../static/二手闲置.png","des":"二手闲置"},
 					{"icon":"../../static/求问求帮.png","des":"求问求帮"},
-					{"icon":"../../static/兼职.png","des":"兼职招聘"},
+					{"icon":"../../static/兼职.png","des":"校园兼职"},
 					{"icon":"../../static/寻人寻物.png","des":"寻人寻物"},
 					{"icon":"../../static/校园交友.png","des":"校园交友"},
 					{"icon":"../../static/学习交流.png","des":"学习交流"},
@@ -217,7 +217,7 @@
 		onShow(){
 			// 有30%的概率可以刷新出现公告
 			let precent = Math.floor(Math.random()*100)
-			if(precent <= 10){
+			if(precent <= 10 && this.noticeList.length > 0){
 				this.showNotice()
 			}
 		},

@@ -72,7 +72,7 @@
 				</view>
 			</view>
 			<view class="avatar" @click="toModifyPage()">
-				<image :src="avatarUrl"/>
+				<img :src="avatarUrl + '?time=' + new Date().getTime()" />
 			</view>
 		</view>
 		<!-- 功能选择模块 -->
@@ -101,31 +101,33 @@
 				</view>
 			</view>
 			<!-- 我的交易 -->
-			<view style="font-size: large;font-weight: bold;margin-top: 30rpx">我的交易</view>
+			<view style="font-size: large;font-weight: bold;margin-top: 30rpx">更多功能</view>
 			<view style="margin-top: 30rpx;border-radius: 30rpx; justify-content: space-around; background-color: #fff;display: flex;width: 90vw;">
 				<view  @click="toMyPostPage()" class="item" style="display: flex; flex-direction: column;justify-content: center;align-items: center;height: 180rpx;">
 					<view class="icon">
-						<image src="../../static/购物袋.png" style="width: 64rpx;height: 64rpx;"></image>
+						<image src="../../static/我的发布.png" style="width: 64rpx;height: 64rpx;"></image>
 					</view>
-					<view>我的发布 {{staticData.myPostSize}}</view>
+					<view v-if="staticData.myPostSize">我的发布 {{staticData.myPostSize}}</view>
+					<view v-else="staticData.myPostSize">我的发布 0</view>
 				</view>
-				<view @click="gotoTheTypePage('我卖出的')" class="item" style="display: flex; flex-direction: column;justify-content: center;align-items: center;height: 180rpx;">
+				<view @click="gotoTheTypePage('优惠劵')" class="item" style="display: flex; flex-direction: column;justify-content: center;align-items: center;height: 180rpx;">
 					<view class="icon">
-						<image src="../../static/卖出.png" style="width: 64rpx;height: 64rpx;"></image>
+						<image src="../../static/优惠劵.png" style="width: 64rpx;height: 64rpx;"></image>
 					</view>
-					<view>我卖出的 {{staticData.mySellSize}}</view>
-				</view>
-				<view @click="gotoTheTypePage('我买到的')" class="item" style="display: flex; flex-direction: column;justify-content: center;align-items: center;height: 180rpx;">
-					<view class="icon">
-						<image src="../../static/已买到.png" style="width: 64rpx;height: 64rpx;"></image>
-					</view>
-					<view>我买到的{{staticData.myBuySize}}</view>
+					<view>优惠劵</view>
 				</view>
 				<view @click="toUseGuidePage()" class="item" style="display: flex; flex-direction: column;justify-content: center;align-items: center;height: 180rpx;">
 					<view class="icon">
-						<image src="../../static/使用指南 (1).png" style="width: 64rpx;height: 64rpx;"></image>
+						<image src="../../static/使用指南 (3).png" style="width: 64rpx;height: 64rpx;"></image>
 					</view>
 					<view>使用指南</view>
+				</view>
+				<view class="item" style="position: relative; display: flex; flex-direction: column;justify-content: center;align-items: center;height: 180rpx;">
+					<view class="icon">
+						<image src="../../static/分享.png" style="width: 64rpx;height: 64rpx;"></image>
+					</view>
+					<view>分享</view>
+					<button style="opacity: 0;position: absolute;height: 128rpx; " open-type="share">1</button>
 				</view>
 			</view>
 			<!-- 其他功能 -->
@@ -229,6 +231,13 @@
 		},
 		methods: {
 			gotoTheTypePage(typeDes){
+				if(typeDes == "优惠劵"){
+					uni.showModal({
+						content:"暂未开放",
+						showCancel:false,
+					})
+					return
+				}
 				uni.navigateTo({
 					url:"/pages/funpage/post-page-of-type/post-page-of-type?type=" + typeDes
 				})

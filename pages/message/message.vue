@@ -27,7 +27,7 @@
 				<text class="btn-icon">✓</text>
 				<text>一键已读</text>
 			</button>
-			<button v-if="!isSubAll || true" class="action-btn" @click="handleAllowSub">订阅消息</button>
+			<button v-if="!isSubAll" class="action-btn" @click="handleAllowSub">订阅消息</button>
 			<button class="action-btn delete-btn" @click="handleDeleteAll" :disabled="total - noReadCount <= 0">
 				<text class="btn-icon">×</text>
 				<text>删除已读</text>
@@ -91,14 +91,15 @@
 				wx.getSetting({
 				  withSubscriptions: true,
 				  success (res) {
+					  console.log("resres",res)
 					  let subComment =  res.subscriptionsSetting.itemSettings["-dW5f0x9CPMCGhBk0ITWfsE3XlZwYCidRyZjQ1kr0dQ"]=="accept"
 					  let subReplayComment =  res.subscriptionsSetting.itemSettings["U2UqvpGWD6ZUcxiH5a7vqyF9dVb0JzLD2kDhPU9ecdU"]=="accept"
-					  let cahtMessageNotice =  res.subscriptionsSetting.itemSettings["Oqr81VmJ0iH03UtLY3F_eJ_0izhVCTNOCcQkTOzr8q0"]=="accept"
-					  let cahtNeedPayOrder =  res.subscriptionsSetting.itemSettings["mmCr4sUX-o8XytQkr3MZnH68n-gG_ucL9weo9Cu5Vmk"]=="accept"
-					  let cahtSuccessOrder =  res.subscriptionsSetting.itemSettings["0HfSDVknCcY18K8VXrIoL4dIHKXwbqgO70eQgpEtQCE"]=="accept"
+					  // let cahtMessageNotice =  res.subscriptionsSetting.itemSettings["Oqr81VmJ0iH03UtLY3F_eJ_0izhVCTNOCcQkTOzr8q0"]=="accept" 聊天通知
+					  // let cahtNeedPayOrder =  res.subscriptionsSetting.itemSettings["mmCr4sUX-o8XytQkr3MZnH68n-gG_ucL9weo9Cu5Vmk"]=="accept" 账单支付结果通知
+					  // let cahtSuccessOrder =  res.subscriptionsSetting.itemSettings["0HfSDVknCcY18K8VXrIoL4dIHKXwbqgO70eQgpEtQCE"]=="accept" 账单生成通知
 					  that.$nextTick(()=>{
-						   that.isSubAll = (subComment && subReplayComment && cahtMessageNotice && cahtNeedPayOrder && cahtSuccessOrder)
-							uni.setStorageSync("isSubAll",true)
+						   that.isSubAll = (subComment && subReplayComment)
+							uni.setStorageSync("isSubAll",that.isSubAll)
 					  })
 				  }
 				})
@@ -169,13 +170,12 @@
 		},
 		methods: {
 			handleAllowSub() {
-				if(this.clickButton){
+				if(this.clickButton || true){
 					// 第一次调用，传入3个模板id
 					wx.requestSubscribeMessage({
 					  tmplIds: [
-					    "-dW5f0x9CPMCGhBk0ITWfsE3XlZwYCidRyZjQ1kr0dQ",
+						"dW5f0x9CPMCGhBk0ITWfsE3XlZwYCidRyZjQ1kr0dQ",
 					    "U2UqvpGWD6ZUcxiH5a7vqyF9dVb0JzLD2kDhPU9ecdU",
-					    "Oqr81VmJ0iH03UtLY3F_eJ_0izhVCTNOCcQkTOzr8q0"
 					  ],
 					  success(res) {
 					    console.log("第一次调用成功", res);
@@ -186,20 +186,20 @@
 					  }
 					});
 				}
-				else{
-					wx.requestSubscribeMessage({
-					  tmplIds: [
-					    "mmCr4sUX-o8XytQkr3MZnH68n-gG_ucL9weo9Cu5Vmk",
-					    "0HfSDVknCcY18K8VXrIoL4dIHKXwbqgO70eQgpEtQCE"
-					  ],
-					  success(res) {
-					    console.log("第二次调用成功", res);
-					  },
-					  fail(err) {
-					    console.log("第二次调用失败", err);
-					  }
-					});
-				}
+				// else{
+				// 	wx.requestSubscribeMessage({
+				// 	  tmplIds: [
+				// 	    "mmCr4sUX-o8XytQkr3MZnH68n-gG_ucL9weo9Cu5Vmk",
+				// 	    "0HfSDVknCcY18K8VXrIoL4dIHKXwbqgO70eQgpEtQCE"
+				// 	  ],
+				// 	  success(res) {
+				// 	    console.log("第二次调用成功", res);
+				// 	  },
+				// 	  fail(err) {
+				// 	    console.log("第二次调用失败", err);
+				// 	  }
+				// 	});
+				// }
 				this.clickButton=!this.clickButton
 			},
 			// 跳转去消息详细页面

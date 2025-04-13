@@ -335,6 +335,7 @@
 		},
 		methods: {
 			cancle(){
+				uni.setStorageSync("isConfirmProtocal", false);
 				uni.navigateBack()
 			},
 			handleScroll(e) {

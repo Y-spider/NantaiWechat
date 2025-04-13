@@ -53,44 +53,6 @@
 			</view>
 		</scroll-view>
 		<!-- 聊天框 -->
-		<view v-if="showGoodsCard">
-			<view style="display: flex;flex-direction: row;
-			gap: 15rpx;position: fixed;width: 94vw;
-			margin-left: 3vw;
-			height: 200rpx;
-			border-radius: 30rpx;
-			bottom: 100rpx;background-color: #ffffff;
-			z-index: 99999;">
-				<view class="title" style="display: flex;flex-direction: column;gap: 15rpx;">
-					<view>
-						<image style="height: 200rpx; width: 200rpx;" :src="baseImageUrl+postImageUrl[0]"
-						 mode="aspectFill" alt="商品图片"></image>
-					</view>
-				</view>
-				<view class="content" style="flex: 1;height: 100%;">
-					<view class="desc" style="height: 100%; display: flex;flex-direction: column;justify-content: space-between;margin: 15rpx;">
-						<view class="text-cut" style="display: flex;justify-content: space-between;">
-							<text style="font-size: larger; font-weight: bolder;margin-left: 15rpx;">{{postData.title}}</text>
-							<text style="margin-right: 30rpx;" @click="showGoodsCard=false">X</text>
-						</view>
-						<view style="display: flex;justify-content: space-between;align-items: center;margin-bottom: 30rpx;">
-							<view style="color: red;">￥{{postData.price}}</view>
-							<view style="
-							padding: 15rpx; 
-							border-radius: 15rpx;
-							justify-content: center;
-							align-items: center;
-							margin-right: 30rpx;
-							display: flex;
-							background-color: #39b54a;
-							color: white;width: 128rpx;"
-							@click="sendGoodsCard"
-							 >发送</view>
-						</view>
-					</view>
-				</view>
-			</view>
-		</view>
 		<view class="cu-bar foot input" :style="[{bottom:InputBottom+'px'}]">
 			<view class="action">
 				<text class="cuIcon-sound text-grey"></text>
@@ -173,6 +135,7 @@
 				})
 		},
 		methods: {
+			
 			sendGoodsCard(){
 				// 发送商品卡片信息
 				let message = {

@@ -160,7 +160,11 @@
 									showErr(res.errMsg)
 								}
 								else if(res.code == 110){
-									showErr("新昵称包含敏感词汇:"+res.errMsg)
+									uni.showModal({
+										content:"名称含有敏感词:"+res.errMsg,
+										showCancel:false,
+										
+									})
 								}
 								uni.hideLoading()
 							})

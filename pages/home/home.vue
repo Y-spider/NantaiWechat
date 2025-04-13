@@ -41,17 +41,17 @@
 			</view>
 		</view>
 		<!-- 个人中心页面 -->
-		<veiw v-else>
+		<view v-else>
 			<HomeSuccessPage 
-			:userInfo="userInfo" 
-			:avatarUrl="avatarUrl" 
-			:postedDataList="postedDataList" 
-			:showWeatherFlagList="showWeatherFlagList"
-			:showWeatherBackground="showWeatherBackground"
-			:showWeatherIndex="showWeatherIndex"
-			:staticData="staticData"
+				:userInfo="userInfo" 
+				:avatarUrl="avatarUrl" 
+				:postedDataList="postedDataList" 
+				:showWeatherFlagList="showWeatherFlagList"
+				:showWeatherBackground="showWeatherBackground"
+				:showWeatherIndex="showWeatherIndex"
+				:staticData="staticData"
 			></HomeSuccessPage>
-		</veiw>
+		</view>
 	</view>
 </template>
 
@@ -107,6 +107,13 @@
 			}
 		},
 		onShow() {
+			let isConfirmProtocal = uni.getStorageSync("isConfirmProtocal");
+			let flag = uni.getStorageSync("flag");
+			
+			if(isConfirmProtocal && !flag){
+				this.login()
+			}
+			this.avatarUrl =  this.$baseImageUrl + this.userInfo.avatar +"?"+ new Date().getTime()
 			getUserStaticAPI().then((res)=>{
 				this.staticData = res.data
 			})
@@ -163,7 +170,7 @@
 				let that = this
 				if(uni.getStorageSync("isConfirmProtocal")==true){
 					uni.showLoading({
-						title:"登录中"
+						title:"登录中..."
 					})
 					
 					uni.login({
@@ -219,8 +226,10 @@
 	.body button{
 		color:#93D2F3 ;
 		border-radius: 44rpx;
-		/* background-color:#93D2F3 ; */
-		margin: 15rpx;
+		padding: 10rpx 20rpx;
+		background-color: rgba(255, 255, 255, 0.2);
+		border: none;
+		font-size: 28rpx;
 	}
 	.fun-box{
 		width: 100%;
@@ -230,7 +239,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		box-shadow: 2px 2px 5px 0px white;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 	}
 	.fun-box .fun-item-title,.fun-item{
 		width: 80%;
