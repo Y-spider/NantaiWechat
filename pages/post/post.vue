@@ -244,10 +244,9 @@
 			let initFlag = uni.getStorageSync("isNeedInit")
 			// 更新userInfo信息
 			this.userInfo = uni.getStorageSync("userInfo")
-			if(initFlag){
+			if(initFlag || !this.userInfo){
 				this.init()
-				let userInfo = uni.getStorageSync("userInfo")
-				if(userInfo == ""){
+				if(!this.userInfo){
 					// 说明当前用户未进行登陆
 					uni.showModal({
 						content:"请先登录!",
@@ -262,9 +261,9 @@
 					})
 				}
 				else{
-					this.postData.openid = userInfo.openid
-					this.postData.name = userInfo.name
-					this.userInfo = userInfo
+					this.postData.openid = this.userInfo.openid
+					this.postData.name = this.userInfo.name
+					
 				}
 			}
 		},
@@ -286,7 +285,7 @@
 					"background-color":"loghtgray"
 				},
 				sendTypeList:["包邮","无需邮寄","顺丰到付"], // 邮寄方式
-				typeRangeList:["请选择帖子类型","二手闲置","求问求帮","兼职招聘","校园交友","寻人寻物","学习交流"],
+				typeRangeList:["请选择帖子类型","二手闲置","求问求帮","兼职招聘","校园趣事","寻人寻物","学习交流"],
 				topRangeList: ["请选择","1小时", "2小时", "3小时", "4小时", "5小时"],
 				base64ImageList:[],
 				base64ImageListIndex:0,

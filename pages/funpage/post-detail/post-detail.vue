@@ -10,7 +10,10 @@
 					<image :src="imageUrl"></image>
 				</view>
 				<view class="name-time-box">	
-					<view class="name">{{ postData.name }}</view>
+					<view class="name">{{ postData.name }}
+						<text v-if="postData.isOffice" style="border-radius: 15rpx;background-color: #b90719; color: white;margin-left: 30rpx;padding: 0 5rpx;">  官方发帖</text>
+						</text>
+					</view>
 					<view class="time">{{ postData.createTime }}</view>
 				</view>
 			</view>
@@ -24,7 +27,7 @@
 				</view>
 				<view v-if="isShowCollection" style=" line-height: 50rpx; background-color: #f5f5f5;position: relative; margin-right: 15rpx; border-radius: 10rpx;">
 					<text style="padding: 5rpx; width: 160rpx;" v-if="!isSubscribe" @click="subscribeUser"> + 关注 </text>
-					<text style="padding: 5rpx;color: lightgray;width: 120rpx;" v-else @click="unSubscribeUser"> 已关注 </text>
+					<text style="padding: 5rpx;color: lightgray;width: 160rpx;" v-else @click="unSubscribeUser"> 已关注 </text>
 				</view>
 			</view>
 		</view>
@@ -142,65 +145,44 @@
 				<StateComponent></StateComponent>
 			</view>
 		</x-skeleton>
-		<view class="comment-input" v-if="postData.openComment" style="padding: 20rpx 25rpx; background-color: #f8f9fa; border-radius: 16rpx;">
+		<view class="comment-input" v-if="postData.openComment" :style="{ bottom: keyboardHeight + 'px' }">
 		    <view 
 		        v-if="replayTipText != ''" 
-		        style="
-		            display: flex;
-		            align-items: center;
-		            justify-content: space-between;
-		            padding: 12rpx 20rpx;
-		            margin-bottom: 20rpx;
-		            background-color: #e9f5fe;
-		            border-radius: 8rpx;
-		            color: #666;
-		            font-size: 26rpx;
-		        ">
-		        <view>回复：<text style="color: #1296db; margin-left: 10rpx;">{{ replayTipText }}</text></view>
+		        class="reply-tip"
+		    >
+		        <view class="reply-text">回复：<text class="reply-name">{{ replayTipText }}</text></view>
 		        <uni-icons 
 		            type="trash-filled" 
 		            size="20" 
-		            style="color: #ff4d4f; padding: 8rpx;"
+		            class="clear-icon"
 		            @click="resetPostCommentForm"
 		        ></uni-icons>
 		    </view>
-		
-		    <view 
-		        ref="commentInput" 
-		        style="
-		            display: flex;
-		            align-items: center;
-		            background: #fff;
-		            border-radius: 40rpx;
-		            padding: 12rpx 20rpx;
-		            box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
-		        ">
-		        <view style="flex: 1; margin-right: 20rpx;">
+
+		    <view class="input-container">
+		        <view class="input-wrapper">
 		            <uni-easyinput 
 		                v-model="postCommentInfo.content"
 		                placeholder="请输入精彩评论..."
 		                :focus="fcous"
-		                style="
-		                    padding: 16rpx 24rpx;
-		                    font-size: 28rpx;
-		                    min-height: 72rpx;
-		                    box-sizing: border-box;
-		                "
+		                class="comment-textarea"
+		                @focus="handleFocus"
+		                @blur="handleBlur"
 		                borderColor="transparent"
+		                :adjustPosition="false"
 		            ></uni-easyinput>
 		        </view>
-		        <uni-icons 
-		            type="paperplane-filled" 
-		            size="36" 
-		            style="
-		                color: #1296db;
-		                padding: 12rpx;
-		                background: #e9f5fe;
-		                border-radius: 50%;
-		                margin-left: auto;
-		            "
+		        <view 
+		            class="send-button" 
+		            :class="{ 'send-button-active': postCommentInfo.content }"
 		            @click="postComment()"
-		        ></uni-icons>
+		        >
+		            <uni-icons 
+		                type="paperplane-filled" 
+		                size="24" 
+		                color="#fff"
+		            ></uni-icons>
+		        </view>
 		    </view>
 		</view>
 	</view>
@@ -282,8 +264,8 @@ export default {
 			isLoading: true,
 			fcous: false,
 			isSubscribe:false, // 标识当前用户是否已经被关注
-			backUrl:"" // 返回上級路徑
-
+			backUrl:"", // 返回上級路徑
+			keyboardHeight: 0,
 		}
 	},
 	onReachBottom() {
@@ -902,6 +884,21 @@ export default {
 				}
 			})
 		},
+		handleFocus(e) {
+			// 键盘弹出时，设置底部安全距离
+			this.keyboardHeight = e.detail.height || 0;
+			// 滚动到底部
+			setTimeout(() => {
+				uni.pageScrollTo({
+					scrollTop: 999999,
+					duration: 300
+				});
+			}, 100);
+		},
+		handleBlur() {
+			// 键盘收起时，恢复底部距离
+			this.keyboardHeight = 0;
+		},
 	}
 }
 </script>
@@ -1109,21 +1106,102 @@ export default {
 }
 
 .comment-input {
-	height: 120rpx;
-	width: 100%;
 	position: fixed;
-	display: flex;
-	flex-direction: column;
-	bottom: 0;
-	justify-content: center;
-	box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
-	background-color: #f0f0f0;
+	left: 0;
+	right: 0;
+	padding: 20rpx 30rpx;
+	background-color: #fff;
+	box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+	transition: all 0.3s;
+	z-index: 999;
 }
 
-.delet {
-	margin: 10rpx;
+.reply-tip {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12rpx 20rpx;
+	margin-bottom: 20rpx;
+	background-color: #e9f5fe;
+	border-radius: 8rpx;
 }
-::v-deep .uni-fab--rightBottom, ::v-deep .uni-fab__circle {
-	bottom:160rpx !important;
+
+.reply-text {
+	color: #666;
+	font-size: 26rpx;
+}
+
+.reply-name {
+	color: #1296db;
+	margin-left: 10rpx;
+}
+
+.clear-icon {
+	color: #ff4d4f;
+	padding: 8rpx;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    gap: 20rpx;
+    padding: 0 10rpx;
+}
+
+.input-wrapper {
+    flex: 1;
+    background: #f8f9fa;
+    border-radius: 40rpx;
+    padding: 12rpx 20rpx;
+    min-height: 72rpx;
+    display: flex;
+    align-items: center;
+}
+
+.comment-textarea {
+    width: 100%;
+}
+
+.comment-textarea :deep(.uni-easyinput__content) {
+    min-height: 72rpx;
+    padding: 16rpx 24rpx;
+    font-size: 28rpx;
+    background: transparent;
+}
+
+.send-button {
+    width: 72rpx;
+    height: 72rpx;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1296db, #0d7ab8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4rpx 12rpx rgba(18, 150, 219, 0.2);
+    transition: all 0.3s ease;
+    opacity: 0.6;
+    transform: scale(0.95);
+    flex-shrink: 0;
+}
+
+.send-button-active {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 6rpx 16rpx rgba(18, 150, 219, 0.3);
+}
+
+.send-button:active {
+    transform: scale(0.9);
+    box-shadow: 0 2rpx 8rpx rgba(18, 150, 219, 0.2);
+}
+
+/* 移除旧的发送图标样式 */
+.send-icon {
+    display: none;
+}
+
+/* 添加底部安全区域 */
+page {
+	padding-bottom: 120rpx;
 }
 </style>

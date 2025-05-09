@@ -97,7 +97,10 @@
 							this.baseFormData.websiteDes = ""
 							this.baseFormData.websiteName=""
 							this.baseFormData.websiteUrl=""
-							showSuccess("上传成功，等待管理员审核")
+							uni.showModal({
+								content:"上传成功，等待管理员审核!",
+								showCancel:false
+							})
 							uni.hideLoading()
 						}
 						else{

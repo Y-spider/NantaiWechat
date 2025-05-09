@@ -94,7 +94,7 @@
 					<view class="fun-box">
 						<view  class="fun-item" v-for="(item,index) in funList" :key="index">
 							<view class="fun-item-icon" @click="gotoTheTypePage(item.des)">
-								<image :src="item.icon"></image>
+								<image :src="item.icon" style="width: 80rpx;height: 80rpx;"></image>
 							</view>
 							<view class="fun-item-des" style="font-size: small;">{{item.des}}</view>
 						</view>
@@ -110,10 +110,14 @@
 		<view class="post-item-box">
 			<view class="post-item" v-for="(post,index) in postDataList" :key="index">
 				<view class="post-item-base-info" @click="gotoDetailPage(index)">
-					<view class="post-item-name" style="width: 40%;"><text style="text-align: left; width: 100%;">{{post.name}}</text></view>
+					<view class="post-item-name" style="width: 40%;">
+						<text style="text-align: left; width: 100%;">{{post.name}}
+						<text v-if="post.isOffice" style="border-radius: 15rpx;background-color: #b90719; color: white;margin-left: 30rpx;padding: 0 5rpx;">  官方帖</text>
+						</text>
+					</view>
 					<view class="post-item-type">{{post.type}}</view>
+					<view v-if="post.isTop" class="post-item-top" :class="state" style="margin: 0 5rpx;">已置顶</view>
 					<view class="post-item-type" style="color: #ff0000; background-color: #ffffff;" v-if="post.type==='二手闲置'">{{post.price}} 元</view>
-					<view v-if="post.isTop" class="post-item-top" :class="state">已置顶</view>
 					<view class="pots-item-avatar">
 						<image :src="baseAvatarUrl + post.avatar +'?time='+ new Date().getTime()"></image>
 					</view>
@@ -180,16 +184,16 @@
 					duration:2500,
 					showSwiperCount:5 // 默认值
 				},
-				funList:[
-					{"icon":"../../static/二手闲置.png","des":"二手闲置"},
-					{"icon":"../../static/求问求帮.png","des":"求问求帮"},
-					{"icon":"../../static/兼职.png","des":"校园兼职"},
-					{"icon":"../../static/寻人寻物.png","des":"寻人寻物"},
-					{"icon":"../../static/校园交友.png","des":"校园交友"},
-					{"icon":"../../static/学习交流.png","des":"学习交流"},
-					{"icon":"../../static/共享资源.png","des":"共享资源"},
-					{"icon":"../../static/热门帖子.png","des":"热门帖子"},
-					],
+				funList: [
+				    {"icon": `${this.$baseImageUrl}icon/二手闲置.png`, "des": "二手闲置"},
+				    {"icon": `${this.$baseImageUrl}icon/求问求帮.png`, "des": "求问求帮"},
+				    {"icon": `${this.$baseImageUrl}icon/校园兼职.png`, "des": "校园兼职"},
+				    {"icon": `${this.$baseImageUrl}icon/寻人寻物.png`, "des": "寻人寻物"},
+				    {"icon": `${this.$baseImageUrl}icon/校园交友.png`, "des": "校园趣事"},
+				    {"icon": `${this.$baseImageUrl}icon/学习交流.png`, "des": "学习交流"},
+				    {"icon": `${this.$baseImageUrl}icon/共享资源.png`, "des": "共享资源"},
+				    {"icon": `${this.$baseImageUrl}icon/热门帖子.png`, "des": "热门帖子"},
+				],
 					futherThreeDayWeather:{}, // 未来三天天气预测信息
 					todayWeather:{},  // 当前天气，服务器端为10分钟更新一次
 					changebackground:"isNight", // 根据当前时间来更换背景颜色 18.00之前为白天，之后为晚上
@@ -215,7 +219,14 @@
 			}
 		},
 		onShow(){
-			// 有30%的概率可以刷新出现公告
+			// 有10%的概率可以刷新出现公告
+			let initFlag = uni.getStorageSync("login_success_init_index")
+			if(initFlag){
+				this.init(1,this.pageSize)
+				this.postDetailPageIndex = -1
+				this.isGotoPostDetailPage = false
+				uni.removeStorageSync("login_success_init_index")
+			}
 			let precent = Math.floor(Math.random()*100)
 			if(precent <= 10 && this.noticeList.length > 0){
 				this.showNotice()
@@ -806,6 +817,11 @@
 		border-radius: 15rpx;
 		background-color: #b95c00;
 		color: white;
+		padding: 0 5rpx;
+	}
+	.post-item-office{
+		border-radius: 15rpx;
+		color: #7cc5eb;
 	}
 	.post-item-top{
 		background-color: #d30000;

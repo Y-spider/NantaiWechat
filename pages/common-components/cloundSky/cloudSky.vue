@@ -10,6 +10,12 @@
 		<view class="cloud-container cloud-3">
 			<CloudCompont bg="white"></CloudCompont>
 		</view>
+		<view class="cloud-container cloud-4">
+			<CloudCompont bg="white"></CloudCompont>
+		</view>
+		<view class="cloud-container cloud-5">
+			<CloudCompont bg="white"></CloudCompont>
+		</view>
 	</view>
 </template>
 
@@ -56,6 +62,14 @@
 		top: 180rpx;
 		animation: cloud-move-3 60s linear infinite;
 	}
+	.cloud-4 {
+		top: 180rpx;
+		animation: cloud-move-4 60s linear infinite;
+	}
+	.cloud-5 {
+		top: 180rpx;
+		animation: cloud-move-5 60s linear infinite;
+	}
 	
 	@keyframes cloud-move-1 {
 		0% { left: -140rpx; }
@@ -69,6 +83,14 @@
 	
 	@keyframes cloud-move-3 {
 		0% { left: -200rpx; }
+		100% { left: 100%; }
+	}
+	@keyframes cloud-move-3 {
+		0% { left: -400rpx; }
+		100% { left: 100%; }
+	}
+	@keyframes cloud-move-3 {
+		0% { left: -100rpx; }
 		100% { left: 100%; }
 	}
 </style>

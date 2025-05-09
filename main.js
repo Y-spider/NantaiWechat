@@ -2,7 +2,7 @@ import App from './App'
 // 线上环境
 const baseURl = "https://www.nantaischool.cn"
 // 开发环境
-// const baseURl = "http://192.168.31.19"
+// const baseURl = "http://192.168.31.20"
 
 // #ifndef VUE3
 import Vue from 'vue'

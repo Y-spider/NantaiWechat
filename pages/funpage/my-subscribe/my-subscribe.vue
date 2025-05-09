@@ -7,10 +7,14 @@
 			<view class="user-show-item" v-for="user in mySubscribeUserList">
 				<view class="info-box" @click="gotoUserPostPage(user)">
 					<view class="avatar" style="display: flex; justify-content: center;align-items: center;">
-						<image src="../../../static/兼职.png"></image>
+						<image :src="baseImageUrl+user.avatar"></image>
 					</view>
 					<view class="info">
-						<class class="title">{{user.name}}</class>
+						<class class="title">
+							{{user.name}}
+							<text v-if="user.openid=='17760580731'" style="border-radius: 15rpx;background-color: #b90719;font-size: small; margin: 5rpx 0; color: white;margin-left: 30rpx;padding: 0 5rpx;">官方账号</text>
+							</text>
+						</class>
 						<class class="fan-count">粉丝数 {{user.fanCount}}</class>
 					</view>
 				</view>
@@ -39,7 +43,8 @@
 				mySubscribeUserList:[], // 关注用户列表
 				loading:true,
 				pageIndex:1,
-				pageSize:10
+				pageSize:10,
+				baseImageUrl:this.$baseImageUrl
 			}
 		},
 		methods: {

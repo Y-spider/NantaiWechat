@@ -188,13 +188,21 @@
 				"navigationBarTitleText" : "",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/funpage/coperation/coperation",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	  "window": {
 	    "backgroundTextStyle": "light",
 	    "navigationBarBackgroundColor": "#fff",
 	    "navigationBarTitleText": "小程序",
-	    "navigationBarTextStyle": "black",
+	    "navigationBarTextStyle": "white",
 	    "enablePullDownRefresh": true,
 	    "onReachBottomDistance": 50,
 	    "backgroundColor": "#F7F7F7",
@@ -202,11 +210,12 @@
 	    "backgroundSize": "cover"
 	  },
 	"tabBar": {
+		"selectedColor": "#ffffff", //设置选中tabbar字体颜色
 		"list": [
-			{"pagePath": "pages/index/index","text": "首页","iconPath": "static/导航-首页.png","selectedIconPath": "static/导航-首页 (1).png"},
-			{"pagePath": "pages/post/post","text": "发布","iconPath": "static/发布.png","selectedIconPath": "static/发布 (1).png"},
-			{"pagePath": "pages/message/message","text": "消息","iconPath": "static/消息.png","selectedIconPath": "static/消息(1).png"},
-			{"pagePath": "pages/home/home","text": "我的","iconPath": "static/我的.png","selectedIconPath": "static/我的 (1).png"}
+			{"pagePath": "pages/index/index","text": "首页","iconPath": "static/首页.png","selectedIconPath": "static/首页.png"},
+			{"pagePath": "pages/post/post","text": "发布","iconPath": "static/发布.png","selectedIconPath": "static/发布.png"},
+			{"pagePath": "pages/message/message","text": "消息","iconPath": "static/消息.png","selectedIconPath": "static/消息.png"},
+			{"pagePath": "pages/home/home","text": "我的","iconPath": "static/我的.png","selectedIconPath": "static/我的.png"}
 		],
 		"backgroundColor": "#2f4052"
 	},

@@ -24,9 +24,13 @@
 		<view class="post-item-box">
 			<view class="post-item" v-for="(post,index) in postDataList" :key="index">
 				<view class="post-item-base-info" @click="gotoDetailPage(index)">
-					<view class="post-item-name" style="width: 30%;"><text style="text-align: left; width: 100%;">{{post.name}}</text></view>
+					<view class="post-item-name" style="width: 40%;"><text style="text-align: left; width: 100%;">{{post.name}}
+					<text v-if="post.isOffice" style="border-radius: 15rpx;background-color: #b90719; color: white;margin-left: 30rpx;padding: 0 5rpx;">  官方帖</text>
+					</text>
+					</text></view>
 					<view class="post-item-type">{{post.type}}</view>
-					<view v-if="post.isTop" class="post-item-top" :class="state">已置顶</view>
+					<view v-if="post.isTop" class="post-item-top" :class="state" style="margin: 0 5rpx;">已置顶</view>
+					<view class="post-item-type" style="color: #ff0000; background-color: #ffffff;" v-if="post.type==='二手闲置'">{{post.price}} 元</view>
 					<view v-if="post.isHot && type=='热门帖子'" class="post-item-top" :class="state">
 						<image src="../../../static/热度.png" style="width: 54rpx;height: 54rpx; background-color: #ffffff;"></image>
 						{{post.hot}}

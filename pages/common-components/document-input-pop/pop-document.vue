@@ -122,7 +122,6 @@
 							this.base64ImageList[this.base64ImageListIndex++] = base64ImgItem;
 						})
 					}catch(err){
-						console.log("保存临时图片error",err);
 						showErr("第"+(i+1)+"张图片上传失败")
 					}
 				}
@@ -175,7 +174,10 @@
 					let result = JSON.parse(res.data)
 				    if(result.code == 200){
 						uni.hideLoading();
-						showSuccess("上传成功，等待管理员审核!")
+						uni.showModal({
+							content:"上传成功，等待管理员审核!",
+							showCancel:false
+						})
 						that.base64ImageList = [],
 						that.fileSize = "",
 						that.fileName = "",

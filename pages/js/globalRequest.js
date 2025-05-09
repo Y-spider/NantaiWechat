@@ -1,7 +1,7 @@
 // 正式环境
 const BASE_URL = "https://www.nantaischool.cn:39001/api/"
 // 开发环境
-// const BASE_URL = "http://192.168.31.19:8888/"
+// const BASE_URL = "http://192.168.31.20:8888/"
 
 export function httpOFPost(path, params = {}, loading = true) {
 	// console.log('%c请求拦截：', ' background:orange', params);
@@ -35,6 +35,14 @@ export function httpOFPost(path, params = {}, loading = true) {
 					reject(res.data)
 				}
 				else if(res.data?.code == 110){
+					uni.showToast({
+						icon: "error",
+						duration: 2000,
+						title: res.data.errMsg
+					});
+					reject(res.data)
+				}
+				else if(res.data?.code == 401){
 					uni.showToast({
 						icon: "error",
 						duration: 2000,

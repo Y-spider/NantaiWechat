@@ -62,24 +62,18 @@
 	 }
 	
 	 .cloud-animate {
-		 animation: float 6s ease-in-out infinite;
+		 animation: float 4s ease-in-out infinite;
 	 }
 	
 	 @keyframes float {
 		 0% {
-			 transform: translate(0, 0);
-		 }
-		 25% {
-			 transform: translate(-8rpx, -6rpx);
+			 transform: translateY(0);
 		 }
 		 50% {
-			 transform: translate(8rpx, -10rpx);
-		 }
-		 75% {
-			 transform: translate(-5rpx, -3rpx);
+			 transform: translateY(-10rpx);
 		 }
 		 100% {
-			 transform: translate(0, 0);
+			 transform: translateY(0);
 		 }
 	 }
 </style>

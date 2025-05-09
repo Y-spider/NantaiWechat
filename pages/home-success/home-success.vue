@@ -1,235 +1,181 @@
 <template>
 	<!-- 登录成功显示页面 -->
-	<view style="height: 100vh;">
-		<!-- 自定义的导航栏样式 -->
-		<NavigationSelf title="个人中心" :boxBg="showWeatherBackground[showWeatherIndex]" :showBack="false"></NavigationSelf>
-		<!-- 天气动画区域 -->
-		<!-- 太阳图像 -->
-		<view v-if="showWeatherFlagList[0]==true" class="sun-box" style="position: absolute;">
-			<view style="width: 80rpx; height: 80rpx; border-radius: 50%;background-color: red;">
-				<text style="">1</text>
+	<view class="container">
+		<!-- 顶部背景区域 -->
+		<view class="header-bg">
+			<!-- 装饰云朵 -->
+			<view class="decoration-clouds">
+				<CloudCompont v-for="(item,index) in 5" :key="index" class="cloud-item"></CloudCompont>
+			</view>
+			<!-- 个人信息卡片 -->
+			<view class="user-card" style="position: relative; margin-top: 120rpx;z-index: 9999;">
+				<view class="avatar-wrapper" style="">
+					<image class="avatar" :src="avatarUrl" mode="aspectFill" @click="toModifyPage"></image>
+				</view>
+				<view class="user-name" style="z-index: 99999;">{{userInfo.name}}</view>
+				<!-- 数据统计 -->
+				<view class="decoration-clouds">
+					<CloudCompont v-for="(item,index) in 3" :key="index" class="cloud-item"></CloudCompont>
+				</view>
+				<view class="stats-box">
+					<view class="stat-item">
+						<text class="num">{{userInfo.point}}</text>
+						<text class="label">积分</text>
+					</view>
+					<view class="stat-item">
+						<text class="num">{{userInfo.todayPost}}</text>
+						<text class="label">今日剩余</text>
+					</view>
+					<view class="stat-item">
+						<text class="num">{{userInfo.totalPost-postedDataList.length}}</text>
+						<text class="label">总剩余</text>
+					</view>
+				</view>
 			</view>
 		</view>
-		<!-- 大雨展示背景 -->
-		<view v-if="showWeatherFlagList[3]==true" class="weather-box,weather-heavy-rain" style="position: absolute;  height: 360rpx; width: 100%; display: flex; background-color: #595c5f;">
-			<RainCompont style="margin-top: 15rpx;"></RainCompont>
-			<RainCompont style="margin-top: 40rpx;"></RainCompont>
-			<RainCompont style="margin-top: -50rpx;"></RainCompont>
-			<RainCompont style="margin-top: -13rpx;margin-left: -15rpx;"></RainCompont>
-			<RainCompont style="margin-top: 27rpx;"></RainCompont>
-		</view>
-		<!-- 小雨展示背景 ，展示三朵云-->
-		<view v-if="showWeatherFlagList[2]==true" class="weather-box,weather-rain" style="position: absolute;  height: 360rpx; width: 100%; display: flex; justify-content: space-around; background-color: #595c5f;">
-			<RainCompont style="margin-top: 15rpx;"></RainCompont>
-			<!-- <RainCompont style="margin-top: 40rpx;"></RainCompont> -->
-			<RainCompont style="margin-top: -50rpx;"></RainCompont>
-			<!-- <RainCompont style="margin-top: -13rpx;margin-left: -15rpx;"></RainCompont> -->
-			<RainCompont style="margin-top: 27rpx;"></RainCompont>
-		</view>
-		<!-- 多云天气背景，背景才开skybule -->
-		<view v-if="showWeatherFlagList[1]==true" class="weather-box,weather-heavy-rain" style="position: absolute;  height: 360rpx; width: 100%; display: flex; justify-content: space-around;flex-direction: column; background-color: skyblue;">
-			<view class="cloud-box-1" style="display: flex;justify-content: space-around;">
-				<CloudCompont  class="cloud" style="margin-top: 12rpx;margin-left: -120rpx;"></CloudCompont>
-				<CloudCompont class="cloud" style="margin-top: -30rpx;margin-left: 22rpx;"></CloudCompont>
-				<CloudCompont  class="cloud" style="margin-top: 25rpx;margin-left: 35rpx;"></CloudCompont>
-				<CloudCompont  class="cloud" style="margin-top: 12rpx;margin-left: 45rpx;"></CloudCompont>
+
+		<!-- 快捷功能区 -->
+		<view class="quick-functions">
+			<view class="quick-item" @click="toMyCollectionPage()">
+				<text class="quick-num">{{staticData.collectionSize}}</text>
+				<text class="quick-label">我的收藏</text>
 			</view>
-			<view class="cloud-box-2" style="display: flex;justify-content: space-around;">
-				<CloudCompont  class="cloud" style="margin-top: -35rpx; margin-left: -120rpx;"></CloudCompont>
-				<CloudCompont  class="cloud" style="margin-top: -65rpx; margin-left: -90rpx;"></CloudCompont>
-				<CloudCompont  class="cloud" dstyle="visibility: 0;"></CloudCompont>
-				<CloudCompont  class="cloud" style="margin-top: -65rpx; margin-left: -88rpx;"></CloudCompont>
+			<view class="quick-item" @click="gotoTheTypePage('历史浏览')">
+				<text class="quick-num">{{staticData.browsingSize}}</text>
+				<text class="quick-label">历史浏览</text>
+			</view>
+			<view class="quick-item" @click="toMySubscribePage()">
+				<text class="quick-num">{{staticData.subscributeSize}}</text>
+				<text class="quick-label">我的关注</text>
+			</view>
+			<view class="quick-item" @click="toSigninPage()">
+				<text class="quick-num">{{staticData.signSize}}</text>
+				<text class="quick-label">本周签到</text>
 			</view>
 		</view>
-		<!-- 晴天天气，背景设置为太阳的颜色哦 -->
-		<view v-if="showWeatherFlagList[0]==true" class="weather-box,weather-heavy-rain" style="position: absolute;  height: 360rpx; width: 100%; display: flex; justify-content: space-around;flex-direction: column; background-color: #fbac13;">
-			<view class="sun-box" style="margin-left: 80%; position: absolute; margin-top: -300rpx;margin-right: 600rpx;">
-				<view style="width: 80rpx; height: 80rpx; border-radius: 50%;background-color: darkred;top: -300rpx;">
-					<text style="opacity: 0;">1</text>
+
+		<!-- 功能列表 -->
+		<view class="function-list">
+			<view class="function-item" @click="toMyPostPage()">
+				<view class="item-left">
+					<image :src="funItemList[0].iconPath" class="icon"></image>
+					<text>{{funItemList[0].funName}} {{staticData.myPostSize || 0}}</text>
 				</view>
+				<image src="../../static/向右箭头 (1).png" class="arrow"></image>
 			</view>
-			<view class="cloud-box-1" style="display: flex;justify-content: space-around;">
-				<CloudCompont  class="cloud" style="margin-top: 12rpx;margin-left: -120rpx;"></CloudCompont>
-				<CloudCompont class="cloud" style="margin-top: -30rpx;margin-left: 22rpx;"></CloudCompont>
-				<CloudCompont  class="cloud" style="margin-top: 25rpx;margin-left: 35rpx;"></CloudCompont>
-				<CloudCompont  class="cloud" style="margin-top: 12rpx;margin-left: 45rpx;"></CloudCompont>
+			<!-- <view class="function-item" @click="gotoTheTypePage('优惠劵')">
+				<view class="item-left">
+					<image src="../../static/优惠劵.png" class="icon"></image>
+					<text>优惠劵</text>
+				</view>
+				<image src="../../static/向右箭头 (1).png" class="arrow"></image>
+			</view> -->
+			<view class="function-item" @click="toUseGuidePage()">
+				<view class="item-left">
+					<image :src="funItemList[1].iconPath" class="icon"></image>
+					<text>{{funItemList[1].funName}}</text>
+				</view>
+				<image src="../../static/向右箭头 (1).png" class="arrow"></image>
 			</view>
-			<view class="cloud-box-2" style="display: flex;justify-content: space-around;">
-				<CloudCompont  class="cloud" style="margin-top: -35rpx; margin-left: -120rpx;"></CloudCompont>
-				<CloudCompont  class="cloud" style="margin-top: -65rpx; margin-left: -90rpx;"></CloudCompont>
-				<CloudCompont  class="cloud" dstyle="visibility: 0;"></CloudCompont>
-				<CloudCompont  class="cloud" style="margin-top: -65rpx; margin-left: -88rpx;"></CloudCompont>
+			<view class="function-item">
+				<view class="item-left">
+					<image :src="funItemList[2].iconPath" class="icon"></image>
+					<text>{{funItemList[2].funName}}</text>
+				</view>
+				<button class="transparent-btn" open-type="share">分享</button>
+				<image src="../../static/向右箭头 (1).png" class="arrow"></image>
 			</view>
-		</view>
-		<!-- 头像区域 -->
-		<view class="body" :style="{ backgroundColor: showWeatherBackground[showWeatherIndex] }">
-			<view class="body-box"  @click="toModifyPage()">
-				<view class="user-name">{{userInfo.name}}</view>
-				<view class="base-info-box">
-					<view class="base-info">{{userInfo.point}} <text>积分</text> </view>
-					<view class="base-info">{{userInfo.todayPost}} <text>今日剩余</text> </view>
-					<view class="base-info">{{userInfo.totalPost-postedDataList.length}}<text>总剩余</text></view>
+			<view class="function-item" @click="toModelPage()">
+				<view class="item-left">
+					<image :src="funItemList[3].iconPath" class="icon"></image>
+					<text>{{funItemList[3].funName}}</text>
 				</view>
+				<image src="../../static/向右箭头 (1).png" class="arrow"></image>
 			</view>
-			<view class="avatar" @click="toModifyPage()">
-				<img :src="avatarUrl + '?time=' + new Date().getTime()" />
+			<!-- 合作联系 -->
+			<view class="function-item" @click="gotoCoperation">
+				<view class="item-left">
+					<image :src="funItemList[7].iconPath" class="icon"></image>
+					<text>{{funItemList[7].funName}}</text>
+				</view>
+				<image src="../../static/向右箭头 (1).png" class="arrow"></image>
 			</view>
-		</view>
-		<!-- 功能选择模块 -->
-		<view class="fun-box" style="flex:1; background-color: #f7f7f7;">
-			<view class="fun-item-title">
-				<p class="welcome">欢迎使用南泰微校园</p>
+			<view class="function-item">
+				<view class="item-left">
+					<image :src="funItemList[4].iconPath" class="icon"></image>
+					<text>{{funItemList[4].funName}}</text>
+				</view>
+				<button class="transparent-btn" open-type="contact">联系客服</button>
+				<image src="../../static/向右箭头 (1).png" class="arrow"></image>
 			</view>
-			<!-- 修改后的功能盒子布局，参考咸鱼 -->
-			<view style="display: flex;gap: 5rpx;border-radius: 30rpx;justify-content: space-around;width: 90vw;background-color: #fff;"
-			 >
-				<view @click="toMyCollectionPage()" style="display: flex; justify-content: space-around; flex-direction: column;gap: 10rpx;align-items: center;height: 120rpx;">
-					<view style="font-weight: bold;">{{staticData.collectionSize}}</view>
-					<view style="font-size: large;">我的收藏</view>
+			<!-- 意见反馈 -->
+			<!-- <view class="function-item">
+				<view class="item-left">
+					<image :src="funItemList[5].iconPath" class="icon"></image>
+					<text>{{funItemList[5].funName}}</text>
 				</view>
-				<view @click="gotoTheTypePage('历史浏览')" style="display: flex;flex-direction: column;gap: 10rpx;justify-content: space-around;align-items: center;height: 120rpx;">
-					<view style="font-weight: bold;">{{staticData.browsingSize}}</view>
-					<view  style="font-size: large;">历史浏览</view>
+				<button class="transparent-btn" open-type="feedback">反馈</button>
+				<image src="../../static/向右箭头 (1).png" class="arrow"></image>
+			</view> -->
+			<view class="function-item" @click="logout">
+				<view class="item-left">
+					<image :src="funItemList[6].iconPath" class="icon"></image>
+					<text>{{funItemList[6].funName}}</text>
 				</view>
-				<view @click="toMySubscribePage()" style="display: flex;flex-direction: column;gap: 10rpx;justify-content: space-around;align-items: center;height: 120rpx;">
-					<view style="font-weight: bold;">{{staticData.subscributeSize}}</view>
-					<view style="font-size: large;">我的关注</view>
-				</view>
-				<view @click="toSigninPage()" style="display: flex;flex-direction: column;gap: 10rpx;justify-content: space-around;align-items: center;height: 120rpx;">
-					<view style="font-weight: bold;">{{staticData.signSize}}</view>
-					<view style="font-size: large;">本周签到</view>
-				</view>
-			</view>
-			<!-- 我的交易 -->
-			<view style="font-size: large;font-weight: bold;margin-top: 30rpx">更多功能</view>
-			<view style="margin-top: 30rpx;border-radius: 30rpx; justify-content: space-around; background-color: #fff;display: flex;width: 90vw;">
-				<view  @click="toMyPostPage()" class="item" style="display: flex; flex-direction: column;justify-content: center;align-items: center;height: 180rpx;">
-					<view class="icon">
-						<image src="../../static/我的发布.png" style="width: 64rpx;height: 64rpx;"></image>
-					</view>
-					<view v-if="staticData.myPostSize">我的发布 {{staticData.myPostSize}}</view>
-					<view v-else="staticData.myPostSize">我的发布 0</view>
-				</view>
-				<view @click="gotoTheTypePage('优惠劵')" class="item" style="display: flex; flex-direction: column;justify-content: center;align-items: center;height: 180rpx;">
-					<view class="icon">
-						<image src="../../static/优惠劵.png" style="width: 64rpx;height: 64rpx;"></image>
-					</view>
-					<view>优惠劵</view>
-				</view>
-				<view @click="toUseGuidePage()" class="item" style="display: flex; flex-direction: column;justify-content: center;align-items: center;height: 180rpx;">
-					<view class="icon">
-						<image src="../../static/使用指南 (3).png" style="width: 64rpx;height: 64rpx;"></image>
-					</view>
-					<view>使用指南</view>
-				</view>
-				<view class="item" style="position: relative; display: flex; flex-direction: column;justify-content: center;align-items: center;height: 180rpx;">
-					<view class="icon">
-						<image src="../../static/分享.png" style="width: 64rpx;height: 64rpx;"></image>
-					</view>
-					<view>分享</view>
-					<button style="opacity: 0;position: absolute;height: 128rpx; " open-type="share">1</button>
-				</view>
-			</view>
-			<!-- 其他功能 -->
-			<view style="margin-bottom: 220rpx; margin-top: 30rpx;border-radius: 30rpx; justify-content: space-around; background-color: #fff;display: flex;width: 90vw;">
-				<view  @click="toModelPage()" class="item" style="display: flex; flex-direction: column;justify-content: center;align-items: center;height: 180rpx;">
-					<view class="icon">
-						<image src="../../static/模版管理.png" style="width: 64rpx;height: 64rpx;"></image>
-					</view>
-					<view>模版管理</view>
-				</view>
-				<view class="item" style="position: relative;display: flex; flex-direction: column;justify-content: center;align-items: center;height: 180rpx;">
-					<view class="icon">
-						<image src="../../static/客服 (1).png" style="width: 64rpx;height: 64rpx;"></image>
-					</view>
-					<view>联系客服</view>
-					<button style="opacity: 0;position: absolute;height: 128rpx; " open-type="contact">1</button>
-				</view>
-				<view class="item" style="position: relative; display: flex; flex-direction: column;justify-content: center;align-items: center;height: 180rpx;">
-					<view class="icon">
-						<image src="../../static/反馈.png" style="width: 64rpx;height: 64rpx;"></image>
-					</view>
-					<view>意见反馈</view>
-					<button style="opacity: 0;position: absolute;height: 128rpx; " open-type="feedback">1</button>
-				</view>
-				<view @click="logout" class="item" style="display: flex; flex-direction: column;justify-content: center;align-items: center;height: 180rpx;">
-					<view class="icon">
-						<image src="../../static/退出.png" style="width: 64rpx;height: 64rpx;"></image>
-					</view>
-					<view>退出登陆</view>
-				</view>
+				<image src="../../static/向右箭头 (1).png" class="arrow"></image>
 			</view>
 			
-			<!-- 修改前的功能盒子布局 -->
-			<!-- <view class="fun-item" @click="toMyPostPage()">
-				<view class="fun-icon mypost"><text>1</text></view>
-				<view class="fun-name">我的发布</view>
-				<view class="fun-icon-arrow"><text>1</text></view>
-			</view>
-			<view class="fun-item" @click="toMyCollectionPage()">
-				<view class="fun-icon about"><text>1</text></view>
-				<view class="fun-name">我的收藏</view>
-				<view class="fun-icon-arrow"><text>1</text></view>
-			</view>
-			<view class="fun-item" @click="toMySubscribePage()">
-				<view class="fun-icon subscribe"><text>1</text></view>
-				<view class="fun-name">我的关注</view>
-				<view class="fun-icon-arrow"><text>1</text></view>
-			</view>
-			<view class="fun-item" @click="toSigninPage()">
-				<view class="fun-icon sign-in"><text>1</text></view>
-				<view class="fun-name">签到</view>
-				<view class="fun-icon-arrow"><text>1</text></view>
-			</view>
-			<view class="fun-item" @click="toUseGuidePage()">
-				<view class="fun-icon use-instruction"><text>1</text></view>
-				<view class="fun-name">使用指南</view>
-				<view class="fun-icon-arrow"><text>1</text></view>
-			</view>
-			<view class="fun-item" @click="toModelPage()">
-				<view class="fun-icon template-manage"><text>1</text></view>
-				<view class="fun-name">模版管理</view>
-				<view class="fun-icon-arrow"><text>1</text></view>
-			</view>
-			<view class="fun-item">
-				<button open-type="contact">1</button>
-				<view class="fun-icon contact"><text>1</text></view>
-				<view class="fun-name">联系客服</view>
-				<view class="fun-icon-arrow"><text>1</text></view>
-			</view>
-			<view class="fun-item">
-				<button open-type="feedback">1</button>
-				<view class="fun-icon feedback"><text>1</text></view>
-				<view class="fun-name">意见反馈</view>
-				<view class="fun-icon-arrow"><text>1</text></view>
-			</view>
-			<view class="fun-item" @click="logout">
-				<view class="fun-icon logout" ><text>1</text></view>
-				<view class="fun-name">退出登陆</view>
-				<view class="fun-icon-arrow"><text>1</text></view>
-			</view> -->
+		</view>
+		
+		<!-- 底部声明 -->
+		<view class="disclaimer">
+			<text>- 本程序由个人开发，与其他组织无关 -</text>
 		</view>
 	</view>
 </template>
 
 <script>
 	import {navigateToPage,showErr, showSuccess} from "../../common/common-js.js"
-	import {logoutAPI,getUserStaticAPI} from "../../api/HomeApi.js"
-	import  RainCompont from "../common-components/rain/rain.vue"
+	import {logoutAPI} from "../../api/HomeApi.js"
 	import CloudCompont from "../common-components/cloud/cloud.vue"
 	import NavigationSelf from "../common-components/head/head.vue"
+	
 	export default {
 		name: "HomeSuccessPage",
 		components:{
-			RainCompont,
 			CloudCompont,
-			NavigationSelf
+			NavigationSelf,
+		},
+		data() {
+			return{
+				funItemList:[
+					{"funName":"我的发布","iconPath":this.$baseImageUrl+"icon/我的发布.png"},
+					{"funName":"使用指南","iconPath":this.$baseImageUrl+"icon/使用指南.png"},
+					{"funName":"邀请校友","iconPath":this.$baseImageUrl+"icon/分享.png"},
+					{"funName":"模版管理","iconPath":this.$baseImageUrl+"icon/模版管理.png"},
+					{"funName":"联系客服","iconPath":this.$baseImageUrl+"icon/联系客服.png"},
+					{"funName":"意见反馈","iconPath":this.$baseImageUrl+"icon/意见反馈.png"},
+					{"funName":"退出登录","iconPath":this.$baseImageUrl+"icon/退出登录(1).png"},
+					{"funName":"合作联系","iconPath":this.$baseImageUrl+"icon/商务合作.png"}
+				]
+			}
+			
 		},
 		props:["userInfo","avatarUrl","postedDataList","showWeatherFlagList","showWeatherBackground","showWeatherIndex","staticData"],
 		onShow(){
-			
+			// 获取本地存储的天气状态
+			const weatherText = uni.getStorageSync('weatherText')
+			if (weatherText) {
+				this.weatherType = weatherText
+			}
 		},
 		methods: {
+			gotoCoperation(){
+				// 前往合作联系页面
+				uni.navigateTo({
+					url:"/pages/funpage/coperation/coperation"
+				})
+			},
 			gotoTheTypePage(typeDes){
 				if(typeDes == "优惠劵"){
 					uni.showModal({
@@ -257,6 +203,8 @@
 						uni.switchTab({
 							url:"/pages/index/index"
 						})
+						// 标记退出成功到首页刷新页面
+						uni.setStorageSync("login_success_init_index",true)
 						showSuccess("退出成功!")
 					}else if(res.code == -1){
 						uni.setStorageSync("flag",false)
@@ -267,6 +215,10 @@
 						// token失效，需要重新登陆
 						uni.setStorageSync("flag",false)
 						showErr("token失效，请重新登陆!")
+					}
+					else if(res.code == 401){
+						uni.setStorageSync("flag",false)
+						showErr(res.errMsg)
 					}
 				})
 			},
@@ -281,9 +233,6 @@
 				})
 			},
 			toSigninPage(){
-				// uni.navigateTo({
-				// 	url:"/pages/funpage/signin-page/signin-page"
-				// })
 				navigateToPage("/pages/funpage/signin-page/signin-page")
 			},
 			toModelPage(){
@@ -374,11 +323,12 @@
 		border-radius: 50%;
 		background: #333;
 		z-index: 11;
-		margin-top: -100rpx;
-		margin-left: 300rpx;
 		background-color: white;
 	}
 	.user-name{
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		width: 80%;
 		text-indent: 1rem;
 		font-size: 32rpx;
@@ -477,7 +427,7 @@
 		align-items: center;
 	}
 	/* 设置不同的背景图片 */
-	.about{
+/* 	.about{
 		background-image: url("../../static/爱心.png");
 	}
 	.instruction{
@@ -503,7 +453,7 @@
 	}
 	.subscribe{
 		background-image: url("../../static/关注.png");
-	}
+	} */
 	
 	
 	image{
@@ -530,5 +480,289 @@
 		100%{
 			transform: translateX(0rpx);
 		}
+	}
+
+	.container {
+		min-height: 100vh;
+		background-color: #f7f7f7;
+	}
+
+	.header-bg {
+		position: relative;
+		height: 400rpx;
+		background: linear-gradient(180deg, #a8d8ff 0%, #f7f7f7 100%);
+		padding-top: 80rpx; /* 减小顶部内边距 */
+		overflow: hidden;
+	}
+
+	/* 波浪动画 */
+	.wave-box {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		height: 120rpx;
+		overflow: hidden;
+	}
+
+	.wave {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 200%;
+		height: 100%;
+		background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="white" fill-opacity="0.2" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x;
+		animation: wave-animation 12s linear infinite;
+	}
+
+	.wave1 {
+		opacity: 0.3;
+		animation-duration: 12s;
+		bottom: -5rpx;
+	}
+
+	.wave2 {
+		opacity: 0.2;
+		animation-duration: 8s;
+		bottom: -10rpx;
+	}
+
+	.wave3 {
+		opacity: 0.1;
+		animation-duration: 5s;
+		bottom: -15rpx;
+	}
+
+	@keyframes wave-animation {
+		0% {
+			transform: translateX(0);
+		}
+		100% {
+			transform: translateX(-50%);
+		}
+	}
+
+	.decoration-clouds {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		overflow: hidden;
+	}
+
+	.cloud-item {
+		position: absolute;
+	}
+
+	.cloud-item:nth-child(1) {
+		top: 10%;
+		left: 10%;
+		animation: float 8s ease-in-out infinite;
+	}
+
+	.cloud-item:nth-child(2) {
+		top: 30%;
+		left: 50%;
+		animation: float 6s ease-in-out infinite;
+	}
+
+	.cloud-item:nth-child(3) {
+		top: 20%;
+		left: 80%;
+		animation: float 7s ease-in-out infinite;
+	}
+
+	.user-card {
+		position: relative;
+		z-index: 1;
+		margin: 0 30rpx;
+		margin-top: 80rpx;  /* 为头像留出空间 */
+		padding: 70rpx 30rpx 30rpx;
+		background: rgba(255, 255, 255, 0.95);
+		border-radius: 20rpx;
+		box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.avatar-wrapper {
+		position: absolute;
+		left: 53%;
+		top: -60rpx;  /* 调整头像位置，使其在卡片顶部居中 */
+		transform: translateX(-50%);
+		width: 120rpx;
+		height: 120rpx;
+		background: #fff;
+		border-radius: 50%;
+		padding: 4rpx;
+		box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+		z-index: 2;  /* 确保头像在最上层 */
+	}
+
+	.avatar {
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+		border: 3rpx solid rgba(255, 255, 255, 0.9);
+	}
+
+	.user-name {
+		font-size: 32rpx;
+		font-weight: bold;
+		margin: 10rpx 0 25rpx;
+		text-align: center;
+		width: 100%;
+		color: #333;
+	}
+
+	.stats-box {
+		display: flex;
+		justify-content: space-around;
+		width: 100%;
+		padding: 0 20rpx;
+		border-top: 1rpx solid rgba(0, 0, 0, 0.05);
+		padding-top: 20rpx;
+	}
+
+	.stat-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.stat-item:nth-child(1) .num {
+		color: #2b85e4;  /* 积分数字颜色 - 蓝色 */
+	}
+
+	.stat-item:nth-child(2) .num {
+		color: #19be6b;  /* 今日剩余数字颜色 - 绿色 */
+	}
+
+	.stat-item:nth-child(3) .num {
+		color: #ff9900;  /* 总剩余数字颜色 - 橙色 */
+	}
+
+	.num {
+		font-size: 36rpx;
+		font-weight: bold;
+		margin-bottom: 4rpx;
+	}
+
+	.label {
+		font-size: 24rpx;
+		color: #666;
+	}
+
+	/* 快捷功能区 */
+	.quick-functions {
+		margin: 20rpx 30rpx;
+		padding: 20rpx;
+		background: #fff;
+		border-radius: 20rpx;
+		display: flex;
+		justify-content: space-around;
+	}
+
+	.quick-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.quick-item:nth-child(1) .quick-num {
+		color: #ff6b81; /* 我的收藏 - 粉红色 */
+	}
+
+	.quick-item:nth-child(2) .quick-num {
+		color: #5352ed; /* 历史浏览 - 靛蓝色 */
+	}
+
+	.quick-item:nth-child(3) .quick-num {
+		color: #2ed573; /* 我的关注 - 绿色 */
+	}
+
+	.quick-item:nth-child(4) .quick-num {
+		color: #ffa502; /* 本周签到 - 橙色 */
+	}
+
+	.quick-num {
+		font-size: 32rpx;
+		font-weight: bold;
+		margin-bottom: 4rpx;
+	}
+
+	.quick-label {
+		font-size: 24rpx;
+		color: #666;
+	}
+
+	.function-list {
+		margin: 20rpx 30rpx;
+		background: #fff;
+		border-radius: 20rpx;
+		padding: 0 20rpx;
+	}
+
+	.function-item {
+		position: relative;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 30rpx 0;
+		border-bottom: 3rpx solid #eee;
+	}
+
+	.function-item:last-child {
+		border-bottom: none;
+	}
+
+	.item-left {
+		display: flex;
+		align-items: center;
+	}
+
+	.icon {
+		width: 50rpx;
+		height: 50rpx;
+		margin-right: 20rpx;
+	}
+
+	.arrow {
+		width: 32rpx;
+		height: 32rpx;
+	}
+
+	.transparent-btn {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+	}
+
+	@keyframes float {
+		0%, 100% { transform: translateY(0); }
+		50% { transform: translateY(-20rpx); }
+	}
+
+	/* 功能列表中的数字样式 */
+	.function-item .number {
+		color: #2b85e4;
+		font-weight: bold;
+		margin-left: 4rpx;
+	}
+
+	/* 底部声明样式 */
+	.disclaimer {
+		width: 100%;
+		padding: 30rpx 0;
+		text-align: center;
+		color: #999;
+		font-size: 24rpx;
+		background: transparent;
+		letter-spacing: 2rpx;
 	}
 </style>

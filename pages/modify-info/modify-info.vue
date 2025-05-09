@@ -161,7 +161,7 @@
 								}
 								else if(res.code == 110){
 									uni.showModal({
-										content:"名称含有敏感词:"+res.errMsg,
+										content:res.errMsg,
 										showCancel:false,
 										
 									})

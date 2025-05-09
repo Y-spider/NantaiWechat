@@ -10,26 +10,34 @@ function navigateToPage(path) {
 }
 
 function showErr(ErroMsg){
-	uni.showToast({
-		icon:"none",
-		title:ErroMsg,
-		duration:2000
+	// uni.showToast({
+	// 	icon:"none",
+	// 	title:ErroMsg,
+	// 	duration:2000
+	// })
+	uni.showModal({
+		content:ErroMsg,
+		showCancel:false
 	})
 }
 
 function showSuccess(successMsg){
-	 return new Promise((resolve,reject)=>{
-		 uni.showToast({
-		 	icon:"none",
-		 	title:successMsg,
-		 	duration:2000,
-			success(){
-				resolve()
-			},
-			fail() {
-				reject()
-			}
-		 })
+	 // return new Promise((resolve,reject)=>{
+		//  uni.showToast({
+		//  	icon:"none",
+		//  	title:successMsg,
+		//  	duration:2000,
+		// 	success(){
+		// 		resolve()
+		// 	},
+		// 	fail() {
+		// 		reject()
+		// 	}
+		//  })
+	 // })
+	 uni.showModal({
+	 	content:successMsg,
+		showCancel:false
 	 })
 }
 // 该函数的功能是获取当前日期的字符串 xxxx年xx月xx日

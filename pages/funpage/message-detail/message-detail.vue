@@ -68,8 +68,12 @@
 					</view>
 				</view>
 				<view class="message-content">
-					<view class="info-item">消息内容: <text class="text-content">{{message.content}}</text></view>
-					<view class="copy-button" v-if="message.type==3"><button size="mini" style="background-color: skyblue;" @click="copyContent">复制内容</button></view>
+					<view class="info-item">
+						消息内容: <text class="text-content">{{message.content}}</text>
+					</view>
+					<view class="copy-button" v-if="message.content">
+						<button size="mini" @click="copyContent">复制内容</button>
+					</view>
 				</view>
 				<view class="fun-button-box">
 					<view v-if="message.postId || reportInfo.postId"><button class="fun-button" @click="handleGoToPostDetail()">查看帖子</button></view>
@@ -110,29 +114,33 @@
 		},
 		methods: {
 			copyContent() {
-			    // 假设 this.message.content 是一个包含 URL 的字符串
-			    const content = this.message.content;
-			
-			    // 使用正则表达式提取 URL
-			    const urlRegex = /https?:\/\/\S+/; // 匹配以 http 或 https 开头的 URL
-			    const match = content.match(urlRegex);
-			
-			    if (match) {
-			        const copyData = match[0]; // 提取第一个匹配的 URL
-			
-			        // 将提取的 URL 复制到剪贴板
-			        uni.setClipboardData({
-			            data: copyData,
-			            success() {
-			                showSuccess("内容复制成功");
-			            },
-			            fail() {
-			                console.error("复制失败");
-			            }
-			        });
-			    } else {
-			        console.error("未找到 URL");
-			    }
+				// 直接复制完整消息内容
+				if(this.message.type == 3){
+					// 复制
+					 const urlRegex = /http[s]?:\/\/[^\s]+/g;
+					const matches = this.message.content.match(urlRegex);
+					if (matches && matches.length > 0) {
+					     uni.setClipboardData({
+					     	data: matches[0],
+					     	success() {
+					     		showSuccess("复制链接成功");
+					     	},
+					     	fail() {
+					     		showErr("复制链接失败");
+					     	}
+					     });
+						 return;
+					    }
+				}
+				uni.setClipboardData({
+					data: this.message.content,
+					success() {
+						showSuccess("复制成功");
+					},
+					fail() {
+						showErr("复制失败");
+					}
+				});
 			},
 			init(){
 				getMessageByIdAPI(this.id).then((res1)=>{
@@ -209,67 +217,153 @@
 </script>
 
 <style scoped>
-	.box{
-		display: flex;
-		justify-content: center;
-		align-items: center;
+	.box {
+		min-height: 100vh;
+		background: #f8f9fa;
+		padding: 30rpx 20rpx;
 	}
-	.info-box{
-		display: flex;
-		flex-direction: column;
-		width: 96vw;
-		background-color: brown;
-		margin-top: 30rpx;
-		border: 1px solid lightgray;
-		background-color: #fff;
-		font-weight: bold;
-		font-size: larger;
-		box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-		border-radius: 15rpx;
+
+	.info-box {
+		background: #fff;
+		border-radius: 24rpx;
+		padding: 40rpx 30rpx;
+		box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.06);
 	}
-	.text-content{
-		font-size: medium;
+
+	.info-item {
+		position: relative;
+		margin-bottom: 30rpx;
+		padding-bottom: 20rpx;
+		border-bottom: 2rpx solid #f5f5f5;
+		font-size: 28rpx;
+		color: #333;
+		display: flex;
+		align-items: flex-start;
+	}
+
+	.info-item:last-child {
+		margin-bottom: 0;
+		padding-bottom: 0;
+		border-bottom: none;
+	}
+
+	.text-content {
+		flex: 1;
+		font-size: 28rpx;
+		color: #666;
+		line-height: 1.6;
+		margin-left: 20rpx;
+		word-break: break-all;
+		white-space: pre-wrap;
+	}
+
+	.text-content[class*="exam-state-"] {
+		display: inline-block;
+		padding: 6rpx 20rpx;
+		border-radius: 8rpx;
 		font-weight: 500;
-		padding: 15rpx;
-		margin-left: 15rpx;
-		color: #ababab;
 	}
-	.info-item{
-		padding-top: 15rpx;
-		padding-left:15rpx ;
+
+	.exam-state-resolve {
+		color: #52c41a;
+		background: rgba(82, 196, 26, 0.1);
 	}
-	.fun-button-box{
+
+	.exam-state-reject {
+		color: #ff4d4f;
+		background: rgba(255, 77, 79, 0.1);
+	}
+
+	.document-imgs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20rpx;
+		margin-top: 20rpx;
+	}
+
+	.img-box {
+		position: relative;
+		width: 200rpx;
+		height: 200rpx;
+		border-radius: 12rpx;
+		overflow: hidden;
+		box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+		transition: all 0.3s ease;
+	}
+
+	.img-box:active {
+		transform: scale(0.98);
+	}
+
+	.img-box image {
 		width: 100%;
-		display: flex;
-		flex-direction: row-reverse;
-		margin-top: 50rpx;
+		height: 100%;
+		object-fit: cover;
 	}
-	.fun-button{
-		height: 64rpx;
+
+	.fun-button-box {
+		margin-top: 40rpx;
+		padding: 20rpx 0;
 		display: flex;
-		justify-content: center;
+		justify-content: flex-end;
+		gap: 20rpx;
+	}
+
+	.fun-button {
+		min-width: 160rpx;
+		height: 72rpx;
+		padding: 0 40rpx;
+		background: linear-gradient(135deg, #4e9deb 0%, #3582E9 100%);
+		color: #fff;
+		border: none;
+		border-radius: 36rpx;
+		font-size: 28rpx;
+		display: flex;
 		align-items: center;
-		color: #4e9deb;
-		border:1rpx solid #4e9deb;
-		border-radius: 15rpx;
-		background-color: #fff;
-		font-size: xx-small;
-		margin: 30rpx 30rpx 30rpx 0rpx;
+		justify-content: center;
+		transition: all 0.3s ease;
+		box-shadow: 0 4rpx 12rpx rgba(78, 157, 235, 0.2);
 	}
-	.exam-state-resolve{
-		color: green;
+
+	.fun-button:active {
+		transform: translateY(2rpx);
+		box-shadow: 0 2rpx 8rpx rgba(78, 157, 235, 0.2);
 	}
-	.exam-state-reject{
-		color: red;
-	}
-	.document-imgs{
+
+	.message-content {
 		display: flex;
+		align-items: flex-start;
+		margin-top: 20rpx;
+		flex-wrap: wrap;
 	}
-	.img-box image{
-		width: 128rpx;
-		height: 128rpx;
-		border-radius: 10rpx;
-		margin: 10rpx;
+
+	.message-content .info-item {
+		flex: 1;
+		min-width: 0;
 	}
-	
+
+	.copy-button {
+		margin-left: 20rpx;
+		align-self: flex-start;
+	}
+
+	.copy-button button {
+		height: 56rpx;
+		padding: 0 30rpx;
+		background: linear-gradient(135deg, #4e9deb 0%, #3582E9 100%);
+		color: #fff;
+		border: none;
+		border-radius: 28rpx;
+		font-size: 24rpx;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		white-space: nowrap;
+		transition: all 0.3s ease;
+		box-shadow: 0 4rpx 12rpx rgba(78, 157, 235, 0.2);
+	}
+
+	[class*="info-item"]:active {
+		background: rgba(0, 0, 0, 0.02);
+	}
 </style>
