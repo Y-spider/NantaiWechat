@@ -2,14 +2,14 @@ import App from './App'
 // 线上环境
 // const baseURl = "https://www.chopper.love"
 // 开发环境
-const baseURl = "http://192.168.31.19"
+const baseURl = "http://127.0.0.1"
 
 // #ifndef VUE3
 import Vue from 'vue'
 import './uni.promisify.adaptor'
 Vue.config.productionTip = false
 App.mpType = 'app'
-Vue.prototype.$socketUrl = "//192.168.31.19:8888"
+Vue.prototype.$socketUrl = "//127.0.0.1:8888"
 Vue.prototype.$baseImageUrl = baseURl+":6134/"
 Vue.prototype.$baseDocumentImageUrl = baseURl+":6135/"
 Vue.prototype.$baseSwiperImageUrl = baseURl + ":6136/"

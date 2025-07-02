@@ -1,7 +1,7 @@
 // 正式环境
 // const BASE_URL = "https://www.chopper.love:39001/api/"
 // 开发环境
-const BASE_URL = "http://192.168.31.19:8888/"
+const BASE_URL = "http://127.0.0.1:8888/"
 
 export function httpOFPost(path, params = {}, loading = true) {
 	// console.log('%c请求拦截：', ' background:orange', params);
